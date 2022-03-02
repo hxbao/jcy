@@ -1,0 +1,40 @@
+{
+  "version": "0.2.1",
+  "configurations": [
+    {
+      "type": "cortex-debug",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "name": "Debug jlink n32L406",
+      "executable": "${workspaceRoot}/build/tn-017-bms-software-stack.elf",
+      "serverpath": "C:/Program Files (x86)/SEGGER/JLink/JLinkGDBServerCL.exe",
+      "servertype": "jlink",
+      "device": "N32L406CB", 
+      "interface": "swd", // 可选jtag、swd
+      "jlinkscript": "",
+      "runToMain": true,      
+      "svdFile": "${workspaceRoot}\\N32L406.svd",
+      "rtos": "",
+      "preLaunchTask": ""
+      
+    },  
+     
+    {
+      "type": "cortex-debug",
+      "request": "launch",
+      "name": "Debug J-Link huada170",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}/build/tn-017-bms-software-stack.elf",
+      "serverpath": "C:/Program Files (x86)/SEGGER/JLink/JLinkGDBServerCL.exe",
+      "servertype": "jlink",
+      "device": "HC32L17x", // 可以在jflash等工具的器件选择列表里找到对应的具体型号
+      "interface": "swd", // 可选jtag、swd
+      "serialNumber": "", // 电脑上有多个JLink，通过这里指定使用一个进行调试
+      "jlinkscript": "",
+      "runToMain": true,
+      "svdFile": "${workspaceRoot}/HC32L170JATA.svd", // 可以在jlink的安装路径下找，也可以在keil、iar等地方找到，该文件描述了器件的寄存器等内容
+      "rtos": "",
+      "preLaunchTask": ""
+    }  
+  ]
+}

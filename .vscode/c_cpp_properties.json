@@ -1,0 +1,30 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "arm-gcc",
+            "intelliSenseMode": "windows-gcc-arm",
+            "compilerPath": "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\10 2021.07\\bin\\arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [
+                    "${workspaceRoot}/*"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ".vscode/browse.db"
+            },
+            "includePath": [
+                "${workspaceRoot}\\lib\\SEGGER_RTT\\RTT\\",
+                "${workspaceRoot}\\inc\\",
+                "${workspaceRoot}\\config\\",
+                "${workspaceRoot}\\lib\\CMSIS\\include",
+                "${workspaceRoot}\\lib\\mcu\\n32\\common",
+                "${workspaceRoot}\\lib\\driver\\n32\\inc",
+                "${workspaceRoot}\\lib\\atc-master",
+                "${workspaceRoot}\\freeRTOS\\Source\\include"
+            ],
+            "defines": [
+              
+            ]
+        }
+    ]
+}
