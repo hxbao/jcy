@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+make clean
+rm -rf /www/wwwroot/bms_project/build/Makefile ./cmake* ./comile_commands.json ./*.map ./tn-017-software-stack.hex ./*.bin
+cmake -D MCU_SELECT_HC=ON ..
+make
+zip output.zip *.hex *.bin ../config/config.h
