@@ -1,6 +1,7 @@
 #include "dxbt24.h"
 #include "includes.h"
 
+#define DXBT24_GET_LINK_STAT() GPIO_ReadInputDataBit(TN_BLE_STATUS_PORT,TN_BLE_STATUS_PIN)
 
 /**
  * DXBT24 5005A功耗情况

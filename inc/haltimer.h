@@ -5,7 +5,7 @@
 
 #define TMR_COUNT	15		
 
-#define TMR_SOC_ENGINE 0
+#define TMR_ATL485     0
 #define TMR_MAIN       1
 #define TMR_AFE        2
 #define TMR_ONEBUS_CHECK 3
