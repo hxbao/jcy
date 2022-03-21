@@ -1,1 +1,1 @@
-[{"node":"I2C1","expanded":true,"format":0,"pinned":false},{"node":"I2C1.CR","expanded":true,"format":0},{"node":"I2C1.STAT","expanded":true,"format":0},{"node":"SYSCTRL","expanded":true,"format":0,"pinned":false},{"node":"SYSCTRL.RCH_CR","expanded":true,"format":0}]
+[{"node":"I2C1","expanded":true,"format":0,"pinned":false}]

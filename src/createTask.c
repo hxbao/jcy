@@ -2,11 +2,17 @@
 
 osThreadId defaultTaskHandle;
 osThreadId espTaskHandle;
+osThreadId onewireTaskHandle;
+osThreadId BT24TaskHandle;
+
+osThreadId defaultTaskHandle;
 osMessageQId QueueTxHandle;
 osSemaphoreId CommandSemHandle;
 
 void StartDefaultTask(void const * argument);
 void EspTask(void const * argument);
+void OneWireTask(void const * argument);
+void BT24Task(void const * argument);
 
 void CreateTask()
 {
@@ -38,8 +44,16 @@ void CreateTask()
 	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
 	/* definition and creation of usbTask */
-	osThreadDef(EspTask, EspTask, osPriorityIdle, 0, 256);
+	osThreadDef(EspTask, EspTask, osPriorityNormal, 0, 256);  
 	espTaskHandle = osThreadCreate(osThread(EspTask), NULL);
+
+		/* definition and creation of usbTask */
+	osThreadDef(OneWireTask, OneWireTask, osPriorityNormal, 0, 256);
+	onewireTaskHandle = osThreadCreate(osThread(OneWireTask), NULL);
+
+			/* definition and creation of usbTask */
+	osThreadDef(BT24Task, BT24Task, osPriorityNormal, 0, 256);
+	BT24TaskHandle = osThreadCreate(osThread(BT24Task), NULL);
 }
 
 void StartDefaultTask(void const * argument)
@@ -50,17 +64,24 @@ void StartDefaultTask(void const * argument)
 
 
 	//sdram_test();
-	//clock select
-	
+	//clock select	
 
   /* Infinite loop */
   for(;;)
   {
-
+	  osDelay(10);
   }
   /* USER CODE END 5 */ 
 }
-
+/** 
+* @brief  	ESP32协议
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
 void EspTask(void const * argument)
 {
   /* USER CODE BEGIN UsbTask */
@@ -87,9 +108,25 @@ void EspTask(void const * argument)
   }
   /* USER CODE END UsbTask */
 }
-
-
-
+/** 
+* @brief  	bms一线通协议任务
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void OneWireTask(void const * argument)
+{	
+	bmsOneWireInit();
+	TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000
+	for(;;)
+	{
+		ATLModbusPoll();
+		osDelay(1000);
+	}
+}
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );

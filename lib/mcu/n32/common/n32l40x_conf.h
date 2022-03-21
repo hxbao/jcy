@@ -54,7 +54,7 @@
 #include "n32l40x_rcc.h"
 #include "n32l40x_rtc.h"
 #include "n32l40x_spi.h"
-//#include "n32l40x_tim.h"
+#include "n32l40x_tim.h"
 #include "n32l40x_usart.h"
 #include "n32l40x_lpuart.h"
 #include "n32l40x_wwdg.h"

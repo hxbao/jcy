@@ -4,5 +4,6 @@
 #define DXBT24_UARTX 1
 
 
+void DXBT24_Init(void);
 
-#endif//
+#endif

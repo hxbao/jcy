@@ -8,10 +8,8 @@ History:
 ********************************************************************************/
 #include "includes.h"
 
-
 static void Bsp_Init(void)
 {
-
 	GPIOInit();
 	bsp_InitTimer();
 }
@@ -22,7 +20,7 @@ void main(void)
 	uint16_t newCrc;
 	uint8_t count = 5;
 	//中断地址偏移设置
-	MCU_SetNVOffset();
+//	MCU_SetNVOffset();
 	Clk_Config();
 	SysTick_Config(SystemCoreClock / 1000);
 
@@ -41,6 +39,17 @@ void main(void)
 	SEGGER_RTT_printf(0, "complie time:%s\n", COMPLIE_TIME);
 
 	Bsp_Init();
+
+	// bmsOneWireInit();
+	// TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000
+
+	// atc_init(&atc, "MY_ATC", USART2,atc_found);
+	// atc_addSearch(&atc, "\r\n+CMD:");
+
+	// while(1)
+	// {
+	// 	atc_loop(&atc);
+	// }
 	CreateTask();
 	osKernelStart();
 }

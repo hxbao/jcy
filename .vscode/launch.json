@@ -6,8 +6,8 @@
       "request": "launch",
       "cwd": "${workspaceRoot}",
       "name": "Debug jlink n32L406",
-      "executable": "${workspaceRoot}/build/tn-017-bms-software-stack.elf",
-      "serverpath": "C:/Program Files (x86)/SEGGER/JLink/JLinkGDBServerCL.exe",
+      "executable": "${workspaceRoot}/build/jcy2.elf",
+      "serverpath": "C:/Program Files/SEGGER/JLink/JLinkGDBServerCL.exe",
       "servertype": "jlink",
       "device": "N32L406CB", 
       "interface": "swd", // 可选jtag、swd

@@ -65,7 +65,7 @@ else(MCU_SELECT_HC==OFF)
         lib/mcu/n32/common
         lib/SEGGER_RTT/RTT
         lib/CMSIS/Include
-        stc/atc-master
+        src/atc-master
         freeRTOS/Source/include
 
         )

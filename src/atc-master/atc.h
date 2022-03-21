@@ -27,8 +27,9 @@ extern "C"
 
 #include <stdbool.h>
 #include <stdarg.h>
-#include "atcConfig.h"
 #include "includes.h"
+#include "atcConfig.h"
+ 
 
 #if (_ATC_RTOS == 0)
 #define atc_delay(x) HAL_Delay(x)

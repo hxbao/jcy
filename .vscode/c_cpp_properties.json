@@ -4,7 +4,7 @@
         {
             "name": "arm-gcc",
             "intelliSenseMode": "windows-gcc-arm",
-            "compilerPath": "C:\\Program Files (x86)\\GNU Arm Embedded Toolchain\\10 2021.07\\bin\\arm-none-eabi-gcc.exe",
+            "compilerPath": "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc-10.3.1.exe",
             "browse": {
                 "path": [
                     "${workspaceRoot}/*"
@@ -19,12 +19,14 @@
                 "${workspaceRoot}\\lib\\CMSIS\\include",
                 "${workspaceRoot}\\lib\\mcu\\n32\\common",
                 "${workspaceRoot}\\lib\\driver\\n32\\inc",
-                "${workspaceRoot}\\lib\\atc-master",
+                "${workspaceRoot}\\lib\\w25qxx-master",
+                "${workspaceRoot}\\src\\atc-master",
                 "${workspaceRoot}\\freeRTOS\\Source\\include"
             ],
-            "defines": [
-              
-            ]
+            "defines": [],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ]
 }

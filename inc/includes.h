@@ -1,6 +1,8 @@
 #ifndef _INCLUDES_H
 #define _INCLUDES_H
 
+#include <stdbool.h>
+#include <stdarg.h>
 #include "config.h"
 #include "string.h"
 #ifdef UNIT_TEST_EN
@@ -24,9 +26,11 @@ void UnitTestProcess(void);
 #include "halN32Can.h"
 #include "SEGGER_RTT.h"
 #include "createtask.h"
+#include "onewire.h" 
+#include "atl485protol.h"
+#include "atc.h"
 //os
 #include "cmsis_os.h"
-
 
 
 

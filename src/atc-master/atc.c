@@ -9,6 +9,9 @@
 #else
 #define atc_printf(...) {};
 #endif
+
+extern atc_t atc;
+
 //####################################################################################################
 void *atc_alloc(size_t size)
 {
@@ -79,13 +82,13 @@ void atc_rxCallback(uint8_t data)
   // if (LL_USART_IsActiveFlag_RXNE(atc->usart))
   // {
   //   uint8_t tmp = LL_USART_ReceiveData8(atc->usart);
-  //   if (atc->rxIndex < _ATC_RXSIZE - 1)
-  //   {
-  //     atc->rxBuffer[atc->rxIndex] = tmp;
-  //     atc->rxIndex++;
-  //   }
-  //   atc->rxTime = HAL_GetTick();
-  //   return;
+    if (atc.rxIndex < _ATC_RXSIZE - 1)
+    { 
+      atc.rxBuffer[atc.rxIndex] = data;
+      atc.rxIndex++;
+    }
+    atc.rxTime =bsp_GetFreeRunTime();
+    return;
   // }
   //  if (LL_USART_IsActiveFlag_PE(atc->usart))
   //    LL_USART_ClearFlag_PE(atc->usart);

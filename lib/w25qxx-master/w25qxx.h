@@ -37,7 +37,6 @@ extern "C"
 #endif
 
 #include <stdbool.h>
-#include "main.h"
 
 	typedef enum
 	{
