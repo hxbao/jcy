@@ -26,9 +26,12 @@ void UnitTestProcess(void);
 #include "halN32Can.h"
 #include "SEGGER_RTT.h"
 #include "createtask.h"
-#include "onewire.h" 
+#include "onebus.h" 
 #include "atl485protol.h"
 #include "atc.h"
+#include "chargeProtocol.h"
+#include "haluart3.h"
+#include "dxbt24.h"
 //os
 #include "cmsis_os.h"
 

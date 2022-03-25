@@ -21,6 +21,8 @@
 #define TMR_UINT_TEST     10
 #define TMR_BLANCE_PWM    11
 
+#define TMR_DEVICE_LOOP	  12
+
 typedef enum
 {
 	TMR_ONCE_MODE = 0,		

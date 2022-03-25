@@ -896,7 +896,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/onewire.c",
+			"path" : "src/onebus.c",
 			"sourceGroupIndex" : 0
 		},
 		{

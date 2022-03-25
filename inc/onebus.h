@@ -1,12 +1,12 @@
 /******************************************************************************
- * @file           : onewire.h
+ * @file           : onebus.h
  * @version        : v1.0
  * @author         : Azreal
  * @creat          : 2021 0804
  ******************************************************************************/
 
-#ifndef __ONEWIRE_H
-#define __ONEWIRE_H
+#ifndef __ONEBUS_H
+#define __ONEBUS_H
 
 #include "includes.h"
 
@@ -163,12 +163,15 @@ typedef struct
 	uint8_t BAT_PRO_CODE; //电池生产流水码 20位
 
 	uint8_t BAT_CRC;		//校验码
-} bat_param;
+} OneBusStaticData_t;
 
 void TIM_Configuration(uint16_t arr, uint16_t psc);
-void bmsOneWireInit(void);
-void bmsOneWireParamInit(bms_info *bms);
+void bmsOneBusInit(void);
+void bmsOneBusParamInit(bms_info *bms);
 void _smart_bms_check_pa(bms_info *bms);
 void GPIO_ToggleBits(GPIO_Module *GPIOx, uint16_t GPIO_Pin);
-
+void bmsOneBusHandler(uint8_t *bmsRxBuff);
+void GetConfigTimeClear(void);
+uint32_t GetConfigLoopTime(void);
+uint8_t get_onebus_bat_sta(void);
 #endif

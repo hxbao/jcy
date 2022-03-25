@@ -20,7 +20,7 @@
 #define MCU_LIB_SELECT (2)
 #endif
 
-#define USE_485_IF    (0)
+#define USE_485_IF    (1)
 
 #if (USE_485_IF != 1)
 #define ONEBUS_TYPE  (1)

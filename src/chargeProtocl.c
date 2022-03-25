@@ -1,56 +1,41 @@
 #include "includes.h"
 #include "chargeProtocol.h"
- 
-#define ch_len	0x0D	//数据长度
 
-uint8_t device_bat_param_array[14]={0};
+#define ch_len 0x0D //数据长度
 
-ch_param cp; 
+unsigned char data_process_buf[DATA_PROCESS_LMT]; //串口数据处理缓存
+unsigned char uart_rx_buf[UART_RECV_BUF_LMT];     //串口接收缓存
+unsigned char uart_tx_buf[UART_SEND_BUF_LMT];     //串口发送缓存
+//
+unsigned char *rx_buf_in;
+unsigned char *rx_buf_out;
 
-/**
- * @brief  内存拷贝
- * @param[out] {dest} 目标地址
- * @param[in] {src} 源地址
- * @param[in] {count} 拷贝数据个数
- * @return 数据处理完后的源地址
- */
-void *my_memcpy(void *dest, const void *src, unsigned short count)  
-{  
-    unsigned char *pdest = (unsigned char *)dest;  
-    const unsigned char *psrc  = (const unsigned char *)src;  
-    unsigned short i;
-    
-    if(dest == NULL || src == NULL) { 
-        return NULL;
-    }
-    
-    if((pdest <= psrc) || (pdest > psrc + count)) {  
-        for(i = 0; i < count; i ++) {  
-            pdest[i] = psrc[i];  
-        }  
-    }else {
-        for(i = count; i > 0; i --) {  
-            pdest[i - 1] = psrc[i - 1];  
-        }  
-    }  
-    
-    return dest;  
-}
+unsigned char stop_update_flag; // ENABLE:停止一切数据上传  DISABLE:恢复一切数据上传
+
+DeviceResponseCmdErr_t DRC;
 /**
  * @brief  计算校验和
  * @param[in] {pack} 数据源指针
  * @param[in] {pack_len} 计算校验和长度
  * @return 校验和
  */
-unsigned char get_check_sum(unsigned char *pack, unsigned short pack_len)
+unsigned char get_check_sum(unsigned char *pack, unsigned short pack_len,uint8_t frame_type)
 {
     unsigned short i;
     unsigned char check_sum = 0;
-    
-    for(i = 0; i < pack_len; i ++) {
-        check_sum += *pack ++;
+
+    for (i = 0; i < pack_len; i++)
+    {
+        check_sum += *pack++;
     }
-    
+    if(frame_type==0)
+    {
+        check_sum+=DEV_FRAME_FIRST;
+    }
+    else
+    {
+        check_sum+=MOD_FRAME_FIRST;
+    }
     return check_sum;
 }
 
@@ -64,9 +49,8 @@ void device_protocol_init(void)
 {
     rx_buf_in = (unsigned char *)uart_rx_buf;
     rx_buf_out = (unsigned char *)uart_rx_buf;
-    
-    stop_update_flag = DISABLE; 
 
+    stop_update_flag = DISABLE;
 }
 /**
  * @brief  串口接收数据暂存处理
@@ -74,19 +58,25 @@ void device_protocol_init(void)
  * @return Null
  * @note   在MCU串口处理函数中调用该函数,并将接收到的数据作为参数传入
  */
-void uart_receive_input(unsigned char value)
+void device_uart_receive_input(unsigned char value)
 {
-    if(1 == rx_buf_out - rx_buf_in) { 
+    if (1 == rx_buf_out - rx_buf_in)
+    {
         //串口接收缓存已满
-    }else if((rx_buf_in > rx_buf_out) && ((rx_buf_in - rx_buf_out) >= sizeof(uart_rx_buf))) {
+    }
+    else if ((rx_buf_in > rx_buf_out) && ((rx_buf_in - rx_buf_out) >= sizeof(uart_rx_buf)))
+    {
         //串口接收缓存已满
-    }else {
+    }
+    else
+    {
         //串口接收缓存未满
-        if(rx_buf_in >= (unsigned char *)(uart_rx_buf + sizeof(uart_rx_buf))) {
+        if (rx_buf_in >= (unsigned char *)(uart_rx_buf + sizeof(uart_rx_buf)))
+        {
             rx_buf_in = (unsigned char *)(uart_rx_buf);
         }
-        
-        *rx_buf_in ++ = value;
+
+        *rx_buf_in++ = value;
     }
 }
 
@@ -97,7 +87,7 @@ void uart_receive_input(unsigned char value)
  */
 unsigned char with_data_rxbuff(void)
 {
-    if(rx_buf_in != rx_buf_out)
+    if (rx_buf_in != rx_buf_out)
         return 1;
     else
         return 0;
@@ -111,32 +101,44 @@ unsigned char with_data_rxbuff(void)
 unsigned char take_byte_rxbuff(void)
 {
     unsigned char value;
-    
-    if(rx_buf_out != rx_buf_in) {
+
+    if (rx_buf_out != rx_buf_in)
+    {
         //有数据
-        if(rx_buf_out >= (unsigned char *)(uart_rx_buf + sizeof(uart_rx_buf))) {
+        if (rx_buf_out >= (unsigned char *)(uart_rx_buf + sizeof(uart_rx_buf)))
+        {
             //数据已经到末尾
             rx_buf_out = (unsigned char *)(uart_rx_buf);
         }
-        
-        value = *rx_buf_out ++;   
+
+        value = *rx_buf_out++;
     }
-    
+
     return value;
 }
 /*****************************************************************************
-函数名称 : data_handle
+函数名称 : device_data_handle
 功能描述 : 数据帧处理
 输入参数 : offset:数据起始位
 返回参数 : 无
 *****************************************************************************/
-void data_handle(unsigned short offset)
+void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC)
 {
-	device_bat_param_array[2]=data_process_buf[offset+2];
-	device_bat_param_array[3]=data_process_buf[offset+3];
-	device_bat_param_array[4]=data_process_buf[offset+4];
-	device_bat_param_array[5]=data_process_buf[offset+5];
-	device_bat_param_array[6]=data_process_buf[offset+6];
+    DRC->DEV_STATUS = data_process_buf[offset + 3];
+    DRC->DEV_GET_VOL= (data_process_buf[offset + 4]<<24)|(data_process_buf[offset + 5]<<16)
+        |(data_process_buf[offset + 6]<<8)|data_process_buf[offset + 7];
+    DRC->DEV_GET_CUR=(data_process_buf[offset + 8]<<8)|data_process_buf[offset + 9];
+    DRC->DEV_TIME_H=data_process_buf[offset + 10];
+    DRC->DEV_TIME_M=data_process_buf[offset + 11];
+    DRC->DEV_TIME_S=data_process_buf[offset + 12];
+    DRC->DEV_GET_SPE=(data_process_buf[offset + 13]<<8)|data_process_buf[offset + 14];
+    DRC->DEV_SET_DISCH_CUR=(data_process_buf[offset + 15]<<8)|data_process_buf[offset + 16];
+    DRC->DEV_SET_DISCH_END_VOL= (data_process_buf[offset + 17]<<24)|(data_process_buf[offset + 18]<<16)
+        |(data_process_buf[offset + 19]<<8)|data_process_buf[offset + 20];
+    DRC->DEV_SET_CH_CUR=(data_process_buf[offset + 21]<<8)|data_process_buf[offset + 22];
+    DRC->DEV_SET_CH_END_VOL= (data_process_buf[offset + 23]<<24)|(data_process_buf[offset + 24]<<16)
+        |(data_process_buf[offset + 25]<<8)|data_process_buf[offset + 26];
+    DRC->DEV_GET_SPE=(data_process_buf[offset + 27]<<8)|data_process_buf[offset + 28];
 }
 
 /**
@@ -147,49 +149,61 @@ void data_handle(unsigned short offset)
  */
 void device_uart_service(void)
 {
-   static unsigned short rx_in = 0;
-	unsigned short offset = 0;
-	unsigned short rx_value_len = 0;
-	
-	while((rx_in < sizeof(data_process_buf)) && with_data_rxbuff() > 0) {
-			data_process_buf[rx_in ++] = take_byte_rxbuff();
-	}
-	
-	if(rx_in < PROTOCOL_HEAD)
-			return;
-	
-	while((rx_in - offset) >= PROTOCOL_HEAD) {
-			if(data_process_buf[offset + HEAD_FIRST] != FRAME_FIRST) {
-					offset ++; 
-					continue;
-			}        
-			
-			rx_value_len = data_process_buf[offset + DATA_LEN];
-			if(rx_value_len > sizeof(data_process_buf) + PROTOCOL_HEAD) {
-					offset += 1;
-					continue;
-			}
-			
-			if((rx_in - offset) < rx_value_len) {
-					break;
-			}
-			
-			//数据接收完成
-			if(get_check_sum((unsigned char *)(data_process_buf+1) + offset,rx_value_len +1) != data_process_buf[offset + rx_value_len+2]) {
-					//校验出错
-					//printf("crc error (crc:0x%X  but data:0x%X)\r\n",get_check_sum((unsigned char *)wifi_data_process_buf + offset,rx_value_len - 1),wifi_data_process_buf[offset + rx_value_len - 1]);
-					offset += 2;
-					continue;
-			}
-			
-      data_handle(offset);
-			offset += rx_value_len+4;
-    }//end while
-    rx_in -= offset;
-    if(rx_in > 0) {  
-        my_memcpy((char *)data_process_buf, (const char *)data_process_buf + offset, rx_in);
+    static unsigned short rx_in = 0;
+    unsigned short offset = 0;
+    unsigned short rx_value_len = 0;
+
+    while ((rx_in < sizeof(data_process_buf)) && with_data_rxbuff() > 0)
+    {
+        data_process_buf[rx_in++] = take_byte_rxbuff();
     }
-		return;
+
+    if (rx_in < DEV_PROTOCOL_HEAD)
+        return;
+
+    while ((rx_in - offset) >= DEV_PROTOCOL_HEAD)
+    {
+        if (data_process_buf[offset + HEAD_FIRST] != DEV_FRAME_FIRST)
+        {
+            offset++;
+            continue;
+        }
+        if (data_process_buf[offset + DEV_ADDR] != DEV_FRAME_SECOND)
+        {
+            offset++;
+            continue;
+        }
+
+        rx_value_len = data_process_buf[offset + DATA_LEN];
+        if (rx_value_len > sizeof(data_process_buf) + DEV_PROTOCOL_HEAD)
+        {
+            offset += 2;
+            continue;
+        }
+
+        if ((rx_in - offset) < rx_value_len)
+        {
+            break;
+        }
+
+        //数据接收完成
+        if (get_check_sum((unsigned char *)(data_process_buf+3) + offset, rx_value_len,DEV2MOD) != data_process_buf[offset + rx_value_len + 3])
+        {
+            //校验出错
+            SEGGER_RTT_printf(0,"sum_check_error!");
+            offset += 4;
+            continue;
+        }
+
+        device_data_handle(offset,&DRC);
+        offset += rx_value_len + 4;
+    } // end while
+    rx_in -= offset;
+    if (rx_in > 0)
+    {
+        memcpy((char *)data_process_buf, (const char *)data_process_buf + offset, rx_in);
+    }
+    return;
 }
 
 /*****************************************************************************
@@ -199,10 +213,9 @@ void device_uart_service(void)
 返回参数 : 无
 使用说明 : 请将MCU串口发送函数填入该函数内,并将接收到的数据作为参数传入串口发送函数
 *****************************************************************************/
-void uart_transmit_output(unsigned char value)
+void device_uart_transmit_output(unsigned char value)
 {
-//   USART_SendData(USART3, value);
-// 	while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET){} 
+    Uart3SendData(&value,1);
 }
 
 /*****************************************************************************
@@ -214,16 +227,16 @@ void uart_transmit_output(unsigned char value)
 *****************************************************************************/
 static void uart_write_data(unsigned char *in, unsigned short len)
 {
-  if((NULL == in) || (0 == len))
-  {
-    return;
-  }
-  
-  while(len --)
-  {
-    uart_transmit_output(*in);
-    in ++;
-  }
+    if ((NULL == in) || (0 == len))
+    {
+        return;
+    }
+
+    while (len--)
+    {
+        device_uart_transmit_output(*in);
+        in++;
+    }
 }
 
 /**
@@ -233,28 +246,44 @@ static void uart_write_data(unsigned char *in, unsigned short len)
  * @param[in] {len} 数据长度
  * @return Null
  */
-void device_uart_write_frame(float *ch_p,unsigned char *ch_s,unsigned short len)
+void device_uart_write_frame(void)
 {
-    unsigned char check_sum = 0;
-    
-    // uart_tx_buf[HEAD_FIRST] = 0x5A;
-    // uart_tx_buf[DATA_LEN] = len;
-    // uart_tx_buf[FUNC_TYPE]=ch_s[0];
-    // uart_tx_buf[BAT_DIS_CUR_H]=(int)(ch_p[0]*100)/100;
-    // uart_tx_buf[BAT_DIS_CUR_L]=(int)(ch_p[0]*100)%100;
-    // uart_tx_buf[BAT_DIS_VOL_H]=(int)(ch_p[1]*100)/100;
-    // uart_tx_buf[BAT_DIS_VOL_L]=(int)(ch_p[1]*100)%100;
-    // uart_tx_buf[BAT_CH_CUR_H]=(int)(ch_p[2]*100)/100;
-    // uart_tx_buf[BAT_CH_CUR_L]=(int)(ch_p[2]*100)%100;
-    // uart_tx_buf[BAT_CH_VOL_H]=(int)(ch_p[3]*100)/100;
-    // uart_tx_buf[BAT_CH_VOL_L]=(int)(ch_p[3]*100)%100;
-    // uart_tx_buf[BAT_CH_CUR_POINT_H]=(int)(ch_p[4]*100)/100;
-    // uart_tx_buf[BAT_CH_CUR_POINT_L]=(int)(ch_p[4]*100)%100;
-    
-    // check_sum = get_check_sum((unsigned char *)(uart_tx_buf+1), len+1);
-	// 	uart_tx_buf[len+2] = check_sum;
-	// 	uart_tx_buf[len+3]=0x5B;
-    uart_write_data((unsigned char *)uart_tx_buf, (len+4));
+    static uint8_t index = 0;
+    uint8_t check_sum = 0;
+    uint8_t len;
+    //循环发送取数据指令
+    if (bsp_CheckTimer(TMR_DEVICE_LOOP))
+    {
+        uart_tx_buf[HEAD_FIRST] = MOD_FRAME_FIRST;
+        uart_tx_buf[DEV_ADDR] = MOD_FRAME_SECOND;
+        uart_tx_buf[DATA_LEN] = MOD_FRAME_TATOL_LEN;
+        uart_tx_buf[BAT_STATE_FRAME] = get_onebus_bat_sta();    //从一线通得到电池状态
+        uart_tx_buf[BAT_CORE_FRAME]= 0;
+        uart_tx_buf[BAT_SPE_FRAME]= 0;
+        uart_tx_buf[BAT_CAP_FRAME]= 0;
+        uart_tx_buf[BAT_SN_FRAME]= 0;
+        uart_tx_buf[BAT_SN_FRAME+1]= 0;
+        uart_tx_buf[BAT_SN_FRAME+2]= 0;
+        uart_tx_buf[BAT_SN_FRAME+3]= 0;
+        uart_tx_buf[BAT_OPERA_FRAME]= 0;
+        uart_tx_buf[BAT_DISCH_CUR_FRAME]= 0;
+        uart_tx_buf[BAT_DISCH_CUR_FRAME+1]= 0;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME]= 0;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+1]= 0;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+2]= 0;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+3]= 0;
+        uart_tx_buf[BAT_CH_CUR_FRAME]= 0;
+        uart_tx_buf[BAT_CH_CUR_FRAME+1]= 0;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME]= 0;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+0]= 0;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+1]= 0;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+2]= 0;
+        uart_tx_buf[BAT_CH_END_CUR_FRAME+3]= 0;
+        uart_tx_buf[BAT_SET_MODE_FRAME]= 0;
+        check_sum=get_check_sum((unsigned char *)(uart_tx_buf+3), MOD_FRAME_TATOL_LEN+1,MOD2DEV);
+        uart_tx_buf[BAT_TO_DEV_CRC]= check_sum;
+    }
+    Uart3SendData((unsigned char *)uart_tx_buf, (MOD_FRAME_TATOL_LEN+4));
 }
 
 /*****************************************************************************
@@ -265,7 +294,7 @@ void device_uart_write_frame(float *ch_p,unsigned char *ch_s,unsigned short len)
 *****************************************************************************/
 uint8_t get_device_work_station(void)
 {
-	return device_bat_param_array[2];
+    
 }
 
 /*****************************************************************************
@@ -276,7 +305,7 @@ uint8_t get_device_work_station(void)
 *****************************************************************************/
 float get_device_vol_value(void)
 {
-	return device_bat_param_array[3]+(((float)(device_bat_param_array[4]))/100);
+    
 }
 
 /*****************************************************************************
@@ -287,7 +316,7 @@ float get_device_vol_value(void)
 *****************************************************************************/
 uint16_t get_device_cur_value(void)
 {
-	return (device_bat_param_array[5]<<8)|device_bat_param_array[6];
+    
 }
 /*****************************************************************************
 函数名称 : get_device_bat_type
@@ -297,7 +326,7 @@ uint16_t get_device_cur_value(void)
 *****************************************************************************/
 uint8_t get_device_bat_type(void)
 {
-	return device_bat_param_array[2];
+    
 }
 /*****************************************************************************
 函数名称 : get_device_fault_code
@@ -307,5 +336,5 @@ uint8_t get_device_bat_type(void)
 *****************************************************************************/
 uint8_t get_device_fault_code(void)
 {
-	return device_bat_param_array[2];
+    
 }

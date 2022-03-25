@@ -1,5 +1,5 @@
-#ifndef  __UART0_H
-#define  __UART0_H
+#ifndef  __HALUART0_H
+#define  __HALUART0_H
 
 #include "includes.h"
 

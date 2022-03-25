@@ -7,7 +7,7 @@
 
 #if(MCU_LIB_SELECT == 2)
 #define TN_LED_PORT       GPIOB
-#define TN_LED_PIN        GPIO_PIN_10
+#define TN_LED_PIN        GPIO_PIN_5
 
 #define TN_PF1_PORT      GPIOF                                        
 #define TN_PF1_PIN       GPIO_PIN_1
@@ -105,13 +105,13 @@
 #define TN_SPI_MOSI_PORT  GPIOB
 
 #define TN_485_COMM_ON_PORT GPIOA
-#define TN_485_COMM_ON_PIN GPIO_PIN_11
+#define TN_485_COMM_ON_PIN GPIO_PIN_12
 
 #define TN_COMM_ON2_PORT GPIOA
 #define TN_COMM_ON2_PIN GPIO_PIN_12
 
-#define TN_485_TXEN_PORT  GPIOB
-#define TN_485_TXEN_PIN   GPIO_PIN_3
+#define TN_485_TXEN_PORT  GPIOA
+#define TN_485_TXEN_PIN   GPIO_PIN_11
 
 #define TN_485_INT_PORT GPIOB
 #define TN_485_INT_PIN GPIO_PIN_6

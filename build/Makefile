@@ -1521,29 +1521,29 @@ src/mcuEEPROM.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.s
 .PHONY : src/mcuEEPROM.c.s
 
-src/onewire.obj: src/onewire.c.obj
-.PHONY : src/onewire.obj
+src/onebus.obj: src/onebus.c.obj
+.PHONY : src/onebus.obj
 
 # target to build an object file
-src/onewire.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onewire.c.obj
-.PHONY : src/onewire.c.obj
+src/onebus.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onebus.c.obj
+.PHONY : src/onebus.c.obj
 
-src/onewire.i: src/onewire.c.i
-.PHONY : src/onewire.i
+src/onebus.i: src/onebus.c.i
+.PHONY : src/onebus.i
 
 # target to preprocess a source file
-src/onewire.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onewire.c.i
-.PHONY : src/onewire.c.i
+src/onebus.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onebus.c.i
+.PHONY : src/onebus.c.i
 
-src/onewire.s: src/onewire.c.s
-.PHONY : src/onewire.s
+src/onebus.s: src/onebus.c.s
+.PHONY : src/onebus.s
 
 # target to generate assembly for a file
-src/onewire.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onewire.c.s
-.PHONY : src/onewire.c.s
+src/onebus.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/onebus.c.s
+.PHONY : src/onebus.c.s
 
 src/unitTest.obj: src/unitTest.c.obj
 .PHONY : src/unitTest.obj
@@ -1760,9 +1760,9 @@ help:
 	@echo "... src/mcuEEPROM.obj"
 	@echo "... src/mcuEEPROM.i"
 	@echo "... src/mcuEEPROM.s"
-	@echo "... src/onewire.obj"
-	@echo "... src/onewire.i"
-	@echo "... src/onewire.s"
+	@echo "... src/onebus.obj"
+	@echo "... src/onebus.i"
+	@echo "... src/onebus.s"
 	@echo "... src/unitTest.obj"
 	@echo "... src/unitTest.i"
 	@echo "... src/unitTest.s"

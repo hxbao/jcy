@@ -40,7 +40,7 @@ void main(void)
 
 	Bsp_Init();
 
-	// bmsOneWireInit();
+	// bmsOnebudInit();
 	// TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000
 
 	// atc_init(&atc, "MY_ATC", USART2,atc_found);

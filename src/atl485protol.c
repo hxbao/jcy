@@ -232,6 +232,7 @@ void ATLModbusPoll(void)
     //循环发送取数据指令
     if(bsp_CheckTimer(TMR_ATL485))  
     {
+        // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
         switch(index++)
         {
             case 0:

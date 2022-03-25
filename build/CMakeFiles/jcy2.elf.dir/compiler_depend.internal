@@ -70,10 +70,13 @@ CMakeFiles/jcy2.elf.dir/app/main.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1520,10 +1523,13 @@ CMakeFiles/jcy2.elf.dir/lib/mcu/n32/common/system_n32l40x.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1609,9 +1615,12 @@ CMakeFiles/jcy2.elf.dir/src/atc-master/atc.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1713,10 +1722,13 @@ CMakeFiles/jcy2.elf.dir/src/atl485protol.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1802,10 +1814,13 @@ CMakeFiles/jcy2.elf.dir/src/chargeProtocl.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1891,10 +1906,13 @@ CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -1979,10 +1997,13 @@ CMakeFiles/jcy2.elf.dir/src/common.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2067,10 +2088,13 @@ CMakeFiles/jcy2.elf.dir/src/createTask.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2145,7 +2169,6 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj
  D:/YL_TECH_CODE/JCY/lib/driver/n32/inc/n32l40x_wwdg.h
  D:/YL_TECH_CODE/JCY/lib/driver/n32/inc/misc.h
  D:/YL_TECH_CODE/JCY/inc/haltimer.h
- D:/YL_TECH_CODE/JCY/inc/includes.h
  D:/YL_TECH_CODE/JCY/inc/common.h
  D:/YL_TECH_CODE/JCY/inc/mcuEEPROM.h
  D:/YL_TECH_CODE/JCY/inc/iap.h
@@ -2156,10 +2179,14 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
+ D:/YL_TECH_CODE/JCY/inc/includes.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2247,10 +2274,13 @@ CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2335,10 +2365,13 @@ CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2423,10 +2456,13 @@ CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2511,10 +2547,13 @@ CMakeFiles/jcy2.elf.dir/src/halspi.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2599,10 +2638,13 @@ CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2687,10 +2729,13 @@ CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2775,10 +2820,13 @@ CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2863,10 +2911,13 @@ CMakeFiles/jcy2.elf.dir/src/iap.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -2951,10 +3002,13 @@ CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -3039,10 +3093,13 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -3058,8 +3115,8 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/semphr.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/event_groups.h
 
-CMakeFiles/jcy2.elf.dir/src/onewire.c.obj
- D:/YL_TECH_CODE/JCY/src/onewire.c
+CMakeFiles/jcy2.elf.dir/src/onebus.c.obj
+ D:/YL_TECH_CODE/JCY/src/onebus.c
  D:/YL_TECH_CODE/JCY/inc/includes.h
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdbool.h
  C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h
@@ -3127,10 +3184,13 @@ CMakeFiles/jcy2.elf.dir/src/onewire.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h
@@ -3145,6 +3205,7 @@ CMakeFiles/jcy2.elf.dir/src/onewire.c.obj
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/queue.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/semphr.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/event_groups.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
 
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj
  D:/YL_TECH_CODE/JCY/src/unitTest.c
@@ -3215,10 +3276,13 @@ CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT.h
  D:/YL_TECH_CODE/JCY/lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h
  D:/YL_TECH_CODE/JCY/inc/createTask.h
- D:/YL_TECH_CODE/JCY/inc/onewire.h
+ D:/YL_TECH_CODE/JCY/inc/onebus.h
  D:/YL_TECH_CODE/JCY/inc/atl485protol.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atc.h
  D:/YL_TECH_CODE/JCY/src/atc-master/atcConfig.h
+ D:/YL_TECH_CODE/JCY/inc/chargeProtocol.h
+ D:/YL_TECH_CODE/JCY/inc/haluart3.h
+ D:/YL_TECH_CODE/JCY/inc/dxbt24.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/cmsis_os.h
  D:/YL_TECH_CODE/JCY/freeRTOS/Source/include/FreeRTOS.h
  D:/YL_TECH_CODE/JCY/config/FreeRTOSConfig.h

@@ -2,8 +2,10 @@
 
 osThreadId defaultTaskHandle;
 osThreadId espTaskHandle;
-osThreadId onewireTaskHandle;
+osThreadId onebusTaskHandle;
 osThreadId BT24TaskHandle;
+osThreadId ATL485TaskHandle;
+osThreadId MFDeviceTaskHandle;
 
 osThreadId defaultTaskHandle;
 osMessageQId QueueTxHandle;
@@ -11,8 +13,10 @@ osSemaphoreId CommandSemHandle;
 
 void StartDefaultTask(void const * argument);
 void EspTask(void const * argument);
-void OneWireTask(void const * argument);
+void OneBusTask(void const * argument);
 void BT24Task(void const * argument);
+void Atl485Task(void const * argument);
+void MFDeviceTask(void const * argument);
 
 void CreateTask()
 {
@@ -48,12 +52,18 @@ void CreateTask()
 	espTaskHandle = osThreadCreate(osThread(EspTask), NULL);
 
 		/* definition and creation of usbTask */
-	osThreadDef(OneWireTask, OneWireTask, osPriorityNormal, 0, 256);
-	onewireTaskHandle = osThreadCreate(osThread(OneWireTask), NULL);
+	osThreadDef(OneBusTask, OneBusTask, osPriorityNormal, 0, 256);
+	onebusTaskHandle = osThreadCreate(osThread(OneBusTask), NULL);
 
 			/* definition and creation of usbTask */
 	osThreadDef(BT24Task, BT24Task, osPriorityNormal, 0, 256);
 	BT24TaskHandle = osThreadCreate(osThread(BT24Task), NULL);
+
+	osThreadDef(Atl485Task, Atl485Task, osPriorityNormal, 0, 256);
+	ATL485TaskHandle = osThreadCreate(osThread(Atl485Task), NULL);
+
+	osThreadDef(MFDeviceTask, MFDeviceTask, osPriorityNormal, 0, 256);
+	MFDeviceTaskHandle = osThreadCreate(osThread(MFDeviceTask), NULL);
 }
 
 void StartDefaultTask(void const * argument)
@@ -117,14 +127,53 @@ void EspTask(void const * argument)
 * @warning 	None
 * @example
 **/
-void OneWireTask(void const * argument)
+void OneBusTask(void const * argument)
 {	
-	bmsOneWireInit();
-	TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000
+	bmsOneBusInit();
+	TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000	
 	for(;;)
 	{
-		ATLModbusPoll();
 		osDelay(1000);
+	}
+}
+
+/** 
+* @brief  	485协议任务
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void Atl485Task(void const * argument)
+{
+	Uart0Init(ATL_ModbusRecvHandle);
+	bsp_StartCallBackTimer(TMR_ATL485,ATLModbusPoll,100);	//100ms
+	for(;;)
+	{
+		osDelay(10);
+	}
+}
+
+/** 
+* @brief  	主机通讯协议任务
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void MFDeviceTask(void const * argument)
+{
+	device_protocol_init();
+	Uart3Init(device_uart_receive_input); 
+	bsp_StartCallBackTimer(TMR_DEVICE_LOOP,device_uart_write_frame,1000);
+	for(;;)
+	{
+		device_uart_service();
+		osDelay(10);
 	}
 }
 

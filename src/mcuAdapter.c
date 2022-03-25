@@ -81,7 +81,7 @@ void GPIOInit(void)
 
     GPIO_InitStructure.Pin = TN_LED_PIN;
     GPIO_InitPeripheral(TN_LED_PORT, &GPIO_InitStructure);
-    GPIO_SetBits(TN_LED_PORT,TN_LED_PIN);
+    GPIO_ResetBits(TN_LED_PORT,TN_LED_PIN);
   
 
     GPIO_InitStructure.GPIO_Current = GPIO_DC_4mA;

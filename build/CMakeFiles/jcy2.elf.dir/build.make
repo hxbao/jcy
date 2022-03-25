@@ -867,19 +867,19 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.s"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/mcuEEPROM.c -o CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.s
 
-CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
-CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: ../src/onewire.c
-CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/jcy2.elf.dir/src/onewire.c.obj"
-	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/onewire.c.obj -MF CMakeFiles/jcy2.elf.dir/src/onewire.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/onewire.c.obj -c D:/YL_TECH_CODE/JCY/src/onewire.c
+CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
+CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: ../src/onebus.c
+CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/jcy2.elf.dir/src/onebus.c.obj"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/onebus.c.obj -MF CMakeFiles/jcy2.elf.dir/src/onebus.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/onebus.c.obj -c D:/YL_TECH_CODE/JCY/src/onebus.c
 
-CMakeFiles/jcy2.elf.dir/src/onewire.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/jcy2.elf.dir/src/onewire.c.i"
-	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:/YL_TECH_CODE/JCY/src/onewire.c > CMakeFiles/jcy2.elf.dir/src/onewire.c.i
+CMakeFiles/jcy2.elf.dir/src/onebus.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/jcy2.elf.dir/src/onebus.c.i"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:/YL_TECH_CODE/JCY/src/onebus.c > CMakeFiles/jcy2.elf.dir/src/onebus.c.i
 
-CMakeFiles/jcy2.elf.dir/src/onewire.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/onewire.c.s"
-	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/onewire.c -o CMakeFiles/jcy2.elf.dir/src/onewire.c.s
+CMakeFiles/jcy2.elf.dir/src/onebus.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/onebus.c.s"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/onebus.c -o CMakeFiles/jcy2.elf.dir/src/onebus.c.s
 
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: ../src/unitTest.c
@@ -981,7 +981,7 @@ jcy2_elf_OBJECTS = \
 "CMakeFiles/jcy2.elf.dir/src/iap.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj" \
-"CMakeFiles/jcy2.elf.dir/src/onewire.c.obj" \
+"CMakeFiles/jcy2.elf.dir/src/onebus.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj" \
 "CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj" \
 "CMakeFiles/jcy2.elf.dir/app/main.c.obj"
@@ -1046,7 +1046,7 @@ jcy2.elf: CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/iap.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj
-jcy2.elf: CMakeFiles/jcy2.elf.dir/src/onewire.c.obj
+jcy2.elf: CMakeFiles/jcy2.elf.dir/src/onebus.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/app/main.c.obj

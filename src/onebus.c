@@ -1,16 +1,17 @@
 /******************************************************************************
-  * @file           : onewire.c
+  * @file           : onebus.c
   * @version        : v1.0
   * @author         : Azreal
   * @creat          : 2021 0804
 ******************************************************************************/
 
 #include "includes.h"
+#include "onebus.h"
 
 void _smart_bms_init(bms_info *bms);
 
 bms_info bms;
-bat_param bp;
+OneBusStaticData_t OBS;
 TIM_TimeBaseInitType TIM_TimeBaseStructure;
 
 #define PA_RX_LEN	51		//PA一线通接收数据包字节
@@ -44,7 +45,7 @@ uint32_t config_cnt;
 * @warning 	None
 * @example
 **/
-void bmsOneWireInit(void)
+void bmsOneBusInit(void)
 {
     GPIO_InitType GPIO_InitStructure;
 
@@ -73,7 +74,7 @@ void bmsOneWireInit(void)
 	ONE_TXD1_HIGH();
 	ONE_TXD2_HIGH();
 	// ACC_ENABLE();	//短接ACC和BAT+
-	bmsOneWireParamInit(&bms);
+	bmsOneBusParamInit(&bms);
 }
 /**
  * @brief  Configures tim1 clocks.
@@ -125,7 +126,7 @@ void TIM_Configuration(uint16_t arr,uint16_t psc)
 * @warning 	None
 * @example
 **/
-void bmsOneWireParamInit(bms_info *bms)
+void bmsOneBusParamInit(bms_info *bms)
 {
 	int i=0;
 	bms->Receflag=0;
@@ -154,7 +155,7 @@ void bmsOneWireParamInit(bms_info *bms)
 * @warning 	None
 * @example
 **/
-void bmsOneWireCheckPA(bms_info *bms,uint8_t *bmsRxBuff)
+void bmsOneBusCheckPA(bms_info *bms,uint8_t *bmsRxBuff)
 {
 	int i;
 	switch(bms->bmstate)  
@@ -266,7 +267,7 @@ void bmsOneWireCheckPA(bms_info *bms,uint8_t *bmsRxBuff)
 * @warning 	None
 * @example
 **/
-void bmsOneWireParamUpdata(bms_info *bms,uint8_t *bmsRxBuff)
+void bmsOneBusParamUpdata(bms_info *bms,uint8_t *bmsRxBuff)
 {
 	switch(bms->Receflag)
 	{
@@ -291,9 +292,22 @@ void bmsOneWireParamUpdata(bms_info *bms,uint8_t *bmsRxBuff)
 * @warning 	None
 * @example
 **/
-void bmsOneWireHandler(uint8_t *bmsRxBuff)
+void bmsOneBusHandler(uint8_t *bmsRxBuff)
 {
-	bmsOneWireParamUpdata(&bms,bmsRxBuff);
+	bmsOneBusParamUpdata(&bms,bmsRxBuff);
+}
+/** 
+* @brief  	bms上报电池状态
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_onebus_bat_sta(void)
+{
+	return OBS.BAT_STATUS;
 }
 /** 
 * @brief  	配置时间清零
@@ -317,7 +331,7 @@ uint32_t GetConfigClear()
 * @warning 	None
 * @example
 **/
-uint32_t GetConfigTimeClear()
+void GetConfigTimeClear()
 {
 	config_cnt=0;
 }
@@ -343,9 +357,9 @@ void TIM1_UP_IRQHandler(void)
 	if (TIM_GetIntStatus(TIM1, TIM_INT_UPDATE) != RESET)
     {
         TIM_ClrIntPendingBit(TIM1, TIM_INT_UPDATE);
-		GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN); 
+		// GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN); 
 		config_cnt++;
-		bmsOneWireCheckPA(&bms,bms_rx_buf); 
+		bmsOneBusCheckPA(&bms,bms_rx_buf); 
 	}
 }
 /** 

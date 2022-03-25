@@ -69,10 +69,13 @@ CMakeFiles/jcy2.elf.dir/app/main.c.obj: ../app/main.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1480,10 +1483,13 @@ CMakeFiles/jcy2.elf.dir/lib/mcu/n32/common/system_n32l40x.c.obj: ../lib/mcu/n32/
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1568,9 +1574,12 @@ CMakeFiles/jcy2.elf.dir/src/atc-master/atc.c.obj: ../src/atc-master/atc.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1671,10 +1680,13 @@ CMakeFiles/jcy2.elf.dir/src/atl485protol.c.obj: ../src/atl485protol.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1759,10 +1771,13 @@ CMakeFiles/jcy2.elf.dir/src/chargeProtocl.c.obj: ../src/chargeProtocl.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1847,10 +1862,13 @@ CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.obj: ../src/commdif_RICan.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1934,10 +1952,13 @@ CMakeFiles/jcy2.elf.dir/src/common.c.obj: ../src/common.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2021,10 +2042,13 @@ CMakeFiles/jcy2.elf.dir/src/createTask.c.obj: ../src/createTask.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2098,7 +2122,6 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: ../src/dxbt24.c \
   ../lib/driver/n32/inc/n32l40x_wwdg.h \
   ../lib/driver/n32/inc/misc.h \
   ../inc/haltimer.h \
-  ../inc/includes.h \
   ../inc/common.h \
   ../inc/mcuEEPROM.h \
   ../inc/iap.h \
@@ -2109,10 +2132,14 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: ../src/dxbt24.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
+  ../inc/includes.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2198,10 +2225,13 @@ CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj: ../src/halLpuart.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2285,10 +2315,13 @@ CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj: ../src/halN32Can.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2372,10 +2405,13 @@ CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj: ../src/halN32Rtc.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2459,10 +2495,13 @@ CMakeFiles/jcy2.elf.dir/src/halspi.c.obj: ../src/halspi.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2546,10 +2585,13 @@ CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj: ../src/haltimer.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2633,10 +2675,13 @@ CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj: ../src/haluart0.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2720,10 +2765,13 @@ CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj: ../src/haluart3.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2807,10 +2855,13 @@ CMakeFiles/jcy2.elf.dir/src/iap.c.obj: ../src/iap.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2894,10 +2945,13 @@ CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj: ../src/mcuAdapter.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2981,10 +3035,13 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: ../src/mcuEEPROM.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3000,7 +3057,7 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: ../src/mcuEEPROM.c \
   ../freeRTOS/Source/include/semphr.h \
   ../freeRTOS/Source/include/event_groups.h
 
-CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: ../src/onewire.c \
+CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: ../src/onebus.c \
   ../inc/includes.h \
   C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdbool.h \
   C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h \
@@ -3068,10 +3125,13 @@ CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: ../src/onewire.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3085,7 +3145,8 @@ CMakeFiles/jcy2.elf.dir/src/onewire.c.obj: ../src/onewire.c \
   ../freeRTOS/Source/include/timers.h \
   ../freeRTOS/Source/include/queue.h \
   ../freeRTOS/Source/include/semphr.h \
-  ../freeRTOS/Source/include/event_groups.h
+  ../freeRTOS/Source/include/event_groups.h \
+  ../inc/onebus.h
 
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: ../src/unitTest.c \
   ../inc/includes.h \
@@ -3155,10 +3216,13 @@ CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: ../src/unitTest.c \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
   ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
   ../inc/createTask.h \
-  ../inc/onewire.h \
+  ../inc/onebus.h \
   ../inc/atl485protol.h \
   ../src/atc-master/atc.h \
   ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/dxbt24.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3259,6 +3323,8 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 
 ../lib/mcu/n32/common/n32l40x.h:
 
+../inc/haluart3.h:
+
 ../lib/CMSIS/Include/core_cm4.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h:
@@ -3293,8 +3359,6 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 
 ../lib/driver/n32/inc/n32l40x_crc.h:
 
-../src/onewire.c:
-
 ../lib/driver/n32/inc/n32l40x_dbg.h:
 
 ../lib/driver/n32/inc/n32l40x_opamp.h:
@@ -3323,9 +3387,9 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 
 ../inc/createTask.h:
 
-../freeRTOS/Source/include/cmsis_os.h:
+C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_pthreadtypes.h:
 
-../inc/onewire.h:
+../inc/onebus.h:
 
 ../inc/chargeProtocol.h:
 
@@ -3334,6 +3398,12 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 ../src/atc-master/atc.h:
 
 ../src/atc-master/atcConfig.h:
+
+C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_endian.h:
+
+../inc/dxbt24.h:
+
+../freeRTOS/Source/include/cmsis_os.h:
 
 ../config/FreeRTOSConfig.h:
 
@@ -3463,10 +3533,6 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/endian.h:
 
-../inc/dxbt24.h:
-
-C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_endian.h:
-
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/select.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_sigset.h:
@@ -3474,8 +3540,6 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_timeval.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_timespec.h:
-
-C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_pthreadtypes.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/sched.h:
 
@@ -3508,5 +3572,7 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 ../src/mcuAdapter.c:
 
 ../src/mcuEEPROM.c:
+
+../src/onebus.c:
 
 ../src/unitTest.c:

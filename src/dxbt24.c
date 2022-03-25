@@ -2,6 +2,8 @@
 #include "includes.h"
 
 atc_t atc;
+BleResponseErr_t	BRE;
+BleResponseCheckCmdErr_t BRCC;
 
 #define PROTOCOL_HEAD_LEN 6
 // crc key值
@@ -20,41 +22,6 @@ unsigned char *queue_in;
 unsigned char *queue_out;
 
 uint8_t bat_rx_buf[100];
-
-//=============================================================================
-//接收数据帧值
-//=============================================================================
-#define BT24_RX_FIRST 0x5F
-#define BT24_RX_ADDRH 0x02
-#define BT24_RX_ADDRL 0x5A
-//=============================================================================
-// BT帧的字节顺序
-//=============================================================================
-#define BT24_FRAME_FIRST 			0
-#define BT24_FRAME_ADDRH 			1
-#define BT24_FRAME_ADDRL 			2
-#define BT24_FRAME_CMDTYPE			3
-#define BT24_FRAME_LENGTH			4
-#define BT24_FRAME_DATATYPE			5
-#define BT24_FRAME_STATE			6
-#define BT24_FRAME_FAULT			7
-#define BT24_FRAME_RESULT			8
-//=============================================================================
-//接收数据帧类型
-//=============================================================================
-#define         APP_CHECK_CMD         		0x80    	//检测校验
-#define         DEVICE_PARAM_CMD            0x0A   		//电池状态
-#define         START_DC_CMD                0x91       	//开始放电                       	
-#define         GET_DC_CMD                 	0x0B       	//得到放电结果
-#define         FW_UPDATA_CMD               0x01       	//固件升级
-//=============================================================================
-//发送数据帧值
-//=============================================================================
-#define         BT24_TX_FIRST         		0xF5    	
-#define         BT24_TX_ADDRH            	0x5A   		//电池高位
-#define         BT24_TX_ADDRL             	0x02       	//地址地位                       	
-#define         BT24_TX_CMD              	0x80       	//发送指令
-
 
 static uint32_t ConfigModuleNoBlockCnt;		 //配置函数延时变量
 static uint8_t ConfigModuleNoBlockFlage;	 // 1-配置完 0-未配置完
@@ -84,37 +51,37 @@ void DXBT24_Init(void)
 
 void DXBT24_Rst(void)
 {
-	DXBT24_RST_LOW();
+	// DXBT24_RST_LOW();
 	bsp_DelayMS(300);
-	DXBT24_RST_HIGH();
+	// DXBT24_RST_HIGH();
 }
 
 void DXBT24_SetSleepMode(void)
 {
-	DXBT24_WKP_HIGH();
-	DXBT24_SWITCH_MOD_TC();
+	// DXBT24_WKP_HIGH();
+	// DXBT24_SWITCH_MOD_TC();
 }
 
 void DXBT24_WakeupFromSleepMode(void)
 {
-	DXBT24_WKP_LOW();
-	DXBT24_SWITCH_MOD_AT();
+	// DXBT24_WKP_LOW();
+	// DXBT24_SWITCH_MOD_AT();
 }
 
-uint8_t DXBT24_CheckLinked(void)
-{
-	uint8_t linked = 0;
+// uint8_t DXBT24_CheckLinked(void)
+// {
+// 	uint8_t linked = 0;
 
-	if (DXBT24_GET_LINK_STAT() == 1)
-	{
-		linked = 1;
-	}
-	else
-	{
-		linked = 0;
-	}
-	return linked;
-}
+// 	if (DXBT24_GET_LINK_STAT() == 1)
+// 	{
+// 		linked = 1;
+// 	}
+// 	else
+// 	{
+// 		linked = 0;
+// 	}
+// 	return linked;
+// }
 
 uint8_t DXBT24_GetMacAddr(uint8_t *mac)
 {
@@ -168,11 +135,11 @@ void DXBT24_WriteModuleName(uint8_t *name)
 	cmd[7] = '=';
 	memcpy((char *)cmd + 8, (char const *)name, strlen((char const *)name));
 
-	DXBT24_SWITCH_MOD_AT();
+	// DXBT24_SWITCH_MOD_AT();
 	// USART_SendDataPoll(&DXBT24_UARTX, "AT+NAME?",8);
 	bsp_DelayMS(300);
 	// USART_SendDataPoll(&DXBT24_UARTX, cmd, strlen((char *)cmd)+5);
-	DXBT24_SWITCH_MOD_TC();
+	// DXBT24_SWITCH_MOD_TC();
 }
 
 uint8_t DXBT24_ReadModuleName(uint8_t *name)
@@ -181,7 +148,7 @@ uint8_t DXBT24_ReadModuleName(uint8_t *name)
 	uint8_t waitCount = 0;
 	uint8_t devID[20];
 
-	DXBT24_SWITCH_MOD_AT();
+	// DXBT24_SWITCH_MOD_AT();
 	bsp_DelayMS(200);
 	/*
 	//USART_SendDataPoll(&DXBT24_UARTX, "AT+NAME?", strlen("AT+NAME?"));
@@ -346,7 +313,7 @@ static void get_app_check_updata(uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_FIRST]=BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH]=BT24_TX_ADDRH;
 	bt24_tx_buf[BT24_FRAME_ADDRL]=BT24_TX_ADDRL;
-	bt24_tx_buf[BT24_FRAME_CMDTYPE]=BT24_TX_CMD;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE]=BT24_TX_CHECK_CMD;
 	if((bat_type==1)||(bat_type==0))
 	{
 		if(fault_code!=0)
@@ -375,13 +342,69 @@ static void get_app_check_updata(uint8_t *batRxBuff)
 	}
 	else
 	{
-		bmsOneWireHandler(batRxBuff);
+		bmsOneBusHandler(batRxBuff);
 		bt24_tx_buf[BT24_FRAME_LENGTH]=0x4F;
 		bt24_tx_buf[BT24_FRAME_LENGTH+3]=batRxBuff[31];
 		bt24_tx_buf[BT24_FRAME_LENGTH+4]=batRxBuff[31]>>2;
-		bt24_tx_buf[BT24_FRAME_LENGTH+4]=batRxBuff[31]>>4;
+		bt24_tx_buf[BT24_FRAME_LENGTH+5]=batRxBuff[31]>>4;
+
 	}
 	atc_transmit(&atc,bt24_tx_buf,bt24_tx_buf[BT24_FRAME_LENGTH]+7);
+}
+/*****************************************************************************
+函数名称 : get_device_param_handler
+功能描述 : 
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+static void get_device_param_handler(uint8_t *batRxBuff)
+{
+	bt24_tx_buf[BT24_FRAME_FIRST]=BT24_TX_FIRST;
+	bt24_tx_buf[BT24_FRAME_ADDRH]=BT24_TX_ADDRH;
+	bt24_tx_buf[BT24_FRAME_ADDRL]=BT24_TX_ADDRL;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE]=BT24_TX_DP_CMD;
+	bt24_tx_buf[BT24_FRAME_LENGTH]=0x2c;
+	bt24_tx_buf[BT24_FRAME_DATATYPE]=0;
+	bt24_tx_buf[BT24_FRAME_STATE]=0x01;
+	bmsOneBusHandler(batRxBuff);
+}
+/*****************************************************************************
+函数名称 : device_start_dc_handler
+功能描述 : 
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+static void device_start_dc_handler(uint8_t *batRxBuff)
+{
+	uint8_t check_crc;
+	uint8_t ch_over;
+	bt24_tx_buf[BT24_FRAME_FIRST]=BT24_TX_FIRST;
+	bt24_tx_buf[BT24_FRAME_ADDRH]=BT24_TX_ADDRH;
+	bt24_tx_buf[BT24_FRAME_ADDRL]=BT24_TX_ADDRL;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE]=BT24_TX_DC_CMD;
+	bt24_tx_buf[BT24_FRAME_LENGTH]=0x02;
+	bt24_tx_buf[BT24_FRAME_DATATYPE]=0;
+	ch_over=get_device_work_station();
+	bt24_tx_buf[BT24_FRAME_STATE]=ch_over;
+	check_crc=get_check_crc8(bt24_tx_buf,strlen(bt24_tx_buf),7);
+	atc_transmit(&atc,bt24_tx_buf,8);
+}
+/*****************************************************************************
+函数名称 : get_device_param_handler
+功能描述 : 
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+static void device_get_dc_handler(uint8_t *batRxBuff)
+{
+	bt24_tx_buf[BT24_FRAME_FIRST]=BT24_TX_FIRST;
+	bt24_tx_buf[BT24_FRAME_ADDRH]=BT24_TX_ADDRH;
+	bt24_tx_buf[BT24_FRAME_ADDRL]=BT24_TX_ADDRL;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE]=BT24_TX_GET_CMD;
+	bt24_tx_buf[BT24_FRAME_LENGTH]=0x2d;
+	bt24_tx_buf[BT24_FRAME_DATATYPE]=0;
+	bt24_tx_buf[BT24_FRAME_STATE]=0x01;
+	bmsOneBusHandler(batRxBuff);
 }
 /**
  * @brief  	处理透传数据
@@ -408,14 +431,15 @@ void bt24_data_handler(uint8_t offset)
 		get_app_check_updata(bat_rx_buf);
 		break;
 	case DEVICE_PARAM_CMD:	//获取数据
-		
+		get_device_param_handler(bat_rx_buf);
 		break;
 	case START_DC_CMD:		//放电通知
-
+		device_start_dc_handler(bat_rx_buf);
 		break;
-	case GET_DC_CMD:		//得到放电结构
-
+	case GET_DC_CMD:		//得到放电结果
+		device_get_dc_handler(bat_rx_buf);
 		break;
+	//APP扫码电池后，传输电池充放电信息
 #ifdef SUPPORT_MCU_FIRM_UPDATE
 	case FW_UPDATA_CMD:		//固件升级
 
@@ -465,6 +489,7 @@ void bt24_recv_service(atc_t *atc)
 		{
 			//校验出错
 			offset += 3;
+			SEGGER_RTT_printf(0,"bt24_crc_check_error!");
 			continue;
 		}
 		bt24_data_handler(offset);
@@ -475,6 +500,175 @@ void bt24_recv_service(atc_t *atc)
 	{
 		memcpy((char *)bt24_rx_buf, (char *)bt24_rx_buf + offset, rx_in);
 	}
+}
+/**
+ * @brief  	从APP得到电池状态
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_status(void)
+{
+	
+}
+/**
+ * @brief  	从APP得到电芯体系
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_core(void)
+{
+	
+}
+/**
+ * @brief  	从APP得到电池规格
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_spec(void)
+{
+	
+}
+/**
+ * @brief  	从APP得到电池容量
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_cap(void)
+{
+	
+}
+/**
+ * @brief  	从APP得到电池SN
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_sn(void)
+{
+	
+}
+/**
+ * @brief  	下发电池工作状态
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_opera_status(void)
+{
+	
+}
+/**
+ * @brief  	设置检测模式
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_det_mode(void)
+{
+	
+}
+/**
+ * @brief  	设置放电电流
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_disch_cur(void)
+{
+	
+}
+/**
+ * @brief  	设置放电终止电压
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_disch_end_vol(void)
+{
+	
+}
+/**
+ * @brief  	设置充电电流
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_ch_cur(void)
+{
+	
+}
+/**
+ * @brief  	设置充电终止电压
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_ch_end_vol(void)
+{
+	
+}
+/**
+ * @brief  	设置充电终止电流
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_ch_end_cur(void)
+{
+	
+}
+/**
+ * @brief  	设置工作模式
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_set_mode(void)
+{
+	
 }
 /**
  * @brief  	BT24蓝牙重启
@@ -620,7 +814,7 @@ void BT24Task(void const *argument)
 {
 	uint8_t data_buff[200];
 	bt24_protocol_init();
-	atc_init(&atc, "MY_ATC", USART2, atc_found);
+	atc_init(&atc, "MY_ATC", 2, atc_found);
 	atc_addSearch(&atc, "\r\n");
 	// atc_command(&atc,"AT\r\n",3000,echo_buf,20,1,"OK");
 	for (;;)

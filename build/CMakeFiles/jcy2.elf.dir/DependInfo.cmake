@@ -93,7 +93,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "D:/YL_TECH_CODE/JCY/src/iap.c" "CMakeFiles/jcy2.elf.dir/src/iap.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/iap.c.obj.d"
   "D:/YL_TECH_CODE/JCY/src/mcuAdapter.c" "CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj.d"
   "D:/YL_TECH_CODE/JCY/src/mcuEEPROM.c" "CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj.d"
-  "D:/YL_TECH_CODE/JCY/src/onewire.c" "CMakeFiles/jcy2.elf.dir/src/onewire.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/onewire.c.obj.d"
+  "D:/YL_TECH_CODE/JCY/src/onebus.c" "CMakeFiles/jcy2.elf.dir/src/onebus.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/onebus.c.obj.d"
   "D:/YL_TECH_CODE/JCY/src/unitTest.c" "CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj" "gcc" "CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj.d"
   )
 
