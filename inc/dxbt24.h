@@ -23,6 +23,13 @@
 #define BT24_FRAME_STATE			6
 #define BT24_FRAME_FAULT			7
 #define BT24_FRAME_RESULT			8
+
+#define BT24_SET_OPERA_STA          5
+#define BT24_SET_DSG_CUR            6
+#define BT24_SET_DSG_END_VOL        8
+#define BT24_SET_CH_CUR             12
+#define BT24_SET_CH_END_VOL         14
+#define BT24_SET_DataType           18
 //=============================================================================
 //接收数据帧类型
 //=============================================================================
@@ -30,7 +37,11 @@
 #define         DEVICE_PARAM_CMD            0x0A   		//电池状态
 #define         START_DC_CMD                0x91       	//开始放电                       	
 #define         GET_DC_CMD                 	0x0B       	//得到放电结果
-#define         FW_UPDATA_CMD               0x01       	//固件升级
+#define         GET_FW_CMD                  0x01       	//固件升级
+#define         FW_UPDATA_CHECK             0x02        //推送新版本检验
+#define         FW_UPDATA_CONTENT           0x03        //升级内容
+#define         FW_UPDATA_OVER              0x04        //推送结束
+#define         FW_UPDATA_RESULT            0x05        //查询升级结果
 //=============================================================================
 //发送数据帧值
 //=============================================================================
@@ -244,6 +255,35 @@ typedef struct
     uint8_t CRC_CHECK;                      //CRC校验
 }BleResponseErr_t;
 
+//=============================================================================
+//BLE发送命令结构体
+//=============================================================================
+typedef struct 
+{
+    uint8_t  OPERA_STA; //操作模式
+    uint16_t DSG_CUR;
+    uint32_t DSG_END_VOL;
+    uint16_t CH_CUR;
+    uint32_t CH_END_VOL;
+    uint32_t DataType;
+}BleSendErr_t;
+
+//=============================================================================
+//BLE设备名称结构体
+//=============================================================================
+typedef struct 
+{
+    uint8_t BLE_MARK;
+    uint8_t BLE_ID_H;
+    uint8_t BLE_ID_L;
+}BleDeviceBuffErr_t;
+ 
+typedef union
+{
+	uint8_t BLE_ID_BUFF[3];
+	BleDeviceBuffErr_t BDB;
+}BleDeviceNameErr_t;
+
 void DXBT24_Init(void);
 uint8_t bt24_get_bat_status(void);
 uint8_t bt24_get_bat_core(void);
@@ -252,10 +292,10 @@ uint8_t bt24_get_bat_cap(void);
 uint8_t bt24_get_bat_sn(void);
 uint8_t bt24_get_bat_opera_status(void);
 uint8_t bt24_get_bat_det_mode(void);
-uint8_t bt24_get_bat_disch_cur(void);
-uint8_t bt24_get_bat_disch_end_vol(void);
-uint8_t bt24_get_bat_ch_cur(void);
-uint8_t bt24_get_bat_ch_end_vol(void);
+uint16_t bt24_get_bat_disch_cur(void);
+uint32_t bt24_get_bat_disch_end_vol(void);
+uint16_t bt24_get_bat_ch_cur(void);
+uint32_t bt24_get_bat_ch_end_vol(void);
 uint8_t bt24_get_bat_ch_end_cur(void);
 uint8_t bt24_get_bat_set_mode(void);
 void bt24_receive_input(uint8_t value);

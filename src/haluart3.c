@@ -74,7 +74,7 @@ void Uart3Init(pf_Rx3Callback callback)
     RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_USART3, ENABLE); 
     Uart3PortCfg();
     USART_StructInit(&USART_InitStructure);
-    USART_InitStructure.BaudRate            = 9600;
+    USART_InitStructure.BaudRate            = 115200;
     USART_InitStructure.WordLength          = USART_WL_8B;
     USART_InitStructure.StopBits            = USART_STPB_1;
     USART_InitStructure.Parity              = USART_PE_NO;

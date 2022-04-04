@@ -87,13 +87,17 @@ typedef struct
 	uint32_t  DEV_SET_CH_END_VOL;				//设置充电截止电压
 	uint16_t  DEV_SET_CH_END_CUR;				//设置充电截止电流
 
+	uint8_t DEV_BAT_TYPE;						//电池类型
+	uint8_t	DEV_FAULT_CODE;						//检测仪故障代码
+	uint16_t DEV_BLE_ID;						//蓝牙ID
+
 	int  ch_time;								//充电时间
 	int  ch_status;								//充电状态上报
 }DeviceResponseCmdErr_t;
 
 void device_uart_write_frame(void);
 uint8_t get_device_work_station(void);
-float get_device_vol_value(void);
+uint32_t get_device_vol_value(void);
 uint16_t get_device_cur_value(void);
 void device_uart_receive_input(unsigned char value);
 void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC);

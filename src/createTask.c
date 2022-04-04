@@ -71,7 +71,7 @@ void StartDefaultTask(void const * argument)
   /* init code for USB_DEVICE */
 
   /* USER CODE BEGIN 5 */
-
+	
 
 	//sdram_test();
 	//clock select	

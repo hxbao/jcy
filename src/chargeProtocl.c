@@ -265,22 +265,22 @@ void device_uart_write_frame(void)
         uart_tx_buf[BAT_SN_FRAME+1]= 0;
         uart_tx_buf[BAT_SN_FRAME+2]= 0;
         uart_tx_buf[BAT_SN_FRAME+3]= 0;
-        uart_tx_buf[BAT_OPERA_FRAME]= 0;
-        uart_tx_buf[BAT_DISCH_CUR_FRAME]= 0;
-        uart_tx_buf[BAT_DISCH_CUR_FRAME+1]= 0;
-        uart_tx_buf[BAT_DISCH_END_VOL_FRAME]= 0;
-        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+1]= 0;
-        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+2]= 0;
-        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+3]= 0;
-        uart_tx_buf[BAT_CH_CUR_FRAME]= 0;
-        uart_tx_buf[BAT_CH_CUR_FRAME+1]= 0;
-        uart_tx_buf[BAT_CH_END_VOL_FRAME]= 0;
-        uart_tx_buf[BAT_CH_END_VOL_FRAME+0]= 0;
-        uart_tx_buf[BAT_CH_END_VOL_FRAME+1]= 0;
-        uart_tx_buf[BAT_CH_END_VOL_FRAME+2]= 0;
-        uart_tx_buf[BAT_CH_END_CUR_FRAME+3]= 0;
-        uart_tx_buf[BAT_SET_MODE_FRAME]= 0;
-        check_sum=get_check_sum((unsigned char *)(uart_tx_buf+3), MOD_FRAME_TATOL_LEN+1,MOD2DEV);
+        uart_tx_buf[BAT_OPERA_FRAME]= bt24_get_bat_opera_status();
+        uart_tx_buf[BAT_DISCH_CUR_FRAME]= bt24_get_bat_disch_cur()>>8;
+        uart_tx_buf[BAT_DISCH_CUR_FRAME+1]= bt24_get_bat_disch_cur();
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME]= bt24_get_bat_disch_end_vol()>>24;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+1]= bt24_get_bat_disch_end_vol()>>16;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+2]= bt24_get_bat_disch_end_vol()>>8;
+        uart_tx_buf[BAT_DISCH_END_VOL_FRAME+3]= bt24_get_bat_disch_end_vol();
+        uart_tx_buf[BAT_CH_CUR_FRAME]= bt24_get_bat_ch_cur()>>8;
+        uart_tx_buf[BAT_CH_CUR_FRAME+1]= bt24_get_bat_ch_cur();
+        uart_tx_buf[BAT_CH_END_VOL_FRAME]= bt24_get_bat_ch_end_vol()>>24;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+1]= bt24_get_bat_ch_end_vol()>>16;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+2]= bt24_get_bat_ch_end_vol()>>8;
+        uart_tx_buf[BAT_CH_END_VOL_FRAME+3]= bt24_get_bat_ch_end_vol();
+        uart_tx_buf[BAT_CH_END_CUR_FRAME]= 0;
+        uart_tx_buf[BAT_SET_MODE_FRAME]= bt24_get_bat_set_mode();
+        check_sum=get_check_sum((unsigned char *)(uart_tx_buf+3), MOD_FRAME_TATOL_LEN,MOD2DEV);
         uart_tx_buf[BAT_TO_DEV_CRC]= check_sum;
     }
     Uart3SendData((unsigned char *)uart_tx_buf, (MOD_FRAME_TATOL_LEN+4));
@@ -294,29 +294,29 @@ void device_uart_write_frame(void)
 *****************************************************************************/
 uint8_t get_device_work_station(void)
 {
-    
+    return DRC.DEV_STATUS; 
 }
 
 /*****************************************************************************
-函数名称 : get_device_work_station
-功能描述 : 查询检测仪工作状态
+函数名称 : get_device_vol_value
+功能描述 : 查询设备电压
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/
-float get_device_vol_value(void)
+uint32_t get_device_vol_value(void)
 {
-    
+    return DRC.DEV_GET_VOL/1000;
 }
 
 /*****************************************************************************
-函数名称 : get_device_work_station
+函数名称 : get_device_cur_value
 功能描述 : 查询检测仪工作状态
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/
 uint16_t get_device_cur_value(void)
 {
-    
+    return DRC.DEV_GET_CUR;
 }
 /*****************************************************************************
 函数名称 : get_device_bat_type
@@ -326,15 +326,25 @@ uint16_t get_device_cur_value(void)
 *****************************************************************************/
 uint8_t get_device_bat_type(void)
 {
-    
+    return DRC.DEV_BAT_TYPE;
 }
 /*****************************************************************************
 函数名称 : get_device_fault_code
-功能描述 : 查询电池类型
+功能描述 : 电池故障
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/
 uint8_t get_device_fault_code(void)
 {
-    
+    return DRC.DEV_FAULT_CODE;
+}
+/*****************************************************************************
+函数名称 : get_device_send_ble_id
+功能描述 : 得到BLE ID
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+uint16_t get_device_send_ble_id(void)
+{
+    return DRC.DEV_BLE_ID;
 }

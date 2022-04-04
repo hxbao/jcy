@@ -186,7 +186,7 @@ void bmsOneBusCheckPA(bms_info *bms,uint8_t *bmsRxBuff)
 						bms_rx_buf[i]=bms->pb_list[i];
 					}
 					bms->Receflag=1;
-					bms->bmstype=1;
+					bms->bmstype=2;
 					bms->bmscount=bmsreset;
 				}
 			}	
@@ -307,7 +307,126 @@ void bmsOneBusHandler(uint8_t *bmsRxBuff)
 **/
 uint8_t get_onebus_bat_sta(void)
 {
-	return OBS.BAT_STATUS;
+	return bms.pb_list[2]>>4;
+	// return OBS.BAT_STATUS;
+}
+/** 
+* @brief  	bms上报电池总压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_vol(void)
+{
+	return bms.pb_list[14]<<8|bms.pb_list[15];
+	// return OBS.BAT_CH_MAX_VOL;
+}
+/** 
+* @brief  	bms上报电池类型
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_onebus_bat_type(void)
+{
+	return bms.bmstype;
+}
+/** 
+* @brief  	bms上报电池最大充电电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_ch_vol(void)
+{
+	return bms.pb_list[4]<<8|bms.pb_list[5];
+}
+/** 
+* @brief  	bms上报电池最大充电电流
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_ch_cur(void)
+{
+	return bms.pb_list[6]<<8|bms.pb_list[7];
+}
+/** 
+* @brief  	bms上报电池最大放大电流
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_dsg_cur(void)
+{
+	return bms.pb_list[10]<<8|bms.pb_list[11];
+}
+/** 
+* @brief  	bms上报电池最高单体温度
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_temp(void)
+{
+	return bms.pb_list[24];
+}
+/** 
+* @brief  	bms上报电池最低单体温度
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_min_temp(void)
+{
+	return bms.pb_list[25];
+}
+/** 
+* @brief  	bms上报电池SOC
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_onebus_bat_soc(void)
+{
+	return bms.pb_list[3];
+}
+/** 
+* @brief  	bms上报电池SOH
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_onebus_bat_soh(void)
+{
+	return bms.pb_list[23];
 }
 /** 
 * @brief  	配置时间清零
