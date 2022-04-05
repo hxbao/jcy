@@ -168,6 +168,7 @@ void Atl485Task(void const * argument)
 void MFDeviceTask(void const * argument)
 {
 	device_protocol_init();
+	device_drc_init();
 	Uart3Init(device_uart_receive_input); 
 	bsp_StartCallBackTimer(TMR_DEVICE_LOOP,device_uart_write_frame,1000);
 	for(;;)

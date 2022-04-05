@@ -18,8 +18,8 @@ BleDeviceNameErr_t	BDN;
 #define CRC_KEY 7
 
 #define CompareValue 5000 //每隔ms发送一次数据
-#define BT24_UART_QUEUE_LMT 300
-#define BT24_UART_RECV_BUF_LMT 300
+#define BT24_UART_QUEUE_LMT 100
+#define BT24_UART_RECV_BUF_LMT 100
 
 static char BLE_NAME[]="DX-BT24-";	//定义蓝牙名称
 
@@ -360,9 +360,14 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 	uint8_t bat_type;
 	uint8_t fault_code;
 	uint8_t check_crc;
-	bat_type=get_onebus_bat_type();
+	bat_type=get_device_bat_type();	//从检测仪返回电池类型
+	bat_type=bt24_get_bat_type();
 	// bat_type = 2;
 	fault_code = get_device_fault_code();
+	for(int i=0;i<sizeof(bt24_tx_buf);i++)
+	{
+		bt24_tx_buf[i]=0x00;
+	}
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
 	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
@@ -395,7 +400,6 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 	}
 	else
 	{
-		bmsOneBusHandler(batRxBuff);
 		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x50;
 		bt24_tx_buf[BT24_FRAME_DATATYPE] = bat_type;
 		bt24_tx_buf[BT24_FRAME_STATE] = 0; 	
@@ -403,6 +407,15 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 		读取一线通/485/CAN 
 		故障信息
 		*/
+		bt24_tx_buf[7]=(get_onebus_bat_fault_code(2)&0X30)|(get_onebus_bat_fault_code(2)&0x0C)>>2;
+		bt24_tx_buf[8]=(get_onebus_bat_fault_code(2)&0X03)<<4|get_onebus_bat_fault_code(1)&0X03;
+		bt24_tx_buf[9]=(get_onebus_bat_fault_code(2)&0XC0)>>2|(get_onebus_bat_fault_code(3)&0X0C)>>2;
+		bt24_tx_buf[10]=(get_onebus_bat_fault_code(3)&0X30)>>4;
+		bt24_tx_buf[11]=(get_onebus_bat_fault_code(3)&0XC0)>>6;	//放电持续过流
+		bt24_tx_buf[14]=(get_onebus_bat_fault_code(4)&0XC0)>>6;
+		bt24_tx_buf[15]=(get_onebus_bat_fault_code(4)&0X30);
+		bt24_tx_buf[16]=(get_onebus_bat_fault_code(4)&0X0C)<<2|(get_onebus_bat_fault_code(4)&0X03);	
+		bt24_tx_buf[20]=get_onebus_bat_fault_code(3)&0X03<<4;
 
 		check_crc = get_check_crc8(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5), 7);
 		bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
@@ -419,19 +432,13 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 {
 	uint8_t check_crc;
 	uint8_t bat_type;
-	bat_type=get_onebus_bat_type();
+	bat_type=bt24_get_bat_type();
 	//  bat_type = 2;
-	if(bat_type==1)
+	for(int i=0;i<sizeof(bt24_tx_buf);i++)
 	{
-		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
-		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
-		bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
-		bt24_tx_buf[BT24_FRAME_CMDTYPE] = BT24_TX_DP_CMD;
-		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x2c;
-		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
-		bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
+		bt24_tx_buf[i]=0x00;
 	}
-	else if(bat_type==2)
+	if(bat_type==2)
 	{
 		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
@@ -440,31 +447,58 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x3a;
 		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 		bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
+
+		//电池总压(检测值)
+		bt24_tx_buf[47]=get_onebus_bat_max_ch_vol()>>8;	
+		bt24_tx_buf[48]=get_onebus_bat_max_ch_vol();
+		//SOC
+		bt24_tx_buf[52]=get_onebus_bat_soc();	
+		//SOH
+		bt24_tx_buf[54]=get_onebus_bat_soh();	
+		//最大充电电流
+		bt24_tx_buf[55]=get_onebus_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[56]=get_onebus_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[57]=get_onebus_bat_max_dsg_cur()>>8;	
+		bt24_tx_buf[58]=get_onebus_bat_max_dsg_cur();	
+		//故障码
+		bt24_tx_buf[62]=get_device_fault_code();
 	}
-	bmsOneBusHandler(batRxBuff);
+	else if(bat_type==0)
+	{		
+		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
+		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
+		bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
+		bt24_tx_buf[BT24_FRAME_CMDTYPE] = BT24_TX_DP_CMD;
+		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x2c;
+		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
+		bt24_tx_buf[BT24_FRAME_STATE] = 1;
+		bt24_tx_buf[47]=get_device_vol_value()>>8;	
+		bt24_tx_buf[48]=get_device_vol_value();
+	}
 	/*
 	读取一线通/485/CAN 或者检测仪数据
 	*/
 	//回路电流
-	bt24_tx_buf[32]=get_device_cur_value()>>8;	
-	bt24_tx_buf[33]=get_device_cur_value();
-	//最大电芯
-	//最小电芯
+	bt24_tx_buf[33]=get_device_cur_value()>>8;	
+	bt24_tx_buf[34]=get_device_cur_value();
+	//最大电芯电压
+	bt24_tx_buf[35]=get_onebus_bat_max_cell_vol()>>8;	
+	bt24_tx_buf[36]=get_onebus_bat_max_cell_vol();
+	//最小电芯电压
+	bt24_tx_buf[37]=get_onebus_bat_min_cell_vol()>>8;	
+	bt24_tx_buf[38]=get_onebus_bat_min_cell_vol();
 	//压差
-	//最大温度
-	//最小温度
+	bt24_tx_buf[39]=get_onebus_bat_max_cell_vol()-get_onebus_bat_min_cell_vol();	
+	//最大温度	
+	bt24_tx_buf[42]=get_onebus_bat_max_temp()>>8;
+	//最小温度	
+	bt24_tx_buf[44]=get_onebus_bat_min_temp()>>8;
 	//电池总压
-	//电池总压(检测值)
-	//外总压
-	//SOC
-	//SOH
-	//最大充电电流
-	//最大放电电流
-	//故障码
-	//从主机得到
-	
 
-	bt24_tx_buf[48]=get_device_vol_value();
+	//外总压
+
+	//从主机得到
 	check_crc = get_check_crc8(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5), 7);
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
@@ -479,13 +513,17 @@ static void device_start_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 {
 	uint8_t check_crc;
 	uint8_t ch_over;
+	for(int i=0;i<sizeof(bt24_tx_buf);i++)
+	{
+		bt24_tx_buf[i]=0x00;
+	}
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
 	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
 	bt24_tx_buf[BT24_FRAME_CMDTYPE] = BT24_TX_DC_CMD;
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x02;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
-	bt24_tx_buf[BT24_FRAME_STATE] = 0x01;
+	bt24_tx_buf[BT24_FRAME_STATE] = 0;
 	check_crc = get_check_crc8(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5), 7);
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
 
@@ -510,19 +548,13 @@ static void device_get_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 {
 	uint8_t check_crc;
 	uint8_t bat_type;
-	bat_type=get_onebus_bat_type();
+	bat_type=bt24_get_bat_type();
 	//  bat_type = 2;
-	if(bat_type==1)
+	for(int i=0;i<sizeof(bt24_tx_buf);i++)
 	{
-		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
-		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
-		bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
-		bt24_tx_buf[BT24_FRAME_CMDTYPE] = BT24_TX_GET_CMD;
-		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x2d;
-		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
-		bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
+		bt24_tx_buf[i]=0x00;
 	}
-	else if(bat_type==2)
+	if(bat_type==2)
 	{
 		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
@@ -531,12 +563,59 @@ static void device_get_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x3b;
 		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 		bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
+
+		//电池总压(检测值)
+		bt24_tx_buf[47]=get_onebus_bat_max_ch_vol()>>8;	
+		bt24_tx_buf[48]=get_onebus_bat_max_ch_vol();
+		//SOC
+		bt24_tx_buf[52]=get_onebus_bat_soc();	
+		//SOH
+		bt24_tx_buf[54]=get_onebus_bat_soh();	
+		//最大充电电流
+		bt24_tx_buf[55]=get_onebus_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[56]=get_onebus_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[57]=get_onebus_bat_max_dsg_cur()>>8;	
+		bt24_tx_buf[58]=get_onebus_bat_max_dsg_cur();	
+		//故障码
+		bt24_tx_buf[62]=get_device_fault_code();
+		//放电结果
+		bt24_tx_buf[63]=get_device_work_station();
 	}
-	bmsOneBusHandler(batRxBuff);
+	else
+	{
+		bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
+		bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
+		bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
+		bt24_tx_buf[BT24_FRAME_CMDTYPE] = BT24_TX_GET_CMD;
+		bt24_tx_buf[BT24_FRAME_LENGTH] = 0x2d;
+		bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
+		bt24_tx_buf[BT24_FRAME_STATE] = 1;
+		bt24_tx_buf[47]=get_device_vol_value()>>8;	
+		bt24_tx_buf[48]=get_device_vol_value();
+		bt24_tx_buf[49]=get_device_work_station();	//	查询电池状态
+	}
 	/*
 	读取一线通/485/CAN 或者检测仪数据
 	*/
+	//回路电流
+	bt24_tx_buf[33]=get_device_cur_value()>>8;	
+	bt24_tx_buf[34]=get_device_cur_value();
+	//最大电芯电压
+	bt24_tx_buf[35]=get_onebus_bat_max_cell_vol()>>8;	
+	bt24_tx_buf[36]=get_onebus_bat_max_cell_vol();
+	//最小电芯电压
+	bt24_tx_buf[37]=get_onebus_bat_min_cell_vol()>>8;	
+	bt24_tx_buf[38]=get_onebus_bat_min_cell_vol();
+	//压差
+	bt24_tx_buf[40]=get_onebus_bat_max_cell_vol()-get_onebus_bat_min_cell_vol();	
+	//最大温度	
+	bt24_tx_buf[42]=get_onebus_bat_max_temp()>>8;
+	//最小温度	
+	bt24_tx_buf[44]=get_onebus_bat_min_temp()>>8;
+	//电池总压
 
+	//外总压
 	check_crc = get_check_crc8(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5), 7);
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
 
@@ -560,6 +639,7 @@ void bt24_data_handler(uint8_t offset)
 	unsigned long dp_len;
 #endif
 	uint8_t cmd_type = bt24_rx_buf[offset + BT24_FRAME_CMDTYPE];
+	bmsOneBusHandler();
 	switch (cmd_type)
 	{
 	case APP_CHECK_CMD: //检测校验
@@ -656,6 +736,46 @@ void bt24_recv_service(atc_t *atc)
 	{
 		memcpy((char *)bt24_rx_buf, (char *)bt24_rx_buf + offset, rx_in);
 	}
+}
+/**
+ * @brief  	得到电池类型
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t bt24_get_bat_type(void)
+{
+	uint8_t bat_type;
+	uint16_t bat_vol;
+	bat_type=get_onebus_bat_type();
+	/*
+	从一线通 485 can得到电池类型
+	*/
+	switch (bat_type)
+	{
+		case 0:	//不能得到电池协议
+			bat_vol=get_device_vol_value();
+			if(bat_vol==0)	//不能得到电池电压
+			{
+				bat_type=0;	//无电池连接
+			}
+			else
+			{
+				bat_type=1;	//硬件版
+			}
+		break;
+
+		case 1:	
+
+		break;
+		case 2:	//得到一线通协议
+			bat_type=2;
+		break;
+	}
+	return bat_type;
 }
 /**
  * @brief  	从APP得到电池状态
@@ -958,24 +1078,27 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 			}
 			break;
 		case 1:
-			id=get_device_send_ble_id();
-			if(DXBT24_Device_ID_Read(id))	//蓝牙名称需要重写并重启
+			if(get_device_send_ble_id()!=0)
 			{
-				for (int i = 0; i < name_len; i++)
+				id=get_device_send_ble_id();
+				if(DXBT24_Device_ID_Read(id))	//蓝牙名称需要重写并重启
 				{
-					echo_buf[i]=name[i];			
-				}					
-				__hex2str((uint8_t*)&id,(char*)(echo_buf+8),2);
-				if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
-				{
-					DataReturnFlage = 1;				
+					for (int i = 0; i < name_len; i++)
+					{
+						echo_buf[i]=name[i];			
+					}					
+					__hex2str((uint8_t*)&id,(char*)(echo_buf+8),2);
+					if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
+					{
+						DataReturnFlage = 1;				
+					}
 				}
+				else
+				{
+					DataReturnFlage = 1;
+					ConfigModuleNoBlockFlage = 1;
+				}		
 			}
-			else
-			{
-				DataReturnFlage = 1;
-				ConfigModuleNoBlockFlage = 1;
-			}		
 			// else
 			// {
 			// 	SEGGER_RTT_printf(0,"BLE disconnected from device,please check!\r\n");

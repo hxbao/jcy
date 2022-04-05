@@ -267,18 +267,18 @@ void bmsOneBusCheckPA(bms_info *bms,uint8_t *bmsRxBuff)
 * @warning 	None
 * @example
 **/
-void bmsOneBusParamUpdata(bms_info *bms,uint8_t *bmsRxBuff)
+void bmsOneBusParamUpdata(bms_info *bms)
 {
 	switch(bms->Receflag)
 	{
 		case 0:
-
+			bms->bmstype=0;
 		break;
 		case 1:	//PA一线通
 			if(bms->Receflag==1)
 			{
 				bms->Receflag=0;
-				memcpy(bmsRxBuff,bms->pb_list,PA_RX_LEN);	
+				bms->bmstype=2;
 			}
 		break;
 	}
@@ -292,9 +292,9 @@ void bmsOneBusParamUpdata(bms_info *bms,uint8_t *bmsRxBuff)
 * @warning 	None
 * @example
 **/
-void bmsOneBusHandler(uint8_t *bmsRxBuff)
+void bmsOneBusHandler(void)
 {
-	bmsOneBusParamUpdata(&bms,bmsRxBuff);
+	bmsOneBusParamUpdata(&bms);
 }
 /** 
 * @brief  	bms上报电池状态
@@ -321,8 +321,33 @@ uint8_t get_onebus_bat_sta(void)
 **/
 uint16_t get_onebus_bat_max_vol(void)
 {
-	return bms.pb_list[14]<<8|bms.pb_list[15];
-	// return OBS.BAT_CH_MAX_VOL;
+	return bms.pb_list[15]<<8|bms.pb_list[14];
+}
+/** 
+* @brief  	bms上报电池最大电芯电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_max_cell_vol(void)
+{
+	return bms.pb_list[30]<<8|bms.pb_list[29];
+}
+/** 
+* @brief  bms上报电池最小电芯电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_onebus_bat_min_cell_vol(void)
+{
+	return bms.pb_list[28]<<8|bms.pb_list[27];
 }
 /** 
 * @brief  	bms上报电池类型
@@ -348,7 +373,7 @@ uint8_t get_onebus_bat_type(void)
 **/
 uint16_t get_onebus_bat_max_ch_vol(void)
 {
-	return bms.pb_list[4]<<8|bms.pb_list[5];
+	return bms.pb_list[5]<<8|bms.pb_list[4];
 }
 /** 
 * @brief  	bms上报电池最大充电电流
@@ -361,7 +386,7 @@ uint16_t get_onebus_bat_max_ch_vol(void)
 **/
 uint16_t get_onebus_bat_max_ch_cur(void)
 {
-	return bms.pb_list[6]<<8|bms.pb_list[7];
+	return bms.pb_list[7]<<8|bms.pb_list[6];
 }
 /** 
 * @brief  	bms上报电池最大放大电流
@@ -374,7 +399,7 @@ uint16_t get_onebus_bat_max_ch_cur(void)
 **/
 uint16_t get_onebus_bat_max_dsg_cur(void)
 {
-	return bms.pb_list[10]<<8|bms.pb_list[11];
+	return bms.pb_list[11]<<8|bms.pb_list[10];
 }
 /** 
 * @brief  	bms上报电池最高单体温度
@@ -427,6 +452,47 @@ uint8_t get_onebus_bat_soc(void)
 uint8_t get_onebus_bat_soh(void)
 {
 	return bms.pb_list[23];
+}
+/** 
+* @brief  	bms上报电池故障组合1
+* @param  	
+	电池前端采集故障 
+	电池放电MOS故障  
+	电池预放电MOS故障 
+	电池充电MOS故障
+
+	电池环境温度传感器故障
+	电池MOS温度传感器故障
+	电池电芯温度传感器故障
+	电池电压过压
+
+	电池电压欠压
+	电池单体电芯电压过压
+	电池单体电芯电压欠压
+	电池单体电芯电压压差过大
+
+	电池放电过流
+	电池回馈过流
+	电池充电过流
+	电池SOC过低
+
+	电池充电过温状态
+	电池充电欠温状态
+	电池放电过温状态
+	电池放电欠温状态
+
+	电池单体电芯温差过大
+	预留
+
+* @param  	
+* @param    code 故障字节代码
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_onebus_bat_fault_code(uint8_t code)
+{
+	return bms.pb_list[31+code];
 }
 /** 
 * @brief  	配置时间清零

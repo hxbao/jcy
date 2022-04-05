@@ -299,4 +299,5 @@ uint32_t bt24_get_bat_ch_end_vol(void);
 uint8_t bt24_get_bat_ch_end_cur(void);
 uint8_t bt24_get_bat_set_mode(void);
 void bt24_receive_input(uint8_t value);
+uint8_t bt24_get_bat_type(void);
 #endif

@@ -170,7 +170,7 @@ void bmsOneBusInit(void);
 void bmsOneBusParamInit(bms_info *bms);
 void _smart_bms_check_pa(bms_info *bms);
 void GPIO_ToggleBits(GPIO_Module *GPIOx, uint16_t GPIO_Pin);
-void bmsOneBusHandler(uint8_t *bmsRxBuff);
+void bmsOneBusHandler(void);
 void GetConfigTimeClear(void);
 uint32_t GetConfigLoopTime(void);
 uint8_t get_onebus_bat_sta(void);

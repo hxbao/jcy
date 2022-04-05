@@ -10,7 +10,7 @@ unsigned char uart_tx_buf[UART_SEND_BUF_LMT];     //串口发送缓存
 unsigned char *rx_buf_in;
 unsigned char *rx_buf_out;
 
-unsigned char stop_update_flag; // ENABLE:停止一切数据上传  DISABLE:恢复一切数据上传
+unsigned char dev_recv_flag; // ENABLE:停止一切数据上传  DISABLE:恢复一切数据上传
 
 DeviceResponseCmdErr_t DRC;
 /**
@@ -50,7 +50,7 @@ void device_protocol_init(void)
     rx_buf_in = (unsigned char *)uart_rx_buf;
     rx_buf_out = (unsigned char *)uart_rx_buf;
 
-    stop_update_flag = DISABLE;
+    dev_recv_flag = DISABLE;
 }
 /**
  * @brief  串口接收数据暂存处理
@@ -139,6 +139,9 @@ void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC)
     DRC->DEV_SET_CH_END_VOL= (data_process_buf[offset + 23]<<24)|(data_process_buf[offset + 24]<<16)
         |(data_process_buf[offset + 25]<<8)|data_process_buf[offset + 26];
     DRC->DEV_GET_SPE=(data_process_buf[offset + 27]<<8)|data_process_buf[offset + 28];
+    DRC->DEV_BAT_TYPE=data_process_buf[offset + 29];
+    DRC->DEV_FAULT_CODE=data_process_buf[offset + 30];
+    DRC->DEV_BLE_ID=(data_process_buf[offset + 31]<<8)|data_process_buf[offset + 32];
 }
 
 /**
@@ -149,7 +152,7 @@ void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC)
  */
 void device_uart_service(void)
 {
-    static unsigned short rx_in = 0;
+    static short rx_in = 0;
     unsigned short offset = 0;
     unsigned short rx_value_len = 0;
 
@@ -196,6 +199,7 @@ void device_uart_service(void)
         }
 
         device_data_handle(offset,&DRC);
+        dev_recv_flag=1;
         offset += rx_value_len + 4;
     } // end while
     rx_in -= offset;
@@ -346,5 +350,26 @@ uint8_t get_device_fault_code(void)
 *****************************************************************************/
 uint16_t get_device_send_ble_id(void)
 {
+    // return 0x1234;
     return DRC.DEV_BLE_ID;
+}
+/*****************************************************************************
+函数名称 : get_device_send_ble_id
+功能描述 : 得到BLE ID
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+void get_device_recv_flag(void)
+{
+    return dev_recv_flag;
+}
+/*****************************************************************************
+函数名称 : device_drc_init
+功能描述 : 初始化DRC参数
+输入参数 : 无
+返回参数 : 无
+*****************************************************************************/
+void device_drc_init(void)
+{
+    DRC.DEV_FAULT_CODE=0;
 }
