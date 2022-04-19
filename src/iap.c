@@ -319,3 +319,52 @@ void iap_load_app(uint32_t appxaddr)
 		jump2app();
 	}
 }
+
+void iap_write_appbin_2(uint32_t appxaddr, uint32_t appbufaddr, uint32_t appsize)
+{
+	uint32_t readCount;
+	uint32_t fwaddr=appxaddr;//当前写入地址
+	while(1)
+	{
+		if(readCount>512)
+		{
+			readCount=512;
+		}
+		Flash_Write(fwaddr, (uint8_t*)appbufaddr, readCount);
+		fwaddr+=readCount;
+		appbufaddr += readCount;
+		if(appbufaddr-FLASH_START_ADDR_APP2 >= appsize)
+		{
+			break;
+		}
+	}
+}
+//得到IAP升级包数量和CRC16校验码
+void iap_start_device(uint32_t appNum, uint16_t appCrc)
+{
+	appBin.appBinPackNum = appNum;
+	appBin.appBinCrc = appCrc;
+}
+//初始化版本号等信息
+void iap_config_init(void)
+{
+	Flash_Read(APP_CONFIG_AREA_ADDR, (uint8_t *)&appBin, sizeof(AppBinHandle_t));
+	if(appBin.flag!=0xAA)
+	{
+		appBin.otaInSwVer[0]=0x01;
+		appBin.otaInSwVer[1]=0x00;
+		appBin.otaInSwVer[2]=0x00;
+		appBin.otaInSwVer[3]=0x00;
+
+		appBin.otaExSwVer[0]=0x01;
+		appBin.otaExSwVer[1]=0x00;
+
+		for(int i=0;i<12;i++)
+		{
+			appBin.proCode[i]=0x00;
+		}
+		appBin.otaHwVerMaj=0x01;
+		appBin.otaHwVerMin=0x00;
+		Flash_Write(APP_CONFIG_AREA_ADDR, (uint8_t *)&appBin, sizeof(AppBinHandle_t));
+	}
+}

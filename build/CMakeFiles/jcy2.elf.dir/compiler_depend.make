@@ -75,7 +75,9 @@ CMakeFiles/jcy2.elf.dir/app/main.c.obj: ../app/main.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1489,7 +1491,9 @@ CMakeFiles/jcy2.elf.dir/lib/mcu/n32/common/system_n32l40x.c.obj: ../lib/mcu/n32/
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1579,7 +1583,9 @@ CMakeFiles/jcy2.elf.dir/src/atc-master/atc.c.obj: ../src/atc-master/atc.c \
   ../src/atc-master/atc.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1686,7 +1692,9 @@ CMakeFiles/jcy2.elf.dir/src/atl485protol.c.obj: ../src/atl485protol.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1777,7 +1785,9 @@ CMakeFiles/jcy2.elf.dir/src/chargeProtocl.c.obj: ../src/chargeProtocl.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1868,7 +1878,101 @@ CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.obj: ../src/commdif_RICan.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
+  ../freeRTOS/Source/include/cmsis_os.h \
+  ../freeRTOS/Source/include/FreeRTOS.h \
+  ../config/FreeRTOSConfig.h \
+  ../freeRTOS/Source/include/projdefs.h \
+  ../freeRTOS/Source/include/portable.h \
+  ../freeRTOS/Source/include/deprecated_definitions.h \
+  ../freeRTOS/Source/include/portmacro.h \
+  ../freeRTOS/Source/include/mpu_wrappers.h \
+  ../freeRTOS/Source/include/task.h \
+  ../freeRTOS/Source/include/list.h \
+  ../freeRTOS/Source/include/timers.h \
+  ../freeRTOS/Source/include/queue.h \
+  ../freeRTOS/Source/include/semphr.h \
+  ../freeRTOS/Source/include/event_groups.h
+
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj: ../src/commdif_niu.c \
+  ../inc/includes.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdbool.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h \
+  ../config/config.h \
+  ../config/config-F0-n32.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/string.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_ansi.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/newlib.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_newlib_version.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/config.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/ieeefp.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/features.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/reent.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_ansi.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_default_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/lock.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/cdefs.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_locale.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/strings.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/string.h \
+  ../lib/mcu/n32/common/n32l40x.h \
+  ../lib/CMSIS/Include/core_cm4.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/stdint.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_intsup.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_stdint.h \
+  ../lib/CMSIS/Include/cmsis_version.h \
+  ../lib/CMSIS/Include/cmsis_compiler.h \
+  ../lib/CMSIS/Include/cmsis_gcc.h \
+  ../lib/mcu/n32/common/system_n32l40x.h \
+  ../lib/mcu/n32/common/n32l40x_conf.h \
+  ../lib/driver/n32/inc/n32l40x_adc.h \
+  ../lib/driver/n32/inc/n32l40x_can.h \
+  ../lib/driver/n32/inc/n32l40x_comp.h \
+  ../lib/driver/n32/inc/n32l40x_crc.h \
+  ../lib/driver/n32/inc/n32l40x_dbg.h \
+  ../lib/driver/n32/inc/n32l40x_dma.h \
+  ../lib/driver/n32/inc/n32l40x_exti.h \
+  ../lib/driver/n32/inc/n32l40x_flash.h \
+  ../lib/driver/n32/inc/n32l40x_gpio.h \
+  ../lib/driver/n32/inc/n32l40x_i2c.h \
+  ../lib/driver/n32/inc/n32l40x_iwdg.h \
+  ../lib/driver/n32/inc/n32l40x_opamp.h \
+  ../lib/driver/n32/inc/n32l40x_pwr.h \
+  ../lib/driver/n32/inc/n32l40x_rcc.h \
+  ../lib/driver/n32/inc/n32l40x_rtc.h \
+  ../lib/driver/n32/inc/n32l40x_spi.h \
+  ../lib/driver/n32/inc/n32l40x_tim.h \
+  ../lib/driver/n32/inc/n32l40x_usart.h \
+  ../lib/driver/n32/inc/n32l40x_lpuart.h \
+  ../lib/driver/n32/inc/n32l40x_wwdg.h \
+  ../lib/driver/n32/inc/misc.h \
+  ../inc/haltimer.h \
+  ../inc/includes.h \
+  ../inc/common.h \
+  ../inc/mcuEEPROM.h \
+  ../inc/iap.h \
+  ../inc/haluart0.h \
+  ../inc/mcuadapter.h \
+  ../inc/halN32Rtc.h \
+  ../inc/halN32Can.h \
+  ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
+  ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
+  ../inc/createTask.h \
+  ../inc/onebus.h \
+  ../inc/atl485protol.h \
+  ../src/atc-master/atc.h \
+  ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/haluart2.h \
+  ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -1958,7 +2062,9 @@ CMakeFiles/jcy2.elf.dir/src/common.c.obj: ../src/common.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2048,7 +2154,9 @@ CMakeFiles/jcy2.elf.dir/src/createTask.c.obj: ../src/createTask.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2139,7 +2247,9 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: ../src/dxbt24.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2231,7 +2341,9 @@ CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj: ../src/halLpuart.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2321,7 +2433,9 @@ CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj: ../src/halN32Can.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2411,7 +2525,9 @@ CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj: ../src/halN32Rtc.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2501,7 +2617,9 @@ CMakeFiles/jcy2.elf.dir/src/halspi.c.obj: ../src/halspi.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2591,7 +2709,9 @@ CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj: ../src/haltimer.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2681,7 +2801,101 @@ CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj: ../src/haluart0.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
+  ../freeRTOS/Source/include/cmsis_os.h \
+  ../freeRTOS/Source/include/FreeRTOS.h \
+  ../config/FreeRTOSConfig.h \
+  ../freeRTOS/Source/include/projdefs.h \
+  ../freeRTOS/Source/include/portable.h \
+  ../freeRTOS/Source/include/deprecated_definitions.h \
+  ../freeRTOS/Source/include/portmacro.h \
+  ../freeRTOS/Source/include/mpu_wrappers.h \
+  ../freeRTOS/Source/include/task.h \
+  ../freeRTOS/Source/include/list.h \
+  ../freeRTOS/Source/include/timers.h \
+  ../freeRTOS/Source/include/queue.h \
+  ../freeRTOS/Source/include/semphr.h \
+  ../freeRTOS/Source/include/event_groups.h
+
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj: ../src/haluart2.c \
+  ../inc/includes.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdbool.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdarg.h \
+  ../config/config.h \
+  ../config/config-F0-n32.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/string.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_ansi.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/newlib.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_newlib_version.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/config.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/ieeefp.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/features.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/reent.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_ansi.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stddef.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/machine/_default_types.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/lock.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/cdefs.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_locale.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/strings.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/string.h \
+  ../lib/mcu/n32/common/n32l40x.h \
+  ../lib/CMSIS/Include/core_cm4.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/stdint.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_intsup.h \
+  C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/_stdint.h \
+  ../lib/CMSIS/Include/cmsis_version.h \
+  ../lib/CMSIS/Include/cmsis_compiler.h \
+  ../lib/CMSIS/Include/cmsis_gcc.h \
+  ../lib/mcu/n32/common/system_n32l40x.h \
+  ../lib/mcu/n32/common/n32l40x_conf.h \
+  ../lib/driver/n32/inc/n32l40x_adc.h \
+  ../lib/driver/n32/inc/n32l40x_can.h \
+  ../lib/driver/n32/inc/n32l40x_comp.h \
+  ../lib/driver/n32/inc/n32l40x_crc.h \
+  ../lib/driver/n32/inc/n32l40x_dbg.h \
+  ../lib/driver/n32/inc/n32l40x_dma.h \
+  ../lib/driver/n32/inc/n32l40x_exti.h \
+  ../lib/driver/n32/inc/n32l40x_flash.h \
+  ../lib/driver/n32/inc/n32l40x_gpio.h \
+  ../lib/driver/n32/inc/n32l40x_i2c.h \
+  ../lib/driver/n32/inc/n32l40x_iwdg.h \
+  ../lib/driver/n32/inc/n32l40x_opamp.h \
+  ../lib/driver/n32/inc/n32l40x_pwr.h \
+  ../lib/driver/n32/inc/n32l40x_rcc.h \
+  ../lib/driver/n32/inc/n32l40x_rtc.h \
+  ../lib/driver/n32/inc/n32l40x_spi.h \
+  ../lib/driver/n32/inc/n32l40x_tim.h \
+  ../lib/driver/n32/inc/n32l40x_usart.h \
+  ../lib/driver/n32/inc/n32l40x_lpuart.h \
+  ../lib/driver/n32/inc/n32l40x_wwdg.h \
+  ../lib/driver/n32/inc/misc.h \
+  ../inc/haltimer.h \
+  ../inc/includes.h \
+  ../inc/common.h \
+  ../inc/mcuEEPROM.h \
+  ../inc/iap.h \
+  ../inc/haluart0.h \
+  ../inc/mcuadapter.h \
+  ../inc/halN32Rtc.h \
+  ../inc/halN32Can.h \
+  ../lib/SEGGER_RTT/RTT/SEGGER_RTT.h \
+  ../lib/SEGGER_RTT/RTT/SEGGER_RTT_Conf.h \
+  ../inc/createTask.h \
+  ../inc/onebus.h \
+  ../inc/atl485protol.h \
+  ../src/atc-master/atc.h \
+  ../src/atc-master/atcConfig.h \
+  ../inc/chargeProtocol.h \
+  ../inc/haluart3.h \
+  ../inc/haluart2.h \
+  ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2771,7 +2985,9 @@ CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj: ../src/haluart3.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2861,7 +3077,9 @@ CMakeFiles/jcy2.elf.dir/src/iap.c.obj: ../src/iap.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -2951,7 +3169,9 @@ CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj: ../src/mcuAdapter.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3041,7 +3261,9 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: ../src/mcuEEPROM.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3131,7 +3353,9 @@ CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: ../src/onebus.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3222,7 +3446,9 @@ CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: ../src/unitTest.c \
   ../src/atc-master/atcConfig.h \
   ../inc/chargeProtocol.h \
   ../inc/haluart3.h \
+  ../inc/haluart2.h \
   ../inc/dxbt24.h \
+  ../inc/niuLogic.h \
   ../freeRTOS/Source/include/cmsis_os.h \
   ../freeRTOS/Source/include/FreeRTOS.h \
   ../config/FreeRTOSConfig.h \
@@ -3270,6 +3496,8 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_ansi.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/_newlib_version.h:
+
+../inc/niuLogic.h:
 
 C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi/include/sys/config.h:
 
@@ -3339,6 +3567,8 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 
 ../lib/driver/n32/inc/n32l40x_tim.h:
 
+../inc/haluart2.h:
+
 ../lib/CMSIS/Include/cmsis_compiler.h:
 
 ../lib/driver/n32/inc/n32l40x_flash.h:
@@ -3354,6 +3584,8 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 ../inc/mcuEEPROM.h:
 
 ../lib/driver/n32/inc/n32l40x_can.h:
+
+../src/commdif_niu.c:
 
 ../inc/halN32Rtc.h:
 
@@ -3564,6 +3796,8 @@ C:/Program\ Files\ (x86)/GNU\ Arm\ Embedded\ Toolchain/10\ 2021.10/arm-none-eabi
 ../src/halspi.c:
 
 ../src/haltimer.c:
+
+../src/haluart2.c:
 
 ../src/haluart3.c:
 

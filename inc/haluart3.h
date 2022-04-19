@@ -5,7 +5,7 @@
 
 typedef void (*pf_Rx3Callback)(uint8_t rData);
  
-extern uint8_t Uart3_RxBuf[256];
+extern uint8_t Uart3_RxBuf[100];
 extern uint8_t FlagUart0Inited;
 extern uint16_t Uart0RxCount;
 

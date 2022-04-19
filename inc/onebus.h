@@ -33,6 +33,22 @@
 #define ACC_IO_CLK RCC_APB2Periph_GPIOA
 #define ACC_IO_PIN GPIO_PIN_8
 #define ACC_IO_PORT GPIOA
+
+#define bms_data		MCU_GPIO_GetBit(ONE_RXD1_PORT,ONE_RXD1_PIN)
+#define TEST_PIN_HIGH()	MCU_GPIO_SetBit(TEST_IO_PORT,TEST_IO_PIN)
+#define TEST_PIN_LOW()	MCU_GPIO_ClrBit(TEST_IO_PORT,TEST_IO_PIN)
+
+#define ACC_ENABLE()	MCU_GPIO_SetBit(ACC_IO_PORT,ACC_IO_PIN)
+#define ACC_DISABLE()	MCU_GPIO_ClrBit(ACC_IO_PORT,ACC_IO_PIN)
+
+#define ONE_TXD1_HIGH()	MCU_GPIO_SetBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
+#define ONE_TXD1_LOW()	MCU_GPIO_ClrBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
+
+#define ONE_TXD2_HIGH()	MCU_GPIO_SetBit(ONE_TXD2_PORT,ONE_TXD2_PIN)
+#define ONE_TXD2_LOW()	MCU_GPIO_ClrBit(ONE_TXD2_PORT,ONE_TXD2_PIN)
+
+#define RX_DISABLE()	USART2->CTRL1|=8;USART2->CTRL1&=0XFFFFFFFB
+#define RX_ENABLE()		USART2->CTRL1|=4;USART2->CTRL1&=0XFFFFFFFF
 /*********************************************************
 ½ÓÊÕ×´Ì¬
 *********************************************************/

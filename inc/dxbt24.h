@@ -5,6 +5,7 @@
 
 #define DXBT24_UARTX 1
 
+#define BLE_NAME  "DX-BT24-"	//定义蓝牙名称
 //=============================================================================
 //接收数据帧值
 //=============================================================================
@@ -284,7 +285,7 @@ typedef union
 	BleDeviceBuffErr_t BDB;
 }BleDeviceNameErr_t;
 
-void DXBT24_Init(void);
+void DX_BT24_Init(void);
 uint8_t bt24_get_bat_status(void);
 uint8_t bt24_get_bat_core(void);
 uint8_t bt24_get_bat_spec(void);
@@ -300,4 +301,7 @@ uint8_t bt24_get_bat_ch_end_cur(void);
 uint8_t bt24_get_bat_set_mode(void);
 void bt24_receive_input(uint8_t value);
 uint8_t bt24_get_bat_type(void);
+void bt24_protocol_init(void);
+uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len);
+void bt24_recv_service(void);
 #endif

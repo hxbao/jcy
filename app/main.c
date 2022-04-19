@@ -20,7 +20,7 @@ void main(void)
 	uint16_t newCrc;
 	uint8_t count = 5;
 	//中断地址偏移设置
-//	MCU_SetNVOffset();
+	// MCU_SetNVOffset();
 	Clk_Config();
 	SysTick_Config(SystemCoreClock / 1000);
 

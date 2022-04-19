@@ -10,24 +10,12 @@
 
 void _smart_bms_init(bms_info *bms);
 
+
 bms_info bms;
 OneBusStaticData_t OBS;
 TIM_TimeBaseInitType TIM_TimeBaseStructure;
 
 #define PA_RX_LEN	51		//PA一线通接收数据包字节
-
-#define bms_data		MCU_GPIO_GetBit(ONE_RXD1_PORT,ONE_RXD1_PIN)
-#define TEST_PIN_HIGH()	MCU_GPIO_SetBit(TEST_IO_PORT,TEST_IO_PIN)
-#define TEST_PIN_LOW()	MCU_GPIO_ClrBit(TEST_IO_PORT,TEST_IO_PIN)
-
-#define ACC_ENABLE()	MCU_GPIO_SetBit(ACC_IO_PORT,ACC_IO_PIN)
-#define ACC_DISABLE()	MCU_GPIO_ClrBit(ACC_IO_PORT,ACC_IO_PIN)
-
-#define ONE_TXD1_HIGH()	MCU_GPIO_SetBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
-#define ONE_TXD1_LOW()	MCU_GPIO_ClrBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
-
-#define ONE_TXD2_HIGH()	MCU_GPIO_SetBit(ONE_TXD2_PORT,ONE_TXD2_PIN)
-#define ONE_TXD2_LOW()	MCU_GPIO_ClrBit(ONE_TXD2_PORT,ONE_TXD2_PIN)
 
 uint8_t bms_rx_buf[100];		//BMS接收协议保存区
 
@@ -37,7 +25,7 @@ uint8_t bmstype;
 
 uint32_t config_cnt;
 /** 
-* @brief  	bms一线通初始化
+* @brief  	bms一线通模式
 * @param  	
 * @param  	
 * @param   
@@ -45,7 +33,7 @@ uint32_t config_cnt;
 * @warning 	None
 * @example
 **/
-void bmsOneBusInit(void)
+void OneBusSetPPMode(void)
 {
     GPIO_InitType GPIO_InitStructure;
 
@@ -76,6 +64,7 @@ void bmsOneBusInit(void)
 	// ACC_ENABLE();	//短接ACC和BAT+
 	bmsOneBusParamInit(&bms);
 }
+
 /**
  * @brief  Configures tim1 clocks.
  */
@@ -454,6 +443,24 @@ uint8_t get_onebus_bat_soh(void)
 	return bms.pb_list[23];
 }
 /** 
+* @brief  	bms上报报文打印
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void get_onebus_bat_msg(void)
+{
+	SEGGER_RTT_printf(0,"onebus_msg:\r\n");
+	for (size_t i = 0; i < 51; i++)
+	{
+		/* code */
+		SEGGER_RTT_printf(0,"%x ",bms.pb_list[i]);
+	}
+}
+/** 
 * @brief  	bms上报电池故障组合1
 * @param  	
 	电池前端采集故障 
@@ -544,7 +551,7 @@ void TIM1_UP_IRQHandler(void)
         TIM_ClrIntPendingBit(TIM1, TIM_INT_UPDATE);
 		// GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN); 
 		config_cnt++;
-		bmsOneBusCheckPA(&bms,bms_rx_buf); 
+		// bmsOneBusCheckPA(&bms,bms_rx_buf); 	//注释掉一线通定时器采样
 	}
 }
 /** 
@@ -562,3 +569,6 @@ void GPIO_ToggleBits(GPIO_Module* GPIOx, uint16_t GPIO_Pin)
 
   GPIOx->POD^= GPIO_Pin;
 } 
+
+
+

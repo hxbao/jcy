@@ -26,17 +26,33 @@ typedef enum
 } Iap_ErrorCode;
 
 //define appHandle struct
+// typedef  struct
+// {
+//   uint8_t  flag;
+//   uint8_t  resv[3];
+//   int appBinByteSize;
+//   uint32_t srcFlashAddr;
+//   int appBinCrc;
+//   uint16_t appBinPackNum; //升级包数量
+//   char appbinVersion[8];
+
+// }AppBinHandle_t;
+
 typedef  struct
 {
   uint8_t  flag;
-  uint8_t  resv[3];
+  uint8_t  otaInSwVer[4];	//软件内部版本号
+  uint8_t  otaExSwVer[2];	//软件内部次版本号
+  uint8_t  proCode[12];		//项目编号
+  uint8_t  otaHwVerMaj;		//硬件主版本号
+  uint8_t  otaHwVerMin;		//硬件次版本号
   int appBinByteSize;
+  uint16_t appBinPackNum; //升级包数量
   uint32_t srcFlashAddr;
   int appBinCrc;
   char appbinVersion[8];
 
 }AppBinHandle_t;
-
 
 extern AppBinHandle_t appBin;
 

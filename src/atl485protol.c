@@ -86,7 +86,7 @@ static uint16_t ATL_Calc_CRC(uint8_t *pDesBuf,uint8_t len)
     return TY_CRC;
 }
 
-static void CommdSendFrame(AltMdCmdReq_t req)
+static void CommdSendFrame(AltMdCmdReq_t req,uart_mode mode)
 {  
     uint8_t data[10];
 
@@ -102,7 +102,14 @@ static void CommdSendFrame(AltMdCmdReq_t req)
     crc = ATL_Calc_CRC(data,6);
     data[6] = (uint8_t)crc;
     data[7] = (uint8_t)(crc>>8);
-    ATl_ModbusSend(data,8);
+    if(mode==onebusmode)
+    {
+        ATl_OneBusModbusSend(data,8);
+    }
+    else
+    {
+        ATl_ModbusSend(data,8);
+    }
 }
 
 static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
@@ -122,7 +129,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
     if(TY_CRCO == TY_CRC)
     {
         //回复数据长度
-        byCount = ((uint16_t)pMdInput[2]<<8) +pMdInput[3];
+        byCount = ((uint16_t)pMdInput[3]<<8) +pMdInput[2];
         
 
         //根据发送的指令和地址，把接收到的数据，填充到相应的数据结构里
@@ -140,7 +147,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             {
                 //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_CELLV;
-                memcpy((uint8_t*)&atl485cellv+mdoffset,pMdInput+5,2*byCount);
+                memcpy((uint8_t*)&atl485cellv+mdoffset,(uint8_t*)pMdInput+4,byCount);
             }
 
         }else
@@ -150,7 +157,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             {
                  //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_BATD;
-                memcpy((uint8_t*)&atl485batd+mdoffset,pMdInput+5,2*byCount);
+                memcpy((uint8_t*)&atl485batd+mdoffset,(uint8_t*)pMdInput+4,byCount);
             }
         }else
         if(atlcmdreq.cmdId == CMD_ID_READ_BATSTA)
@@ -159,7 +166,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             {
                   //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_BATSTA;
-                memcpy((uint8_t*)&atl485batsta+mdoffset,pMdInput+5,2*byCount);
+                memcpy((uint8_t*)&atl485batsta+mdoffset,pMdInput+4,byCount);
             }
         }else
         if(atlcmdreq.cmdId == CMD_ID_READ_PROJECT)
@@ -167,7 +174,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             if((atlcmdreq.reqaddr >= ATL485_BASE_ADDR_PROJECTINTO) && (atlcmdreq.reqaddr < ATL485_BASE_ADDR_PROJECTINTO+1000))
             {
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_PROJECTINTO;
-                memcpy((uint8_t*)&atl485prjInfo+mdoffset,pMdInput+5,2*byCount);
+                memcpy((uint8_t*)&atl485prjInfo+mdoffset,pMdInput+4,byCount);
             }
         }
 
@@ -181,10 +188,11 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
 
 void ATL_ModbusRecvHandle(uint8_t rdata)
 {
-    uint16_t mdLen = 0;
+    static uint16_t mdLen = 0;
     if(rdata == ATL_MODBUS_DEV && rxIndex == 0)
     {
         ATLMdOrgInBuf[rxIndex++] = rdata;
+        // SEGGER_RTT_printf(0,"%02X ",rdata);
         return;
     }else
     if(rxIndex > 0)
@@ -196,18 +204,19 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
             return ;
         }
         SEGGER_RTT_printf(0,"%02X ",rdata);
-        if(rxIndex ==4)
+        if(rxIndex ==3)
         {
-            mdLen = ATLMdOrgInBuf[3] + (uint16_t)ATLMdOrgInBuf[4]<<8;
+            mdLen = ATLMdOrgInBuf[2] | ((uint16_t)ATLMdOrgInBuf[3]<<8);
         }
         //请求读数据帧
-        if(rxIndex == mdLen*2 + 6)
+        if(rxIndex == mdLen+6)
         {   
             //返回读数据帧         
             if(ATL_MODBUS_CMD_READ == ATLMdOrgInBuf[1])
             {
                 SEGGER_RTT_printf(0,"\n");
                 ATLModbusParse(ATLMdOrgInBuf,rxIndex);
+                ATLMdPollFlg=1;
                 rxIndex = 0;
             }else{
                 rxIndex = 0;
@@ -225,7 +234,15 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
         }
     }
 }
-
+/**
+ * @brief  	纯硬件485发送指令
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
 void ATLModbusPoll(void)
 {
     static uint8_t index = 0;
@@ -235,20 +252,22 @@ void ATLModbusPoll(void)
         // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
         switch(index++)
         {
-            case 0:
+            case 0: //雅迪3000地址最大只能读取26个字节数据，大于26则读取无效
             atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
-            atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
-            CommdSendFrame(atlcmdreq);
+            // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
+            atlcmdreq.reqCount = 26;    
+            CommdSendFrame(atlcmdreq,atlmode);
             break;
 
-            case 1:
+            case 1: //雅迪3000地址最大只能读取84个字节数据，大于84则读取无效
             atlcmdreq.cmdId = CMD_ID_READ_BATD;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
             atlcmdreq.reqCount = sizeof(Atl485_batd_t);
-            CommdSendFrame(atlcmdreq);
+            // atlcmdreq.reqCount = 84;    
+            CommdSendFrame(atlcmdreq,atlmode);
             break;
 
             case 2:
@@ -256,17 +275,20 @@ void ATLModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
             atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
-            CommdSendFrame(atlcmdreq);
+            // atlcmdreq.reqCount = 0;
+            CommdSendFrame(atlcmdreq,atlmode);
             break;
 
-            case 3:
+            case 3: //雅迪7000地址最大只能读取88个字节数据，大于88则读取无效
             atlcmdreq.cmdId = CMD_ID_READ_PROJECT;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
             atlcmdreq.reqCount = sizeof(Atl485_ProjectInfo_t);
-            CommdSendFrame(atlcmdreq);
+            // atlcmdreq.reqCount = 88;        
+            CommdSendFrame(atlcmdreq,atlmode);
             break;
         }
+        // SEGGER_RTT_printf(0,"atl485_mode_running\r\n");
     } 
 
     if(index == 4)
@@ -274,6 +296,282 @@ void ATLModbusPoll(void)
         index = 0;
     }
 }
+/**
+ * @brief  	一线通/485兼容模式
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+void ATLOneBusModbusPoll(void)
+{
+    static uint8_t index = 0;
+    //循环发送取数据指令
+    if(bsp_CheckTimer(TMR_ONEBUS_CHECK))  
+    {
+        // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
+        switch(index++)
+        {
+            case 0: //雅迪3000地址最大只能读取26个字节数据，大于26则读取无效
+            atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
+            atlcmdreq.funcode = 0x03;
+            atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
+            // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
+            atlcmdreq.reqCount = 26;    
+            CommdSendFrame(atlcmdreq,onebusmode);
+            break;
 
+            case 1: //雅迪3000地址最大只能读取84个字节数据，大于84则读取无效
+            atlcmdreq.cmdId = CMD_ID_READ_BATD;
+            atlcmdreq.funcode = 0x03;
+            atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
+            atlcmdreq.reqCount = sizeof(Atl485_batd_t);
+            // atlcmdreq.reqCount = 84;    
+            CommdSendFrame(atlcmdreq,onebusmode);
+            break;
 
+            case 2:
+            atlcmdreq.cmdId = CMD_ID_READ_BATSTA;
+            atlcmdreq.funcode = 0x03;
+            atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
+            atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
+            // atlcmdreq.reqCount = 0;
+            CommdSendFrame(atlcmdreq,onebusmode);
+            break;
 
+            case 3: //雅迪7000地址最大只能读取88个字节数据，大于88则读取无效
+            atlcmdreq.cmdId = CMD_ID_READ_PROJECT;
+            atlcmdreq.funcode = 0x03;
+            atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
+            atlcmdreq.reqCount = sizeof(Atl485_ProjectInfo_t);
+            // atlcmdreq.reqCount = 88;        
+            CommdSendFrame(atlcmdreq,onebusmode);
+            break;
+        }
+        // SEGGER_RTT_printf(0,"onebus_mode_running\r\n");
+    } 
+
+    if(index == 4)
+    {
+        index = 0;
+    }
+}
+/**
+ * @brief  	发送静默指令 1秒
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+void ATLModbusSendSlient(void)
+{
+    for(int i=0;i<100;i++)
+    {
+        atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
+        atlcmdreq.funcode = 0x03;
+        atlcmdreq.reqaddr = ATL485_BASE_ADDR_SILENT;
+        atlcmdreq.reqCount = 0x00;
+        CommdSendFrame(atlcmdreq,onebusmode);
+        bsp_DelayUS(10000);
+    }
+}
+/** 
+* @brief  	bms上报电池状态
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_atl485_bat_sta(void)
+{
+	return atl485batsta.Run_Mode;
+	// return OBS.BAT_STATUS;
+}
+/** 
+* @brief  	bms上报电池单体总压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_vol(void)
+{
+	return atl485batd.packSumVolt;
+}
+/** 
+* @brief  	bms上报电池采样总压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_cap_vol(void)
+{
+	return atl485batd.IntPackVolt;
+}
+/** 
+* @brief  	bms上报电池外总压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_ext_vol(void)
+{
+	return atl485batd.ExtPackVolt;
+}
+/** 
+* @brief  	bms上报电池最大电芯电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_cell_vol(void)
+{
+	return atl485batd.MaxCellVolt;
+}
+/** 
+* @brief  bms上报电池最小电芯电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_min_cell_vol(void)
+{
+	return atl485batd.MinCellVolt;
+}
+/** 
+* @brief  	bms上报电池类型
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_atl485_bat_type(void)
+{
+	return atl485prjInfo.BMS_CellType;
+}
+/** 
+* @brief  	bms上报电池最大充电电流
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_ch_cur(void)
+{
+	return atl485batd.Max_CHGCUR1;
+}
+/** 
+* @brief  	bms上报电池最大放大电流
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_dsg_cur(void)
+{
+	return atl485batd.Max_PerDSGCUR1;
+}
+/** 
+* @brief  	bms上报电池最高单体温度
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_max_temp(void)
+{
+	return atl485batd.MaxCellTemp;
+}
+/** 
+* @brief  	bms上报电池最低单体温度
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_min_temp(void)
+{
+	return atl485batd.MinCellTemp;
+}
+/** 
+* @brief  	bms上报电池SOC
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_soc(void)
+{
+	return atl485batd.SOC;
+}
+/** 
+* @brief  	bms上报电池SOH
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_soh(void)
+{
+	return atl485batd.SOH;
+}
+/** 
+* @brief  	bms上报电池压差
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_vol_dec(void)
+{
+	return atl485batd.DeltaV;
+}
+/** 
+* @brief  	bms上报电池电芯电压
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_vol_cell(uint8_t num)
+{
+	return atl485cellv.cellv[num];
+}

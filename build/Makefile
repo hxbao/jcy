@@ -1185,6 +1185,30 @@ src/commdif_RICan.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.s
 .PHONY : src/commdif_RICan.c.s
 
+src/commdif_niu.obj: src/commdif_niu.c.obj
+.PHONY : src/commdif_niu.obj
+
+# target to build an object file
+src/commdif_niu.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj
+.PHONY : src/commdif_niu.c.obj
+
+src/commdif_niu.i: src/commdif_niu.c.i
+.PHONY : src/commdif_niu.i
+
+# target to preprocess a source file
+src/commdif_niu.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.i
+.PHONY : src/commdif_niu.c.i
+
+src/commdif_niu.s: src/commdif_niu.c.s
+.PHONY : src/commdif_niu.s
+
+# target to generate assembly for a file
+src/commdif_niu.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.s
+.PHONY : src/commdif_niu.c.s
+
 src/common.obj: src/common.c.obj
 .PHONY : src/common.obj
 
@@ -1424,6 +1448,30 @@ src/haluart0.s: src/haluart0.c.s
 src/haluart0.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/haluart0.c.s
 .PHONY : src/haluart0.c.s
+
+src/haluart2.obj: src/haluart2.c.obj
+.PHONY : src/haluart2.obj
+
+# target to build an object file
+src/haluart2.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj
+.PHONY : src/haluart2.c.obj
+
+src/haluart2.i: src/haluart2.c.i
+.PHONY : src/haluart2.i
+
+# target to preprocess a source file
+src/haluart2.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/haluart2.c.i
+.PHONY : src/haluart2.c.i
+
+src/haluart2.s: src/haluart2.c.s
+.PHONY : src/haluart2.s
+
+# target to generate assembly for a file
+src/haluart2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jcy2.elf.dir/build.make CMakeFiles/jcy2.elf.dir/src/haluart2.c.s
+.PHONY : src/haluart2.c.s
 
 src/haluart3.obj: src/haluart3.c.obj
 .PHONY : src/haluart3.obj
@@ -1718,6 +1766,9 @@ help:
 	@echo "... src/commdif_RICan.obj"
 	@echo "... src/commdif_RICan.i"
 	@echo "... src/commdif_RICan.s"
+	@echo "... src/commdif_niu.obj"
+	@echo "... src/commdif_niu.i"
+	@echo "... src/commdif_niu.s"
 	@echo "... src/common.obj"
 	@echo "... src/common.i"
 	@echo "... src/common.s"
@@ -1748,6 +1799,9 @@ help:
 	@echo "... src/haluart0.obj"
 	@echo "... src/haluart0.i"
 	@echo "... src/haluart0.s"
+	@echo "... src/haluart2.obj"
+	@echo "... src/haluart2.i"
+	@echo "... src/haluart2.s"
 	@echo "... src/haluart3.obj"
 	@echo "... src/haluart3.i"
 	@echo "... src/haluart3.s"

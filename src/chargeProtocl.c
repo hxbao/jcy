@@ -176,7 +176,6 @@ void device_uart_service(void)
             offset++;
             continue;
         }
-
         rx_value_len = data_process_buf[offset + DATA_LEN];
         if (rx_value_len > sizeof(data_process_buf) + DEV_PROTOCOL_HEAD)
         {
@@ -197,7 +196,6 @@ void device_uart_service(void)
             offset += 4;
             continue;
         }
-
         device_data_handle(offset,&DRC);
         dev_recv_flag=1;
         offset += rx_value_len + 4;
@@ -314,7 +312,7 @@ uint32_t get_device_vol_value(void)
 
 /*****************************************************************************
 函数名称 : get_device_cur_value
-功能描述 : 查询检测仪工作状态
+功能描述 : 查询检测仪工作电流
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/

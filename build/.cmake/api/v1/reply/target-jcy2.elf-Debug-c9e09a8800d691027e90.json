@@ -290,7 +290,9 @@
 				56,
 				57,
 				58,
-				60
+				59,
+				60,
+				62
 			]
 		},
 		{
@@ -405,7 +407,7 @@
 			"language" : "ASM",
 			"sourceIndexes" : 
 			[
-				59
+				61
 			]
 		}
 	],
@@ -537,15 +539,17 @@
 				56,
 				57,
 				58,
-				60
+				59,
+				60,
+				62
 			]
 		},
 		{
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				59,
-				61
+				61,
+				63
 			]
 		}
 	],
@@ -812,6 +816,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "src/commdif_niu.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "src/common.c",
 			"sourceGroupIndex" : 0
 		},
@@ -867,6 +877,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/haluart0.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/haluart2.c",
 			"sourceGroupIndex" : 0
 		},
 		{

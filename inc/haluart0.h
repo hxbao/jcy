@@ -10,7 +10,7 @@
 typedef void (*pf_RxCallback)(uint8_t rData);
 
 
-extern uint8_t Uart0_RxBuf[256];
+extern uint8_t Uart0_RxBuf[100];
 extern uint8_t FlagUart0Inited;
 extern uint16_t Uart0RxCount;
 
@@ -25,6 +25,9 @@ void Uart0DeInit(void);
 void Uart0SendData(uint8_t *pData, uint16_t len);
 uint16_t Uart0ReceiveData(uint8_t *pData);
 
+void Uart1SendData(uint8_t *pData, uint16_t len);
+uint8_t get_atl485_clear(void);
+uint8_t get_atl485_flag(void);
 
 void LpUartInit(pf_RxCallback callback);
 void LpUartDeInit(void);

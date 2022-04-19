@@ -10,6 +10,7 @@ History:
 
 
 uint8_t Uart0FlagUartInited = 0;
+static uint8_t Atl485Flag;   //硬件485接口
 pf_RxCallback RxCallback;
 
 //注册一个接收回调处理函数
@@ -175,7 +176,7 @@ static void Uart0PortCfg(void)
 
     /* Configure USARTy Tx as alternate function push-pull */
     GPIO_InitStructure.Pin            = GPIO_PIN_9;    
-    GPIO_InitStructure.GPIO_Mode      = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Mode      = GPIO_Mode_AF_PP;
     GPIO_InitStructure.GPIO_Alternate = GPIO_AF4_USART1;
     GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
 
@@ -184,6 +185,11 @@ static void Uart0PortCfg(void)
     GPIO_InitStructure.GPIO_Pull      = GPIO_No_Pull;
     GPIO_InitStructure.GPIO_Alternate = GPIO_AF4_USART1;
     GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);  
+
+    GPIO_InitStructure.Pin            = TN_485_TXEN_PIN;    
+    GPIO_InitStructure.GPIO_Mode      = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pull      = GPIO_No_Pull;
+    GPIO_InitPeripheral(TN_485_TXEN_PORT, &GPIO_InitStructure);
 
 }
 
@@ -239,10 +245,10 @@ void Uart0Init(pf_RxCallback callback)
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_USART1, ENABLE); 
     Uart0PortCfg();
     USART_StructInit(&USART_InitStructure);
-    USART_InitStructure.BaudRate            = 9600;
-    USART_InitStructure.WordLength          = USART_WL_9B;
+    USART_InitStructure.BaudRate            = 57600;
+    USART_InitStructure.WordLength          = USART_WL_8B;
     USART_InitStructure.StopBits            = USART_STPB_1;
-    USART_InitStructure.Parity              = USART_PE_EVEN;
+    USART_InitStructure.Parity              = USART_PE_NO;
     USART_InitStructure.HardwareFlowControl = USART_HFCTRL_NONE;
     USART_InitStructure.Mode                = USART_MODE_RX | USART_MODE_TX;
 
@@ -287,7 +293,7 @@ void UartDeInit(void)
 
 }
 
-void Uart0SendData(uint8_t *pData, uint16_t len)
+void Uart1SendData(uint8_t *pData, uint16_t len)
 {
     uint16_t i;
     //IO 设置到Uart发送模式
@@ -320,9 +326,9 @@ void USART1_IRQHandler(void)
    
     if(USART_GetIntStatus(USART1, USART_INT_RXDNE) != RESET)    ///接收数据
     {
-        
         data = USART_ReceiveData(USART1);///读取数据
         HandleRecvData(data); 
+        Atl485Flag=0x02;
         //USART_ClrIntPendingBit(USART1, USART_INT_RXDNE);   ///<清接收中断请求 
     }else
     {
@@ -330,6 +336,35 @@ void USART1_IRQHandler(void)
         //SEGGER_RTT_printf(0,"UART ERROR:%X\n",USART1->STS);
         USART_ReceiveData(USART1);
     }
+}
+
+/** 
+* @brief  	得到硬件485模式标志位
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_atl485_flag()
+{
+    return Atl485Flag;
+}
+
+/** 
+* @brief  	清楚硬件485模式标志位
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_atl485_clear()
+{
+    Atl485Flag=0;
+    return Atl485Flag;
 }
 
 #endif

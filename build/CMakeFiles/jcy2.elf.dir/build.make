@@ -671,10 +671,24 @@ CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.s"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/commdif_RICan.c -o CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.s
 
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj: ../src/commdif_niu.c
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj -MF CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj -c D:/YL_TECH_CODE/JCY/src/commdif_niu.c
+
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.i"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:/YL_TECH_CODE/JCY/src/commdif_niu.c > CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.i
+
+CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.s"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/commdif_niu.c -o CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.s
+
 CMakeFiles/jcy2.elf.dir/src/common.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/common.c.obj: ../src/common.c
 CMakeFiles/jcy2.elf.dir/src/common.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building C object CMakeFiles/jcy2.elf.dir/src/common.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object CMakeFiles/jcy2.elf.dir/src/common.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/common.c.obj -MF CMakeFiles/jcy2.elf.dir/src/common.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/common.c.obj -c D:/YL_TECH_CODE/JCY/src/common.c
 
 CMakeFiles/jcy2.elf.dir/src/common.c.i: cmake_force
@@ -688,7 +702,7 @@ CMakeFiles/jcy2.elf.dir/src/common.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/createTask.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/createTask.c.obj: ../src/createTask.c
 CMakeFiles/jcy2.elf.dir/src/createTask.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building C object CMakeFiles/jcy2.elf.dir/src/createTask.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building C object CMakeFiles/jcy2.elf.dir/src/createTask.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/createTask.c.obj -MF CMakeFiles/jcy2.elf.dir/src/createTask.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/createTask.c.obj -c D:/YL_TECH_CODE/JCY/src/createTask.c
 
 CMakeFiles/jcy2.elf.dir/src/createTask.c.i: cmake_force
@@ -702,7 +716,7 @@ CMakeFiles/jcy2.elf.dir/src/createTask.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: ../src/dxbt24.c
 CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building C object CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building C object CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj -MF CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj -c D:/YL_TECH_CODE/JCY/src/dxbt24.c
 
 CMakeFiles/jcy2.elf.dir/src/dxbt24.c.i: cmake_force
@@ -716,7 +730,7 @@ CMakeFiles/jcy2.elf.dir/src/dxbt24.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/esp32.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/esp32.c.obj: ../src/esp32.c
 CMakeFiles/jcy2.elf.dir/src/esp32.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building C object CMakeFiles/jcy2.elf.dir/src/esp32.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object CMakeFiles/jcy2.elf.dir/src/esp32.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/esp32.c.obj -MF CMakeFiles/jcy2.elf.dir/src/esp32.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/esp32.c.obj -c D:/YL_TECH_CODE/JCY/src/esp32.c
 
 CMakeFiles/jcy2.elf.dir/src/esp32.c.i: cmake_force
@@ -730,7 +744,7 @@ CMakeFiles/jcy2.elf.dir/src/esp32.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj: ../src/halLpuart.c
 CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj -MF CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/halLpuart.c.obj -c D:/YL_TECH_CODE/JCY/src/halLpuart.c
 
 CMakeFiles/jcy2.elf.dir/src/halLpuart.c.i: cmake_force
@@ -744,7 +758,7 @@ CMakeFiles/jcy2.elf.dir/src/halLpuart.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj: ../src/halN32Can.c
 CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building C object CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj -MF CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/halN32Can.c.obj -c D:/YL_TECH_CODE/JCY/src/halN32Can.c
 
 CMakeFiles/jcy2.elf.dir/src/halN32Can.c.i: cmake_force
@@ -758,7 +772,7 @@ CMakeFiles/jcy2.elf.dir/src/halN32Can.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj: ../src/halN32Rtc.c
 CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building C object CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj -MF CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj -c D:/YL_TECH_CODE/JCY/src/halN32Rtc.c
 
 CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.i: cmake_force
@@ -772,7 +786,7 @@ CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/halspi.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/halspi.c.obj: ../src/halspi.c
 CMakeFiles/jcy2.elf.dir/src/halspi.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building C object CMakeFiles/jcy2.elf.dir/src/halspi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/jcy2.elf.dir/src/halspi.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/halspi.c.obj -MF CMakeFiles/jcy2.elf.dir/src/halspi.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/halspi.c.obj -c D:/YL_TECH_CODE/JCY/src/halspi.c
 
 CMakeFiles/jcy2.elf.dir/src/halspi.c.i: cmake_force
@@ -786,7 +800,7 @@ CMakeFiles/jcy2.elf.dir/src/halspi.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj: ../src/haltimer.c
 CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj -MF CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj -c D:/YL_TECH_CODE/JCY/src/haltimer.c
 
 CMakeFiles/jcy2.elf.dir/src/haltimer.c.i: cmake_force
@@ -800,7 +814,7 @@ CMakeFiles/jcy2.elf.dir/src/haltimer.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj: ../src/haluart0.c
 CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building C object CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj -MF CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj -c D:/YL_TECH_CODE/JCY/src/haluart0.c
 
 CMakeFiles/jcy2.elf.dir/src/haluart0.c.i: cmake_force
@@ -811,10 +825,24 @@ CMakeFiles/jcy2.elf.dir/src/haluart0.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/haluart0.c.s"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/haluart0.c -o CMakeFiles/jcy2.elf.dir/src/haluart0.c.s
 
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj: ../src/haluart2.c
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj -MF CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj -c D:/YL_TECH_CODE/JCY/src/haluart2.c
+
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/jcy2.elf.dir/src/haluart2.c.i"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:/YL_TECH_CODE/JCY/src/haluart2.c > CMakeFiles/jcy2.elf.dir/src/haluart2.c.i
+
+CMakeFiles/jcy2.elf.dir/src/haluart2.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/jcy2.elf.dir/src/haluart2.c.s"
+	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:/YL_TECH_CODE/JCY/src/haluart2.c -o CMakeFiles/jcy2.elf.dir/src/haluart2.c.s
+
 CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj: ../src/haluart3.c
 CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building C object CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj -MF CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj -c D:/YL_TECH_CODE/JCY/src/haluart3.c
 
 CMakeFiles/jcy2.elf.dir/src/haluart3.c.i: cmake_force
@@ -828,7 +856,7 @@ CMakeFiles/jcy2.elf.dir/src/haluart3.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/iap.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/iap.c.obj: ../src/iap.c
 CMakeFiles/jcy2.elf.dir/src/iap.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building C object CMakeFiles/jcy2.elf.dir/src/iap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/jcy2.elf.dir/src/iap.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/iap.c.obj -MF CMakeFiles/jcy2.elf.dir/src/iap.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/iap.c.obj -c D:/YL_TECH_CODE/JCY/src/iap.c
 
 CMakeFiles/jcy2.elf.dir/src/iap.c.i: cmake_force
@@ -842,7 +870,7 @@ CMakeFiles/jcy2.elf.dir/src/iap.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj: ../src/mcuAdapter.c
 CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building C object CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj -MF CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj -c D:/YL_TECH_CODE/JCY/src/mcuAdapter.c
 
 CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.i: cmake_force
@@ -856,7 +884,7 @@ CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: ../src/mcuEEPROM.c
 CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building C object CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj -MF CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.obj -c D:/YL_TECH_CODE/JCY/src/mcuEEPROM.c
 
 CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.i: cmake_force
@@ -870,7 +898,7 @@ CMakeFiles/jcy2.elf.dir/src/mcuEEPROM.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: ../src/onebus.c
 CMakeFiles/jcy2.elf.dir/src/onebus.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building C object CMakeFiles/jcy2.elf.dir/src/onebus.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building C object CMakeFiles/jcy2.elf.dir/src/onebus.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/onebus.c.obj -MF CMakeFiles/jcy2.elf.dir/src/onebus.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/onebus.c.obj -c D:/YL_TECH_CODE/JCY/src/onebus.c
 
 CMakeFiles/jcy2.elf.dir/src/onebus.c.i: cmake_force
@@ -884,7 +912,7 @@ CMakeFiles/jcy2.elf.dir/src/onebus.c.s: cmake_force
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: ../src/unitTest.c
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building C object CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj -MF CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj.d -o CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj -c D:/YL_TECH_CODE/JCY/src/unitTest.c
 
 CMakeFiles/jcy2.elf.dir/src/unitTest.c.i: cmake_force
@@ -897,7 +925,7 @@ CMakeFiles/jcy2.elf.dir/src/unitTest.c.s: cmake_force
 
 CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj: ../startup/startup_n32l406x.s
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building ASM object CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building ASM object CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj -c D:/YL_TECH_CODE/JCY/startup/startup_n32l406x.s
 
 CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.i: cmake_force
@@ -911,7 +939,7 @@ CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.s: cmake_force
 CMakeFiles/jcy2.elf.dir/app/main.c.obj: CMakeFiles/jcy2.elf.dir/flags.make
 CMakeFiles/jcy2.elf.dir/app/main.c.obj: ../app/main.c
 CMakeFiles/jcy2.elf.dir/app/main.c.obj: CMakeFiles/jcy2.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building C object CMakeFiles/jcy2.elf.dir/app/main.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building C object CMakeFiles/jcy2.elf.dir/app/main.c.obj"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/jcy2.elf.dir/app/main.c.obj -MF CMakeFiles/jcy2.elf.dir/app/main.c.obj.d -o CMakeFiles/jcy2.elf.dir/app/main.c.obj -c D:/YL_TECH_CODE/JCY/app/main.c
 
 CMakeFiles/jcy2.elf.dir/app/main.c.i: cmake_force
@@ -967,6 +995,7 @@ jcy2_elf_OBJECTS = \
 "CMakeFiles/jcy2.elf.dir/src/atl485protol.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/chargeProtocl.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.obj" \
+"CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/common.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/createTask.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj" \
@@ -977,6 +1006,7 @@ jcy2_elf_OBJECTS = \
 "CMakeFiles/jcy2.elf.dir/src/halspi.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj" \
+"CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/iap.c.obj" \
 "CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj" \
@@ -1032,6 +1062,7 @@ jcy2.elf: CMakeFiles/jcy2.elf.dir/src/atc-master/atc.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/atl485protol.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/chargeProtocl.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/commdif_RICan.c.obj
+jcy2.elf: CMakeFiles/jcy2.elf.dir/src/commdif_niu.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/common.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/createTask.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/dxbt24.c.obj
@@ -1042,6 +1073,7 @@ jcy2.elf: CMakeFiles/jcy2.elf.dir/src/halN32Rtc.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/halspi.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/haltimer.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/haluart0.c.obj
+jcy2.elf: CMakeFiles/jcy2.elf.dir/src/haluart2.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/haluart3.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/iap.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/src/mcuAdapter.c.obj
@@ -1051,7 +1083,7 @@ jcy2.elf: CMakeFiles/jcy2.elf.dir/src/unitTest.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/startup/startup_n32l406x.s.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/app/main.c.obj
 jcy2.elf: CMakeFiles/jcy2.elf.dir/build.make
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Linking C executable jcy2.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:/YL_TECH_CODE/JCY/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Linking C executable jcy2.elf"
 	"C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe" -g -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mcpu=cortex-m4 -mthumb -mthumb-interwork -Wl,-gc-sections,--print-memory-usage,-Map=D:/YL_TECH_CODE/JCY/build/jcy2.map -T D:/YL_TECH_CODE/JCY/n32l406x.ld $(jcy2_elf_OBJECTS) $(jcy2_elf_EXTERNAL_OBJECTS) -o jcy2.elf 
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Building D:/YL_TECH_CODE/JCY/build/jcy2.hex "
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "    Building D:/YL_TECH_CODE/JCY/build/jcy2.bin"

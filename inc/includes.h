@@ -31,13 +31,15 @@ void UnitTestProcess(void);
 #include "atc.h"
 #include "chargeProtocol.h"
 #include "haluart3.h"
+#include "haluart2.h"
 #include "dxbt24.h"
+#include "niuLogic.h"
 //os
 #include "cmsis_os.h"
 
 
 
-
+uint8_t msgLoop(void);
 #endif
 
 #endif

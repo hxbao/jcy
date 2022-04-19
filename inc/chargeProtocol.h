@@ -104,4 +104,8 @@ void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC);
 uint8_t get_device_fault_code(void);
 void device_protocol_init(void);
 void device_uart_service(void);
+uint8_t get_device_bat_type(void);
+uint16_t get_device_send_ble_id(void);
+void device_drc_init(void);
+void get_device_recv_flag(void);
 #endif

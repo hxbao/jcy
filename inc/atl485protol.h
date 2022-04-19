@@ -4,6 +4,8 @@
 #include "includes.h"
 
 //modbus 基地址
+#define ATL485_BASE_ADDR_SILENT       1
+
 #define ATL485_BASE_ADDR_CELLV        1000
 #define ATL485_BASE_ADDR_CELLT        2000
 #define ATL485_BASE_ADDR_BATD         3000
@@ -34,7 +36,7 @@
 
 
 typedef struct{
-    uint16_t cellv[32];
+    uint16_t cellv[13];
 }Atl485_Cellv_t;//单体电压
 
 typedef struct{
@@ -45,7 +47,8 @@ typedef struct{
     uint16_t packSumVolt;   //0.1V
     uint16_t IntPackVolt;   //0.1V
     uint16_t ExtPackVolt;   //0.1V
-    int32_t PackCurrentVolt; //1mA
+    uint16_t PackCurrentl; //1mA
+    uint16_t PackCurrenth;
     uint16_t SOC;            //0.1%
     uint16_t SOC_User;       //0.1%
     uint16_t SOH;            //0.1%
@@ -54,6 +57,7 @@ typedef struct{
     uint16_t MinCellVolt;
     uint16_t MinCellVoltNo;
     int16_t MaxCellTemp;
+    uint16_t MaxCellTempNO;
     uint16_t MinCellTemp;
     uint16_t MinCellTempNo;
     int16_t  Max_CHGCUR1;  //允许最大充电电流1 0.1A
@@ -80,13 +84,9 @@ typedef struct{
     uint16_t TotalDsgTime;            //剩余放电时间 0.1h 0 R
     uint16_t DeltaV;                  //压差 1mV 0 R
     uint16_t DeltaT;                  //温差 0.1 ℃ 0 R
-    uint16_t InsulatorPlus;           // 正绝缘电阻 0.1KΩ 0 R
-    uint16_t InsulatorMinus;          //负绝缘电阻 0.1KΩ 0 R
 
-    int32_t PackCurrent;              //电池组电流 1mA 3,000,000 R/W
-    int32_t SUB_CUR;                  //副回路电流 1mA 3000000
-
-
+    uint16_t InsulatorPlus;
+    uint16_t InsulatorMinus;
 }Atl485_batd_t;//电池概要数据
 
 typedef struct
@@ -146,16 +146,12 @@ typedef struct
 {
     uint16_t IntSwVersion[2];               //软件内部版本
     uint16_t ExtSwVersion;                  //软件外部版本
-    uint16_t ProjectCode[3];                //项目编号
+    uint16_t ProjectCode[6];                //项目编号
     uint16_t Boot1VerMajor;                 //Boot1版本
-    uint16_t Boot1VerMinor;
     uint16_t Boot2VerMajor;
-    uint16_t Boot2VerMinor;
     uint16_t RSVD;
-    uint16_t Year;                          //offset 2000
-    uint16_t Month;
-    uint16_t Day;
-    uint16_t RSVD1;
+    uint16_t YearMonth;                     //offset 2000
+    uint16_t DayRSVD;
     uint16_t SN[2];
     uint16_t BMS_CellNum;
     uint16_t BMS_CellType;                 //0x00：未配置
@@ -170,11 +166,6 @@ typedef struct
     uint16_t Product_BarCode[19];       //二维码信息
     uint16_t ManufactureName[4];        //生产商
     uint16_t HW_VERSION_Major;          //硬件版本号
-    uint16_t HW_VERSION_Minor;          //硬件版本号
-    uint16_t PCBA_BarCode[19];          //单板条形码信息
-
-
-
 }Atl485_ProjectInfo_t;
 
 typedef struct 
@@ -400,19 +391,33 @@ typedef struct {
     uint16_t	CalcRes;	                //0~65535 Ohm		1Ohm	0	计算阻值
 }Atl485_F099HIS_t;
 
+typedef enum
+{
+    onebusmode,
+    atlmode
+}uart_mode;
 
 
-
-
-
-
-
-#define ATl_ModbusSend(a,b) Uart0SendData(a,b)
-
+#define ATl_OneBusModbusSend(a,b) Uart2SendData(a,b)
+#define ATl_ModbusSend(a,b) Uart1SendData(a,b)
 
 void ATL_ModbusRecvHandle(uint8_t rdata);
 void ATLModbusPoll(void);
-
-
-
+void ATLOneBusModbusPoll(void);
+uint16_t get_atl485_bat_vol_cell(uint8_t num);
+uint16_t get_atl485_bat_vol_dec(void);
+uint16_t get_atl485_bat_soh(void);
+uint16_t get_atl485_bat_soc(void);
+uint16_t get_atl485_bat_min_temp(void);
+uint16_t get_atl485_bat_max_temp(void);
+uint16_t get_atl485_bat_max_dsg_cur(void);
+uint16_t get_atl485_bat_max_ch_cur(void);
+uint8_t get_atl485_bat_type(void);
+uint16_t get_atl485_bat_min_cell_vol(void);
+uint16_t get_atl485_bat_max_cell_vol(void);
+uint16_t get_atl485_bat_max_ext_vol(void);
+uint16_t get_atl485_bat_max_cap_vol(void);
+uint16_t get_atl485_bat_max_vol(void);
+uint8_t get_atl485_bat_sta(void);
+void ATLModbusSendSlient(void);
 #endif
