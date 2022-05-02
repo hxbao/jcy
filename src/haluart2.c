@@ -40,6 +40,12 @@ static void OneBusSetUart2Mode(void)
     GPIO_InitStructure.GPIO_Alternate = GPIO_AF4_USART2;
     GPIO_InitPeripheral(ONE_RXD1_PORT, &GPIO_InitStructure);
 
+    GPIO_InitStructure.Pin        = GPIO_PIN_8;	//ACC_CTL
+	GPIO_InitStructure.GPIO_Current = GPIO_DC_4mA;
+	GPIO_InitStructure.GPIO_Pull    = GPIO_No_Pull;
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
+    GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+
 	ACC_ENABLE();	//¶Ì½ÓACCºÍBAT+
 }
 

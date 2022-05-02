@@ -245,7 +245,7 @@ void Uart0Init(pf_RxCallback callback)
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_USART1, ENABLE); 
     Uart0PortCfg();
     USART_StructInit(&USART_InitStructure);
-    USART_InitStructure.BaudRate            = 57600;
+    USART_InitStructure.BaudRate            = 115200;
     USART_InitStructure.WordLength          = USART_WL_8B;
     USART_InitStructure.StopBits            = USART_STPB_1;
     USART_InitStructure.Parity              = USART_PE_NO;
