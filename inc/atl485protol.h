@@ -36,7 +36,7 @@
 
 
 typedef struct{
-    uint16_t cellv[13];
+    uint16_t cellv[20];
 }Atl485_Cellv_t;//单体电压
 
 typedef struct{
@@ -106,38 +106,49 @@ typedef struct
                             // Bit3：预留
                             // 0：断开；
                             // 1：闭合；
-    uint16_t BMS_ALARM_CODE0_9[10]; //故障1-10
-    uint16_t BalanceFlag12[2]; //均衡状态1-32
-    uint16_t DigitalSignal;    //开关信号
-                                // Bit0： ON信号
-                                // Bit1： ACC信号
-                                // Bit2： CRG信号
-                                // Bit3: KEY信号
-                                // 0：信号无效；
-                                // 1：信号有效；
-    uint16_t McuResetStatus;  //byte0 0x00：The high speed clock is not running；
-                                                // 0x01：The high speed clock is running. The clock source is an internal
-                                                // RC oscillator；
-                                                // 0x02：The high speed clock is running. The clock source is an external
-                                                // OSC oscillator；
-                                                // 0x03: reserved
-                                                // 0x04:
-                                                // 0x05:
-                                                // 0x06:
-                                                // 0x07:
-                              //byte1 
-                                            // 0x01:Low voltage detect reset;
-                                            // 0x02:Loss of clock reset;
-                                            // 0x03:Loss of lock reset;
-                                            // 0x04:CMU Loss of lock reset;
-                                            // 0x05:Watch dog reset;
-                                            // 0x06:External pin reset(an active-low level on the external RESET pin);
-                                            // 0x07:Power on reset;
-                                            // 0x08:JTAG generated reset;
-                                            // 0x09:core lockup reset(the ARM core indication of a LOCKUP event);
-                                            // 0x0A:Software reset(software setting of SYSRESETREQ bit);
-                                            // 0x0B:MDM-AP system reset(host debugger system setting of the System
-                                            // Reset Request bit); 
+    uint8_t BMS_ALARM_CODE0[8];
+    uint8_t BMS_ALARM_CODE1[8];
+    uint8_t BMS_ALARM_CODE2[8];
+    uint8_t BMS_ALARM_CODE3[8];
+    uint8_t BMS_ALARM_CODE4[8];
+    uint8_t BMS_ALARM_CODE5[8];
+    uint8_t BMS_ALARM_CODE6[8];
+    uint8_t BMS_ALARM_CODE7[8];
+    uint8_t BMS_ALARM_CODE8[8];
+    uint8_t BMS_ALARM_CODE9[8];
+    uint16_t BalanceFlag12[2];
+    // uint16_t BMS_ALARM_CODE0_9[10]; //故障1-10
+    // uint16_t BalanceFlag12[2]; //均衡状态1-32
+    // uint16_t DigitalSignal;    //开关信号
+    //                             // Bit0： ON信号
+    //                             // Bit1： ACC信号
+    //                             // Bit2： CRG信号
+    //                             // Bit3: KEY信号
+    //                             // 0：信号无效；
+    //                             // 1：信号有效；
+    // uint16_t McuResetStatus;  //byte0 0x00：The high speed clock is not running；
+    //                                             // 0x01：The high speed clock is running. The clock source is an internal
+    //                                             // RC oscillator；
+    //                                             // 0x02：The high speed clock is running. The clock source is an external
+    //                                             // OSC oscillator；
+    //                                             // 0x03: reserved
+    //                                             // 0x04:
+    //                                             // 0x05:
+    //                                             // 0x06:
+    //                                             // 0x07:
+    //                           //byte1 
+    //                                         // 0x01:Low voltage detect reset;
+    //                                         // 0x02:Loss of clock reset;
+    //                                         // 0x03:Loss of lock reset;
+    //                                         // 0x04:CMU Loss of lock reset;
+    //                                         // 0x05:Watch dog reset;
+    //                                         // 0x06:External pin reset(an active-low level on the external RESET pin);
+    //                                         // 0x07:Power on reset;
+    //                                         // 0x08:JTAG generated reset;
+    //                                         // 0x09:core lockup reset(the ARM core indication of a LOCKUP event);
+    //                                         // 0x0A:Software reset(software setting of SYSRESETREQ bit);
+    //                                         // 0x0B:MDM-AP system reset(host debugger system setting of the System
+    //                                         // Reset Request bit); 
 
 
 }Atl485_BatState_t;

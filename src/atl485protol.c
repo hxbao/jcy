@@ -2,30 +2,30 @@
 #include "atl485protol.h"
 
 
-//ATL BMS 485设备地址
+//ATL BMS 485设�?�地址
 #define ATL_MODBUS_DEV 0x01
 
 
-//命令码,主机发送的命令码
+//命令�??,主机发送的命令�??
 #define ATL_MODBUS_CMD_READ_ID        0x04
 #define ATL_MODBUS_CMD_READ           0x03
 #define ATL_MODBUS_CMD_WRITE          0x10
 #define ATL_MODBUS_CMD_WRITE_ID       0x11
 
-//读电压单体
+//读电压单�??
 #define CMD_ID_READ_CELLVID            0x01
 //读取电池数据
 #define CMD_ID_READ_BATD               0x03
-//读取电池故障报警信息
+//读取电池故障报�?�信�??
 #define CMD_ID_READ_BATSTA             0x04         
 //读取项目信息
 #define CMD_ID_READ_PROJECT            0x07
 
 
+static uint16_t get_atl485_bat_cell_num(void);
 
 
-
-//回应命令错误码
+//回应命令错�??�??
 typedef enum {
     CS_ERR = 0x80,
     ADDR_ERR = 0x40,
@@ -128,20 +128,20 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
 
     if(TY_CRCO == TY_CRC)
     {
-        //回复数据长度
+        //回�?�数�??长度
         byCount = ((uint16_t)pMdInput[3]<<8) +pMdInput[2];
         
 
-        //根据发送的指令和地址，把接收到的数据，填充到相应的数据结构里
+        //根据发送的指令和地址，把接收到的数据，填充到相应的数�??结构�??
         // #define CMD_ID_READ_CELLVID            0x01
         // //读取电池数据
         // #define CMD_ID_READ_BATD               0x03
-        // //读取电池故障报警信息
+        // //读取电池故障报�?�信�??
         // #define CMD_ID_READ_BATSTA             0x04         
         // //读取项目信息
         // #define CMD_ID_READ_PROJECT            0x07
         
-        if(atlcmdreq.cmdId == CMD_ID_READ_CELLVID)//读数据请求
+        if(atlcmdreq.cmdId == CMD_ID_READ_CELLVID)//读数�??请求
         {
             if((atlcmdreq.reqaddr >= ATL485_BASE_ADDR_CELLV) && (atlcmdreq.reqaddr < ATL485_BASE_ADDR_CELLV+1000))
             {
@@ -208,10 +208,10 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
         {
             mdLen = ATLMdOrgInBuf[2] | ((uint16_t)ATLMdOrgInBuf[3]<<8);
         }
-        //请求读数据帧
+        //请求读数�??�??
         if(rxIndex == mdLen+6)
         {   
-            //返回读数据帧         
+            //返回读数�??�??         
             if(ATL_MODBUS_CMD_READ == ATLMdOrgInBuf[1])
             {
                 SEGGER_RTT_printf(0,"\n");
@@ -222,7 +222,7 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
                 rxIndex = 0;
             }
 
-            //返回写数据帧
+            //返回写数�??�??
             if(ATL_MODBUS_CMD_WRITE == ATLMdOrgInBuf[1])
             {
                 SEGGER_RTT_printf(0,"\n");
@@ -235,7 +235,7 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
     }
 }
 /**
- * @brief  	纯硬件485发送指令
+ * @brief  	�??�??�??485发送指�??
  * @param
  * @param
  * @param
@@ -246,22 +246,24 @@ void ATL_ModbusRecvHandle(uint8_t rdata)
 void ATLModbusPoll(void)
 {
     static uint8_t index = 0;
-    //循环发送取数据指令
+    static uint8_t cellnum;
+    cellnum=get_atl485_bat_cell_num();
+    //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ATL485))  
     {
         // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
         switch(index++)
         {
-            case 0: //雅迪3000地址最大只能读取26个字节数据，大于26则读取无效
+            case 0: //雅迪3000地址最大只能�?�取26�??字节数据，大�??26则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
             // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
-            atlcmdreq.reqCount = 26;    
+            atlcmdreq.reqCount = cellnum*2;    
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
-            case 1: //雅迪3000地址最大只能读取84个字节数据，大于84则读取无效
+            case 1: //雅迪3000地址最大只能�?�取84�??字节数据，大�??84则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_BATD;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
@@ -270,16 +272,16 @@ void ATLModbusPoll(void)
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
-            case 2:
+            case 2: //4000地址
             atlcmdreq.cmdId = CMD_ID_READ_BATSTA;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
             atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
-            // atlcmdreq.reqCount = 0;
+            // atlcmdreq.reqCount = 100;
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
-            case 3: //雅迪7000地址最大只能读取88个字节数据，大于88则读取无效
+            case 3: //雅迪7000地址最大只能�?�取88�??字节数据，大�??88则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_PROJECT;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
@@ -297,7 +299,7 @@ void ATLModbusPoll(void)
     }
 }
 /**
- * @brief  	一线通/485兼容模式
+ * @brief  	一线�?/485兼�?�模�??
  * @param
  * @param
  * @param
@@ -308,13 +310,13 @@ void ATLModbusPoll(void)
 void ATLOneBusModbusPoll(void)
 {
     static uint8_t index = 0;
-    //循环发送取数据指令
+    //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ONEBUS_CHECK))  
     {
         // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
         switch(index++)
         {
-            case 0: //雅迪3000地址最大只能读取26个字节数据，大于26则读取无效
+            case 0: //雅迪3000地址最大只能�?�取26�??字节数据，大�??26则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
@@ -323,7 +325,7 @@ void ATLOneBusModbusPoll(void)
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
-            case 1: //雅迪3000地址最大只能读取84个字节数据，大于84则读取无效
+            case 1: //雅迪3000地址最大只能�?�取84�??字节数据，大�??84则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_BATD;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
@@ -332,16 +334,16 @@ void ATLOneBusModbusPoll(void)
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
-            case 2:
+            case 2: //4000地址
             atlcmdreq.cmdId = CMD_ID_READ_BATSTA;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
             atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
-            // atlcmdreq.reqCount = 0;
+            // atlcmdreq.reqCount = 100;
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
-            case 3: //雅迪7000地址最大只能读取88个字节数据，大于88则读取无效
+            case 3: //雅迪7000地址最大只能�?�取88�??字节数据，大�??88则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_PROJECT;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
@@ -359,7 +361,7 @@ void ATLOneBusModbusPoll(void)
     }
 }
 /**
- * @brief  	发送静默指令 1秒
+ * @brief  	发送静默指�?? 1�??
  * @param
  * @param
  * @param
@@ -380,7 +382,7 @@ void ATLModbusSendSlient(void)
     }
 }
 /** 
-* @brief  	bms上报电池状态
+* @brief  	bms上报电池状�?
 * @param  	
 * @param  	
 * @param   
@@ -433,7 +435,7 @@ uint16_t get_atl485_bat_max_ext_vol(void)
 	return atl485batd.ExtPackVolt;
 }
 /** 
-* @brief  	bms上报电池最大电芯电压
+* @brief  	bms上报电池最大电�??电压
 * @param  	
 * @param  	
 * @param   
@@ -446,7 +448,7 @@ uint16_t get_atl485_bat_max_cell_vol(void)
 	return atl485batd.MaxCellVolt;
 }
 /** 
-* @brief  bms上报电池最小电芯电压
+* @brief  bms上报电池最小电�??电压
 * @param  	
 * @param  	
 * @param   
@@ -472,7 +474,7 @@ uint8_t get_atl485_bat_type(void)
 	return atl485prjInfo.BMS_CellType;
 }
 /** 
-* @brief  	bms上报电池最大充电电流
+* @brief  	bms上报电池最大充电电�??
 * @param  	
 * @param  	
 * @param   
@@ -485,7 +487,7 @@ uint16_t get_atl485_bat_max_ch_cur(void)
 	return atl485batd.Max_CHGCUR1;
 }
 /** 
-* @brief  	bms上报电池最大放大电流
+* @brief  	bms上报电池最大放大电�??
 * @param  	
 * @param  	
 * @param   
@@ -498,7 +500,7 @@ uint16_t get_atl485_bat_max_dsg_cur(void)
 	return atl485batd.Max_PerDSGCUR1;
 }
 /** 
-* @brief  	bms上报电池最高单体温度
+* @brief  	bms上报电池最高单体温�??
 * @param  	
 * @param  	
 * @param   
@@ -508,10 +510,10 @@ uint16_t get_atl485_bat_max_dsg_cur(void)
 **/
 uint16_t get_atl485_bat_max_temp(void)
 {
-	return atl485batd.MaxCellTemp;
+	return atl485batd.MaxCellTemp-400;
 }
 /** 
-* @brief  	bms上报电池最低单体温度
+* @brief  	bms上报电池最低单体温�??
 * @param  	
 * @param  	
 * @param   
@@ -521,7 +523,7 @@ uint16_t get_atl485_bat_max_temp(void)
 **/
 uint16_t get_atl485_bat_min_temp(void)
 {
-	return atl485batd.MinCellTemp;
+	return atl485batd.MinCellTemp-400;
 }
 /** 
 * @brief  	bms上报电池SOC
@@ -574,4 +576,240 @@ uint16_t get_atl485_bat_vol_dec(void)
 uint16_t get_atl485_bat_vol_cell(uint8_t num)
 {
 	return atl485cellv.cellv[num];
+}
+/** 
+* @brief  	bms上报�??�??次数
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_circle(uint8_t num)
+{
+	return atl485batd.Cycle;
+}
+/** 
+* @brief  	bms上报�??�??次数
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint16_t get_atl485_bat_cell_num()
+{
+	return atl485prjInfo.BMS_CellNum;
+}
+/** 
+* @brief  	bms返回故障�??
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint8_t get_atl485_bat_fault_code(uint8_t num)
+{
+    uint8_t i;  //�??�??
+    uint8_t j;  //十位
+    uint8_t temp;
+    j=num/8;
+    i=num%8;
+    switch (j)
+    {
+    case 0:
+        if(i%2==0)
+        {
+           temp=atl485batsta.BMS_ALARM_CODE0[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE0[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 1:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE1[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE1[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 2:
+    if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE2[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE2[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 3:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE3[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE3[i/2]&0xF0;
+        }   
+        /* code */
+        break;
+    case 4:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE4[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE4[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 5:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE5[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE5[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 6:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE6[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE6[i/2]&0xF0;
+        }
+        /* code */
+        break;
+    case 7:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE7[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE7[i/2]&0xF0;
+        }
+        /* code */
+        break;    
+    case 8:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE8[i/2]&0x0F;
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE8[i/2]&0xF0;
+        }
+        /* code */
+        break; 
+    case 9:
+        if(i%2==0)
+        {
+            temp=atl485batsta.BMS_ALARM_CODE9[i/2];
+        }
+        else
+        {
+            temp=atl485batsta.BMS_ALARM_CODE9[i/2]&0xF0;
+        }
+        /* code */
+        break; 
+    }
+	return temp;
+}
+/** 
+* @brief  	bms返回faultcode 蓝牙询问查�??
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+uint32_t get_atl485_bat_fault()
+{
+    uint8_t checkfault;
+    uint8_t faultnum;
+    for(int i;i<8;i++)
+    {
+        faultnum=atl485batsta.BMS_ALARM_CODE0[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE1[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE2[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE3[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE4[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE5[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE6[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE7[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE8[i];
+        faultnum=atl485batsta.BMS_ALARM_CODE9[i];
+        if(faultnum)
+        {
+            checkfault|=0x0200;
+            break;
+        }
+    }
+    uint8_t BAT_OT=(atl485batsta.BMS_ALARM_CODE0[7]>>4)|atl485batsta.BMS_ALARM_CODE1[1];
+    uint8_t BAT_UT=atl485batsta.BMS_ALARM_CODE1[0]|(atl485batsta.BMS_ALARM_CODE1[1]>>4); 
+    uint8_t TOTAL_OV=atl485batsta.BMS_ALARM_CODE0[1]>>4;
+    uint8_t TOTAL_UV=atl485batsta.BMS_ALARM_CODE0[2];
+    uint8_t BAT_CHG_OI=atl485batsta.BMS_ALARM_CODE0[2]>>4|atl485batsta.BMS_ALARM_CODE0[3];
+    uint8_t BAT_DSG_OI=atl485batsta.BMS_ALARM_CODE0[4]>>4|atl485batsta.BMS_ALARM_CODE0[5];
+    uint8_t CELL_OV=atl485batsta.BMS_ALARM_CODE1[4]>>4;
+    uint8_t CELL_UV=atl485batsta.BMS_ALARM_CODE1[3]>>4|atl485batsta.BMS_ALARM_CODE1[4];
+    uint8_t MOS_OI=atl485batsta.BMS_ALARM_CODE2[4]|atl485batsta.BMS_ALARM_CODE2[5]|atl485batsta.BMS_ALARM_CODE2[6];
+
+    if(BAT_OT)
+    {
+        checkfault|0x01;
+    }
+    if(BAT_UT)
+    {
+        checkfault|0x02;
+    }
+    if(TOTAL_OV)
+    {
+        checkfault|0x04;
+    }
+    if(TOTAL_UV)
+    {
+        checkfault|0x08;
+    }
+    if(BAT_CHG_OI)
+    {
+        checkfault|0x10;
+    }
+    if(BAT_DSG_OI)
+    {
+        checkfault|0x20;
+    }
+    if(CELL_OV)
+    {
+        checkfault|0x40;
+    }
+    if(CELL_UV)
+    {
+        checkfault|0x80;
+    }
+    if(MOS_OI)
+    {
+        checkfault|0x100;
+    }
+    return checkfault;
 }
