@@ -248,6 +248,10 @@ void ATLModbusPoll(void)
     static uint8_t index = 0;
     static uint8_t cellnum;
     cellnum=get_atl485_bat_cell_num();
+    if(cellnum==0)
+    {
+        cellnum=13;        
+    }
     //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ATL485))  
     {
@@ -310,6 +314,12 @@ void ATLModbusPoll(void)
 void ATLOneBusModbusPoll(void)
 {
     static uint8_t index = 0;
+    static uint8_t cellnum;
+    cellnum=get_atl485_bat_cell_num();
+    if(cellnum==0)
+    {
+        cellnum=13;        
+    }
     //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ONEBUS_CHECK))  
     {
@@ -321,7 +331,7 @@ void ATLOneBusModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
             // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
-            atlcmdreq.reqCount = 26;    
+            atlcmdreq.reqCount = cellnum*2;    
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 

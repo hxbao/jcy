@@ -17,7 +17,7 @@ BleDeviceNameErr_t	BDN;
 // crc key值
 #define CRC_KEY 7
 
-#define CompareValue 5000 //每隔ms发送一次数据
+#define CompareValue 5000 //每隔5000ms发送一次数据
 #define BT24_UART_QUEUE_LMT 200
 #define BT24_UART_RECV_BUF_LMT 200
 
@@ -30,19 +30,15 @@ unsigned char *queue_in;
 unsigned char *queue_out;
 
 uint8_t bat_rx_buf[200];
-uint8_t stop_update_flag;		//停止一切数据上报
+uint8_t stop_update_flag;		//禁止升级
 
 static uint32_t ConfigModuleNoBlockCnt;		 //配置函数延时变量
-static uint8_t ConfigModuleNoBlockFlage;	 // 1-配置完 0-未配置完
-static uint8_t ConfigModuleNoBlockCaseValue; //控制执行哪一条Case 语句
-int DataReturnFlage = 0;					 //是否返回了预期的数据
+static uint8_t ConfigModuleNoBlockFlage;	 // 1-配置完成 0-未配置完成
+static uint8_t ConfigModuleNoBlockCaseValue; //控制执行哪一条CASE语句
+int DataReturnFlage = 0;					 //是否返回的预期的数据
 uint32_t RunCnt = 0;						 //记录运行状态发送的次数
 uint8_t BT24_RECV_FLAG;
-/**
- * DXBT24 5005A功耗情况
- * 唤醒模式下:发送数据 700uA  低功耗模式运行 只广播时 2uA , 设备连接情况下 300uA
- *
- */
+
 char __num2hex(uint8_t num)
 {
     if (num <= 0x9) {
@@ -69,7 +65,7 @@ void __hex2str(uint8_t *in, char *out, int len)
     out[2 * len] = '\0';
 }
 /**
- * 蓝牙模块P0-11初始化
+ * 蓝牙模块初始化
  */
 void DX_BT24_Init(void)
 {
@@ -87,12 +83,12 @@ void DX_BT24_Init(void)
     GPIO_InitPeripheral(BLE_STA_PORT, &GPIO_InitStructure);  
 }
 /**
- * 蓝牙模块初始化
+ *蓝牙模块初始化
  */
 void DXBT24_Init(void)
 {
 
-	// mod管脚进入配置模式
+	// mod绠¤剼杩涘叆閰嶇疆妯″紡
 	//   DXBT24_Rst();
 	// DXBT24_SWITCH_MOD_AT();
 	// bsp_DelayMS(300);
@@ -241,11 +237,11 @@ void DXBT24_ReceiveHandle(uint8_t *pData, uint16_t length)
 {
 }
 /*****************************************************************************
-函数名称 :
-功能描述 : 协议串口初始化函数
-输入参数 : 无
-返回参数 : 无
-使用说明 : 必须在MCU初始化代码中调用该函数
+函数名称
+功能描述：协议串口初始化函数
+输入参数：无
+返回参数：无
+使用说明：必须再MCU初始化代码中调用该函数
 *****************************************************************************/
 void bt24_protocol_init(void)
 {
@@ -253,27 +249,27 @@ void bt24_protocol_init(void)
 	queue_out = (unsigned char *)bt24_queue_buf;
 }
 /*****************************************************************************
-函数名称 :
-功能描述 : 收数据处理
-输入参数 : value:串口收到字节数据
-返回参数 : 无
-使用说明 :
+函数名称
+功能描述：收数据处理
+输入参数：无
+返回参数：无
+使用说明：
 *****************************************************************************/
 void bt24_receive_input(uint8_t value)
 {
-	//#error "请在串口接收中断中调用uart_receive_input(value),串口数据由MCU_SDK处理,用户请勿再另行处理,完成后删除该行"
+	//#error "璇峰湪涓插彛鎺ユ敹涓�鏂�涓�璋冪敤uart_receive_input(value),涓插彛鏁版嵁鐢盡CU_SDK澶勭悊,鐢ㄦ埛璇峰嬁鍐嶅彟琛屽�勭悊,瀹屾垚鍚庡垹闄よ�ヨ��"
 
 	if ((queue_in > queue_out) && ((queue_in - queue_out) >= sizeof(bt24_queue_buf)))
 	{
-		//数据队列满
+		//鏁版嵁闃熷垪婊�
 	}
 	else if ((queue_in < queue_out) && ((queue_out - queue_in) == 0))
 	{
-		//数据队列满
+		//鏁版嵁闃熷垪婊�
 	}
 	else
 	{
-		//队列不满
+		//闃熷垪涓嶆弧
 		if (queue_in >= (unsigned char *)(bt24_queue_buf + sizeof(bt24_queue_buf)))
 		{
 			queue_in = (unsigned char *)(bt24_queue_buf);
@@ -283,10 +279,11 @@ void bt24_receive_input(uint8_t value)
 	}
 }
 /*****************************************************************************
-函数名称 : get_queue_total_data
-功能描述 : 读取队列内数据
-输入参数 : 无
-返回参数 : 无
+函数名称
+功能描述：读取队列数据
+输入参数：无
+返回参数：无
+使用说明：
 *****************************************************************************/
 unsigned char get_queue_total_data(void)
 {
@@ -296,10 +293,11 @@ unsigned char get_queue_total_data(void)
 		return 0;
 }
 /*****************************************************************************
-函数名称 : Queue_Read_Byte
-功能描述 : 读取队列1字节数据
-输入参数 : 无
-返回参数 : 无
+函数名称
+功能描述：读取队列1字节数据
+输入参数：无
+返回参数：无
+使用说明：
 *****************************************************************************/
 unsigned char Queue_Read_Byte(void)
 {
@@ -307,10 +305,10 @@ unsigned char Queue_Read_Byte(void)
 
 	if (queue_out != queue_in)
 	{
-		//有数据
+		//鏈夋暟鎹�
 		if (queue_out >= (unsigned char *)(bt24_queue_buf + sizeof(bt24_queue_buf)))
 		{
-			//数据已经到末尾
+			//鏁版嵁宸茬粡鍒版湯灏�
 			queue_out = (unsigned char *)(bt24_queue_buf);
 		}
 
@@ -322,7 +320,7 @@ unsigned char Queue_Read_Byte(void)
 /**
  * @brief
  * @param[in] {pack} 数据源指针
- * @param[in] {pack_len} 计算校验和长度
+ * @param[in] {pack_len} 计算长度
  * @return
  */
 unsigned char get_check_crc8(uint8_t *pack, uint8_t pack_len, uint8_t key)
@@ -352,7 +350,7 @@ unsigned char get_check_crc8(uint8_t *pack, uint8_t pack_len, uint8_t key)
 /**
  * @brief
  * @param[in] {pack} 数据源指针
- * @param[in] {pack_len} 计算校验和长度
+ * @param[in] {pack_len} 计算长度
  * @return
  */
 unsigned char get_check_crc8_value(uint8_t *pack, uint8_t pack_len)
@@ -376,10 +374,10 @@ unsigned char get_check_crc8_value(uint8_t *pack, uint8_t pack_len)
 	return (crc);
 }
 /**
- * @brief  计算校验和
+ * @brief
  * @param[in] {pack} 数据源指针
- * @param[in] {pack_len} 计算校验和长度
- * @return 校验和
+ * @param[in] {pack_len} 计算长度
+ * @return
  */
 unsigned char get_check_sum_bt24(unsigned char *pack, unsigned short pack_len)
 {
@@ -394,18 +392,18 @@ unsigned char get_check_sum_bt24(unsigned char *pack, unsigned short pack_len)
 }
 
 /*****************************************************************************
-函数名称 : get_app_check_updata
-功能描述 :	检测校验
-输入参数 : 无
-返回参数 : 无
+函数名称: get_app_check_updata
+功能描述：检测校验
+输入参数：无
+返回参数：无
 *****************************************************************************/
 static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 {
 	uint8_t bat_type;
 	uint8_t fault_code;
 	uint8_t check_crc;
-	uint8_t protocol_type;		//协议接口类型
-	bat_type=get_device_bat_type();	//从检测仪返回电池类型
+	uint8_t protocol_type;		//协议类型
+	bat_type=get_device_bat_type();	//电池类型
 	bat_type=bt24_get_bat_type();
 	fault_code = get_device_fault_code();
 	protocol_type=msgLoop();
@@ -421,8 +419,7 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = bat_type;
 	bt24_tx_buf[BT24_FRAME_STATE] = 0; 	
 	/*
-	读取一线通/485/CAN 
-	故障信息
+	读取协议类型
 	*/
 	if((protocol_type==1)||(protocol_type==2))	//485协议
 	{
@@ -441,10 +438,10 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /*****************************************************************************
-函数名称 : get_device_param_handler
-功能描述 :	获取静态数据
-输入参数 : 无
-返回参数 : 无
+函数名称: get_device_param_handler
+功能描述：获取静态数据
+输入参数：无
+返回参数：无
 *****************************************************************************/
 static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 {
@@ -457,7 +454,7 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 		bt24_tx_buf[i]=0x00;
 	}
 	/*
-	读取485/CAN 
+	读取协议类型
 	*/
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
@@ -466,13 +463,13 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x55;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 	bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
-	//电芯电压1-20
+	//电池单体串数
 	for(int i=0;i<20;i++)
 	{
 		bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
 		bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
 	}
-	//回路电流
+	//电流
 	bt24_tx_buf[47]=get_device_cur_value()>>8;	
 	bt24_tx_buf[48]=get_device_cur_value();
 	//最大电芯电压
@@ -490,7 +487,7 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	//最小电芯温度
 	bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
 	bt24_tx_buf[58]=get_atl485_bat_min_temp();
-	//电池总压(电芯电压累加值)
+	//电池总压(累加值)
 	bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
 	bt24_tx_buf[60]=get_atl485_bat_max_vol();
 	//电池总压(检测值)
@@ -514,7 +511,7 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	//循环次数
 	bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
 	bt24_tx_buf[74]=get_atl485_bat_circle();
-	//故障码
+	//faultcode
 	bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
 	bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
 	bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
@@ -541,10 +538,10 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /*****************************************************************************
-函数名称 : device_start_dc_handler
-功能描述 :	 放电通知
-输入参数 : 无
-返回参数 : 无
+函数名称: device_start_dc_handler
+功能描述：放电通知
+输入参数：无
+返回参数：无
 *****************************************************************************/
 static void device_start_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 {
@@ -577,10 +574,10 @@ static void device_start_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /*****************************************************************************
-函数名称 : get_device_dc_handler
-功能描述 :	询问放电结果
-输入参数 : 无
-返回参数 : 无
+函数名称: get_device_dc_handler
+功能描述：询问放电结果
+输入参数：无
+返回参数：无
 *****************************************************************************/
 static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 {
@@ -594,7 +591,7 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 		bt24_tx_buf[i]=0x00;
 	}
 	/*
-	读取485/CAN 
+	读取485/can数据
 	*/
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
@@ -603,13 +600,13 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x56;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 	bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
-	//电芯电压1-20
+	//电池单体串数
 	for(int i=0;i<20;i++)
 	{
 		bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
 		bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
 	}
-	//回路电流
+	//电流
 	bt24_tx_buf[47]=get_device_cur_value()>>8;	
 	bt24_tx_buf[48]=get_device_cur_value();
 	//最大电芯电压
@@ -627,7 +624,7 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	//最小电芯温度
 	bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
 	bt24_tx_buf[58]=get_atl485_bat_min_temp();
-	//电池总压(电芯电压累加值)
+	//电池总压(累加值)
 	bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
 	bt24_tx_buf[60]=get_atl485_bat_max_vol();
 	//电池总压(检测值)
@@ -651,12 +648,12 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	//循环次数
 	bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
 	bt24_tx_buf[74]=get_atl485_bat_circle();
-	// //故障码
+	//faultcode
 	bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
 	bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
 	bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
 	bt24_tx_buf[78]=get_atl485_bat_fault();
-	//放电结果
+	//放电状态
 	bt24_tx_buf[79]=get_device_work_station();
 	//当前电压
 	bt24_tx_buf[80]=get_device_vol_value()>>24;
@@ -672,7 +669,7 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[87]=get_device_time_m();
 	//秒
 	bt24_tx_buf[88]=get_device_time_s();
-	//总容量
+	//容量
 	bt24_tx_buf[89]=get_device_sum_cap()>>8;
 	bt24_tx_buf[90]=get_device_sum_cap();
 
@@ -682,7 +679,7 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /**
- * @brief  		获取版本号
+ * @brief  		获取版本
  * @param
  * @param
  * @param
@@ -724,7 +721,7 @@ void get_device_fw_version_handler()
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /**
- * @brief  		推送新版本校验
+ * @brief  		固件版本校验
  * @param
  * @param
  * @param
@@ -751,7 +748,7 @@ void device_fw_check_poll_handler()
 
 }
 /**
- * @brief  		进入固件升级模式
+ * @brief  		固件升级
  * @param
  * @param
  * @param
@@ -767,7 +764,7 @@ uint8_t device_fw_updata_poll_handler(const unsigned char value[],uint32_t lengt
 	return SUCCESS;
 }
 /**
- * @brief  		推送升级成功
+ * @brief  		固件升级成功
  * @param
  * @param
  * @param
@@ -791,7 +788,7 @@ void device_fw_updata_success_handler(void)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /**
- * @brief  		推送结束校验
+ * @brief  		固件升级结束
  * @param
  * @param
  * @param
@@ -815,7 +812,7 @@ void device_updata_over_poll_handler(void)
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /**
- * @brief  		查询升级结果
+ * @brief  		设备固件成功
  * @param
  * @param
  * @param
@@ -853,11 +850,11 @@ void bt24_data_handler(uint8_t offset)
 	static uint16_t frame_len=0;
 	static uint16_t frame_len_back=0;
 	static uint32_t firm_length;	   // MCU升级文件长度
-	static uint8_t firm_update_flag; // MCU升级标志
-	uint8_t *firmware_addr;	//固件首地址
+	static uint8_t firm_update_flag; // MCU升级标记
+	uint8_t *firmware_addr;	//固件地址
 	uint32_t dp_len;
-	static uint16_t appbinNum;	//升级包数量
-	static uint16_t appbinCrc;		//升级包CRC16校验
+	static uint16_t appbinNum;		
+	static uint16_t appbinCrc;		
 #endif
 	uint32_t total_len;
 	uint8_t err; 
@@ -879,7 +876,6 @@ void bt24_data_handler(uint8_t offset)
 		case GET_DC_CMD: //得到放电结果
 			get_device_dc_handler(offset,bat_rx_buf);
 			break;
-		// APP扫码电池后，传输电池充放电信息
 #ifdef SUPPORT_MCU_FIRM_UPDATE
 		case GET_FW_CMD:
 			get_device_fw_version_handler(bat_rx_buf);
@@ -887,26 +883,26 @@ void bt24_data_handler(uint8_t offset)
 		case FW_UPDATA_CHECK:
 			appbinCrc=bt24_rx_buf[6]<<8|bt24_rx_buf[7];
 			appbinNum=bt24_rx_buf[8]<<8|bt24_rx_buf[9];
-			iap_start_device(appbinNum,appbinCrc);	//记录CRC16校验码和数据包数量
-			device_fw_check_poll_handler();		//校验
-			firm_update_flag = FW_UPDATA_CHECK;	//升级校验完毕，开始升级
+			iap_start_device(appbinNum,appbinCrc);	
+			device_fw_check_poll_handler();		
+			firm_update_flag = FW_UPDATA_CHECK;	
 			break;
 		case FW_UPDATA_CONTENT:		
 			// if(firm_update_flag==FW_UPDATA_CHECK)
 			// {
 				frame_len=bt24_rx_buf[offset+6]<<8|bt24_rx_buf[offset+7];
 				stop_update_flag = ENABLE; 
-				if(frame_len > frame_len_back)	//得到帧序号
+				if(frame_len > frame_len_back)	
 				{
-					dp_len=bt24_rx_buf[offset+4]-3;	//得到数据帧长度
+					dp_len=bt24_rx_buf[offset+4]-3;	
 					firmware_addr=(uint8_t*)bt24_rx_buf;
-					firmware_addr+=(offset+7);	//得到数据首地址
-					ret=device_fw_updata_poll_handler(firmware_addr,dp_len);	//升级函数
+					firmware_addr+=(offset+7);	
+					ret=device_fw_updata_poll_handler(firmware_addr,dp_len);	
 				}
 				else
 				{
 					firm_update_flag=0;
-					err=3;//帧不连续
+					err=3;
 				}
 				
 				if(ret==SUCCESS)
@@ -918,7 +914,7 @@ void bt24_data_handler(uint8_t offset)
 			// }
 			break;
         case FW_UPDATA_OVER:
-			if(frame_len==appbinNum)	//数据包数量一致
+			if(frame_len==appbinNum)	
 			{
 				crc = CRC16_MODBUS((uint8_t *)FLASH_START_ADDR_APP2, appBin.appBinPackNum*128, 0xFFFF);
 			}
@@ -952,7 +948,7 @@ void bt24_data_handler(uint8_t offset)
 	}
 }
 /**
- * @brief  	接收到透传数据
+ * @brief  	接收透传数据
  * @param
  * @param
  * @param
@@ -1026,11 +1022,11 @@ uint8_t bt24_get_bat_type(void)
 	uint16_t bat_vol;
 	bat_type=msgLoop();
 	/*
-	从一线通 485 can得到电池类型
+	从协议得到电池类型
 	*/
 	switch (bat_type)
 	{
-		case 0:	//不能得到电池协议
+		case 0:	//不能得到电池类型
 			bat_vol=get_device_vol_value();
 			if(bat_vol==0)	//不能得到电池电压
 			{
@@ -1043,19 +1039,19 @@ uint8_t bt24_get_bat_type(void)
 		break;
 
 		case 1:	
-			bat_type=3;	//一线通485兼容协议
+			bat_type=3;	//485
 		break;
 		case 2:	
-			bat_type=3; //硬件485协议
+			bat_type=3; //486
 		break;
-		case 4:	//CAN协议
+		case 4:	//CAN总线
 			bat_type=4;
 		break;
 	}
 	return bat_type;
 }
 /**
- * @brief  	从APP得到电池状态
+ * @brief  	得到电池状态
  * @param
  * @param
  * @param
@@ -1068,7 +1064,7 @@ uint8_t bt24_get_bat_status(void)
 
 }
 /**
- * @brief  	从APP得到电芯体系
+ * @brief  	从APP得到电池规格
  * @param
  * @param
  * @param
@@ -1080,7 +1076,7 @@ uint8_t bt24_get_bat_core(void)
 {
 }
 /**
- * @brief  	从APP得到电池规格
+ * @brief  	从APP得到电池容量
  * @param
  * @param
  * @param
@@ -1118,7 +1114,7 @@ uint8_t bt24_get_bat_sn(void)
 
 }
 /**
- * @brief  	下发电池工作状态
+ * @brief  	从APP得到电池充放电状态和蓝牙状态
  * @param
  * @param
  * @param
@@ -1169,7 +1165,7 @@ uint16_t bt24_get_bat_disch_cur(void)
 	return BSE.DSG_CUR;
 } 
 /**
- * @brief  	设置放电终止电压
+ * @brief  	设置终止电压
  * @param
  * @param
  * @param
@@ -1251,7 +1247,7 @@ uint8_t DXBT24_Reset()
 	return 0;
 }
 /**
- * @brief  	BT24蓝牙恢复出厂设置
+ * @brief  	BT24恢复出厂设置
  * @param
  * @param
  * @param
@@ -1323,7 +1319,7 @@ uint8_t DXBT24_Device_ID_Read(uint16_t BLE_ID)
 	return 0;
 }
 /**
- * @brief  	BT24蓝牙AT初始化 轮询
+ * @brief  	BT24蓝牙AT初始化
  * @param	500ms轮询
  * @param
  * @param

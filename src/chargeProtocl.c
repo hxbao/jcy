@@ -138,7 +138,7 @@ void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC)
     DRC->DEV_SET_CH_CUR=(data_process_buf[offset + 21]<<8)|data_process_buf[offset + 22];
     DRC->DEV_SET_CH_END_VOL= (data_process_buf[offset + 23]<<24)|(data_process_buf[offset + 24]<<16)
         |(data_process_buf[offset + 25]<<8)|data_process_buf[offset + 26];
-    DRC->DEV_GET_SPE=(data_process_buf[offset + 27]<<8)|data_process_buf[offset + 28];
+    DRC->BAT_CH_END_CUR=(data_process_buf[offset + 27]<<8)|data_process_buf[offset + 28];
     DRC->DEV_BAT_TYPE=data_process_buf[offset + 29];
     DRC->DEV_FAULT_CODE=data_process_buf[offset + 30];
     DRC->DEV_BLE_ID=(data_process_buf[offset + 31]<<8)|data_process_buf[offset + 32];
@@ -200,7 +200,10 @@ void device_uart_service(void)
         dev_recv_flag=1;
         offset += rx_value_len + 4;
     } // end while
-    rx_in -= offset;
+    if(rx_in>=offset)
+    {
+        rx_in -= offset;
+    }
     if (rx_in > 0)
     {
         memcpy((char *)data_process_buf, (const char *)data_process_buf + offset, rx_in);
