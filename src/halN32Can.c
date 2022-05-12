@@ -1,7 +1,7 @@
 #include "includes.h"
 #if (MCU_LIB_SELECT == 2)
 
-#if (PROJECT_ID == 3)
+#if (PROJECT_ID == 1)
 
 
 CanRxMessage CAN_RxMessage;
@@ -61,7 +61,7 @@ void CAN_NVIC_Config(void)
  * @brief  Configures CAN.
  * @param CAN_BaudRate 10Kbit/s ~ 1Mbit/s
  */
-void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum)
+void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum,uint32_t idMask,uint8_t isIdMask)
 {
     CAN_InitType CAN_InitStructure;
     CAN_FilterInitType CAN_FilterInitStructure;
@@ -91,7 +91,7 @@ void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum
     /*Initializes the CAN */
     CAN_Init(CAN, &CAN_InitStructure);
 
-    if(idListNum<3)
+    if(idListNum<3 && idListNum >0)
     {
         /* CAN filter init */
         CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
@@ -116,6 +116,20 @@ void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum
         CAN_FilterInitStructure.Filter_LowId          = *(idListTab+1);//0x045a;//升级id
         CAN_FilterInitStructure.FilterMask_HighId     = *(idListTab+2);
         CAN_FilterInitStructure.FilterMask_LowId      = *(idListTab+3);
+        CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
+        CAN_FilterInitStructure.Filter_Act            = ENABLE;
+        CAN_InitFilter(&CAN_FilterInitStructure);
+    }
+
+    if(isIdMask == 1)
+    {
+        CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
+        CAN_FilterInitStructure.Filter_Mode           = CAN_Filter_IdMaskMode;
+        CAN_FilterInitStructure.Filter_Scale          = CAN_Filter_32bitScale;
+        CAN_FilterInitStructure.Filter_HighId         = 0x0000;
+        CAN_FilterInitStructure.Filter_LowId          = 0x0000;
+        CAN_FilterInitStructure.FilterMask_HighId     = (uint16_t)(idMask>>16);
+        CAN_FilterInitStructure.FilterMask_LowId      = (uint16_t)(idMask);
         CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
         CAN_FilterInitStructure.Filter_Act            = ENABLE;
         CAN_InitFilter(&CAN_FilterInitStructure);

@@ -1,3 +1,3 @@
-D:/YL_TECH_CODE/JCY/build/CMakeFiles/jcy2.elf.dir
-D:/YL_TECH_CODE/JCY/build/CMakeFiles/edit_cache.dir
-D:/YL_TECH_CODE/JCY/build/CMakeFiles/rebuild_cache.dir
+D:/TN_work/Projects/swProject/esp32_forjcy/slu1/jcy/build/CMakeFiles/jcy2.elf.dir
+D:/TN_work/Projects/swProject/esp32_forjcy/slu1/jcy/build/CMakeFiles/edit_cache.dir
+D:/TN_work/Projects/swProject/esp32_forjcy/slu1/jcy/build/CMakeFiles/rebuild_cache.dir

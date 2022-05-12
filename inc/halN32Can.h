@@ -46,7 +46,7 @@ typedef void (*pf_CANRxCallback)(CanRxMessage RxMessage);
 
 void BxCanPortInit(void);
 void CAN_Config(uint32_t CAN_BaudRate);
-void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum);
+void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum,uint32_t idMask,uint8_t isIdMask);
 uint8_t CANTxMessage(CAN_Module* CANx,CanTxMessage* TxMessage);
 void RYCAN_RxProcess(CanRxMessage rxm);
 #endif 

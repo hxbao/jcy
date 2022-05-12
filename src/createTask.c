@@ -6,6 +6,7 @@ osThreadId onebusTaskHandle;
 osThreadId BT24TaskHandle;
 osThreadId ATL485TaskHandle;
 osThreadId MFDeviceTaskHandle;
+osThreadId ATLCanBusHandle;
 
 osThreadId defaultTaskHandle;
 osMessageQId QueueTx;
@@ -17,6 +18,7 @@ void OneBusTask(void const * argument);
 void BT24Task(void const * argument);
 void Atl485Task(void const * argument);
 void MFDeviceTask(void const * argument);
+void ATLCANParseTask(void const * argument);
 
 atc_t atc;
 
@@ -66,6 +68,9 @@ void CreateTask()
 
 	osThreadDef(MFDeviceTask, MFDeviceTask, osPriorityNormal, 0, 256);
 	MFDeviceTaskHandle = osThreadCreate(osThread(MFDeviceTask), NULL);
+
+	osThreadDef(ATLCANParseTask, ATLCANParseTask, osPriorityNormal, 0, 256);
+	ATLCanBusHandle = osThreadCreate(osThread(ATLCANParseTask), NULL);
 }
 
 void StartDefaultTask(void const * argument)
@@ -186,6 +191,25 @@ void Atl485Task(void const * argument)
 		{
 			// SEGGER_RTT_printf(0,"ATL485_Task_Running mode-%d\r\n",evt.value.v);	
 		}
+		osDelay(500);
+	}
+}
+
+/** 
+* @brief  	ATL CAN Parser
+* @param  	
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void ATLCANParseTask(void const * argument)
+{
+	RYCAN_Init();
+	for(;;)
+	{
+		RYCAN_TxProcess();
 		osDelay(500);
 	}
 }

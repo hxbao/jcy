@@ -28,6 +28,7 @@ void UnitTestProcess(void);
 #include "createtask.h"
 #include "onebus.h" 
 #include "atl485protol.h"
+#include "AtlCANProtocol.h"
 #include "atc.h"
 #include "chargeProtocol.h"
 #include "haluart3.h"
