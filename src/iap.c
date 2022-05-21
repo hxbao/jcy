@@ -342,7 +342,7 @@ void iap_write_appbin_2(uint32_t appxaddr, uint32_t appbufaddr, uint32_t appsize
 //得到IAP升级包数量和CRC16校验码
 void iap_start_device(uint32_t appNum, uint16_t appCrc)
 {
-	appBin.appBinPackNum = appNum;
+	appBin.appBinByteSize = appNum;
 	appBin.appBinCrc = appCrc;
 }
 //初始化版本号等信息
@@ -365,6 +365,16 @@ void iap_config_init(void)
 		}
 		appBin.otaHwVerMaj=0x01;
 		appBin.otaHwVerMin=0x00;
+		Flash_Write(APP_CONFIG_AREA_ADDR, (uint8_t *)&appBin, sizeof(AppBinHandle_t));
+	}
+}
+
+void IAP_TEST()
+{
+	if (appBin.flag == 0xaa) //need updata appbin data
+	{
+		iap_write_appbin(FLASH_START_ADDR_APP2+0x5000, appBin.srcFlashAddr, appBin.appBinByteSize);
+		// appBin.flag = 0x55;
 		Flash_Write(APP_CONFIG_AREA_ADDR, (uint8_t *)&appBin, sizeof(AppBinHandle_t));
 	}
 }

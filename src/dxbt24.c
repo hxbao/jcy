@@ -18,8 +18,8 @@ BleDeviceNameErr_t	BDN;
 #define CRC_KEY 7
 
 #define CompareValue 5000 //每隔5000ms发送一次数据
-#define BT24_UART_QUEUE_LMT 200
-#define BT24_UART_RECV_BUF_LMT 200
+#define BT24_UART_QUEUE_LMT 400
+#define BT24_UART_RECV_BUF_LMT 400
 
 // BT24接收透传数据缓存
 unsigned char bt24_queue_buf[BT24_UART_QUEUE_LMT];
@@ -38,6 +38,28 @@ static uint8_t ConfigModuleNoBlockCaseValue; //控制执行哪一条CASE语句
 int DataReturnFlage = 0;					 //是否返回的预期的数据
 uint32_t RunCnt = 0;						 //记录运行状态发送的次数
 uint8_t BT24_RECV_FLAG;
+
+#define Poly16 							0xA001
+
+uint16_t GetCrc16(uint8_t *buf, uint8_t len)
+{
+	uint8_t j = 0;
+	uint16_t chkSum = 0;
+	if(0 == len)
+	{
+		return 0;
+	}
+	chkSum = 0xFFFF;
+	while(len--)
+	{
+		chkSum ^= *buf++;
+		for(j = 0;j < 8;j++)
+		{
+			chkSum = (chkSum >> 1) ^ ((chkSum & 1) ? Poly16 : 0);
+		}
+	}
+	return chkSum;
+}
 
 char __num2hex(uint8_t num)
 {
@@ -756,10 +778,10 @@ void device_fw_check_poll_handler()
  * @warning 	None
  * @example
  **/
-uint8_t device_fw_updata_poll_handler(const unsigned char value[],uint32_t length)
+uint8_t device_fw_updata_poll_handler(unsigned char value[],uint32_t length)
 {
 	static uint32_t appaddr;
-	iap_temporaryStore_appbin(value,appaddr,length);
+	iap_temporaryStore_appbin((uint8_t*)value,appaddr,length);
 	appaddr+=length;
 	return SUCCESS;
 }
@@ -772,7 +794,7 @@ uint8_t device_fw_updata_poll_handler(const unsigned char value[],uint32_t lengt
  * @warning 	None
  * @example
  **/
-void device_fw_updata_success_handler(void)
+void device_fw_updata_success_handler(uint8_t Status)
 {
 	uint8_t check_crc;
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
@@ -780,7 +802,7 @@ void device_fw_updata_success_handler(void)
 	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
 	bt24_tx_buf[BT24_FRAME_CMDTYPE] = FW_UPDATA_CONTENT;
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x02;
-	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
+	bt24_tx_buf[BT24_FRAME_DATATYPE] = Status;
 
 	check_crc = get_check_sum_bt24(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5));
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
@@ -796,7 +818,7 @@ void device_fw_updata_success_handler(void)
  * @warning 	None
  * @example
  **/
-void device_updata_over_poll_handler(void)
+void device_updata_over_poll_handler(uint8_t status)
 {
 	uint8_t check_crc;
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
@@ -804,7 +826,7 @@ void device_updata_over_poll_handler(void)
 	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
 	bt24_tx_buf[BT24_FRAME_CMDTYPE] = FW_UPDATA_OVER;
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x02;
-	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
+	bt24_tx_buf[BT24_FRAME_DATATYPE] = status;
 
 	check_crc = get_check_sum_bt24(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5));
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
@@ -854,7 +876,9 @@ void bt24_data_handler(uint8_t offset)
 	uint8_t *firmware_addr;	//固件地址
 	uint32_t dp_len;
 	static uint16_t appbinNum;		
-	static uint16_t appbinCrc;		
+	static uint16_t appbinCrc;
+	uint8_t bt24_rx_buf_back[200];
+	uint8_t leftValue;	
 #endif
 	uint32_t total_len;
 	uint8_t err; 
@@ -883,8 +907,10 @@ void bt24_data_handler(uint8_t offset)
 		case FW_UPDATA_CHECK:
 			appbinCrc=bt24_rx_buf[6]<<8|bt24_rx_buf[7];
 			appbinNum=bt24_rx_buf[8]<<8|bt24_rx_buf[9];
-			iap_start_device(appbinNum,appbinCrc);	
+			iap_start(appbinNum,appbinCrc);	
 			device_fw_check_poll_handler();		
+			SEGGER_RTT_printf(0,"appbinNum_value! %x\r\n",appbinNum);
+			SEGGER_RTT_printf(0,"appbinCrc_value! %x\r\n",appbinCrc);
 			firm_update_flag = FW_UPDATA_CHECK;	
 			break;
 		case FW_UPDATA_CONTENT:		
@@ -896,48 +922,68 @@ void bt24_data_handler(uint8_t offset)
 				{
 					dp_len=bt24_rx_buf[offset+4]-3;	
 					firmware_addr=(uint8_t*)bt24_rx_buf;
-					firmware_addr+=(offset+7);	
-					ret=device_fw_updata_poll_handler(firmware_addr,dp_len);	
+					firmware_addr+=(offset+8);	
+					ret=device_fw_updata_poll_handler(firmware_addr,dp_len);
+					frame_len_back=frame_len;	
 				}
 				else
 				{
 					firm_update_flag=0;
+					frame_len_back=frame_len-1;
+					device_fw_updata_success_handler(0x03);	//帧不连续
 					err=3;
 				}
 				
 				if(ret==SUCCESS)
 				{
-					device_fw_updata_success_handler();
+					device_fw_updata_success_handler(0x00);
+					SEGGER_RTT_printf(0,"device_fw_recv_one_frame_success! OTA_Frame_ID----%d\r\n",frame_len);
+					memcpy((char *)bt24_rx_buf_back,(char *)bt24_rx_buf,200);
+					// for(int i=8;i<136;i++)
+					// {
+					// 	SEGGER_RTT_printf(0,"%02x",bt24_rx_buf_back[i]);	
+					// }
+					// SEGGER_RTT_printf(0,"\r\n");	
 				}
-				frame_len_back=frame_len;
 				stop_update_flag = DISABLE; 
 			// }
 			break;
         case FW_UPDATA_OVER:
-			if(frame_len==appbinNum)	
-			{
-				crc = CRC16_MODBUS((uint8_t *)FLASH_START_ADDR_APP2, appBin.appBinPackNum*128, 0xFFFF);
-			}
-			if (crc == (uint16_t)appBin.appBinCrc)
-			{
-				save_iap_configration();
-				device_updata_over_poll_handler();
-				bsp_DelayMS(1000);
-				NVIC_SystemReset();
-			}
-            // length2 = IapHanle(cmd,len,pMdInput,NiuMdAckBuf);
-            // NIu_ModbusSendAck(NiuMdAckBuf,length2);
-
-            // SEGGER_RTT_printf(0,"iap ack:\n");
-            // for(int i = 0;i<length2;i++){
-            //         SEGGER_RTT_printf(0,"%02X ",NiuMdAckBuf[i]);
-            // }   
-            // SEGGER_RTT_printf(0,"\n");   
-
-            // if((NiuMdAckBuf[4] == TN_MODBUS_CMD_IAP_VERIFY) && NiuMdAckBuf[6] == 0x01)
-            // {
-            //     //
-            // }  
+				for(int i=135;i>0;i--)
+				{ 
+					if(bt24_rx_buf_back[i]!=0)
+					{
+						leftValue=i-7;
+						break;		
+					}					
+				}
+				firm_length=128*(frame_len-1)+leftValue;
+				SEGGER_RTT_printf(0,"device_recv_sum_byte_value! %x\r\n",firm_length);
+				if(firm_length==appbinNum)	
+				{
+					crc = CRC16_MODBUS((uint8_t *)FLASH_START_ADDR_APP2, appBin.appBinByteSize, 0xFFFF);
+					SEGGER_RTT_printf(0,"CRC16_VALUE! %x\r\n",crc);
+					if (crc == (uint16_t)appBin.appBinCrc)
+					{
+						save_iap_configration();
+						device_updata_over_poll_handler(0x00);	//升级成功
+						// IAP_TEST();
+						SEGGER_RTT_printf(0,"device_fw_updata_success! -----RESET!\r\n");
+						bsp_DelayMS(1000);
+						NVIC_SystemReset();
+					}
+					else
+					{
+						device_updata_over_poll_handler(0x04);	//CRC16校验失败
+						SEGGER_RTT_printf(0,"device_fw_check_crc16_failed! -----please_updata_again!\r\n");
+					}
+				}
+				else
+				{
+					device_updata_over_poll_handler(0x03);	//帧接收失败
+					SEGGER_RTT_printf(0,"device_fw_recv_frame__failed! -----please_updata_again!\r\n");
+				}
+				
             break;
 		case FW_UPDATA_RESULT:
 			get_device_updata_end_handler();
@@ -990,18 +1036,22 @@ void bt24_recv_service(void)
 		{
 			break;
 		}
+		// if(bt24_rx_buf[offset+BT24_FRAME_CMDTYPE])
 		if (get_check_sum_bt24(bt24_rx_buf, rx_in - 1) != bt24_rx_buf[rx_value_len+PROTOCOL_HEAD_LEN + offset - 1])
 		{
 			//校验出错
-			offset += 3;
+			offset += rx_value_len+6;
 			crc=get_check_sum_bt24(bt24_rx_buf, rx_in - 1);
 			SEGGER_RTT_printf(0, "bt24_crc_check_error! %x\n",crc);
 			continue;
 		}
 		bt24_data_handler(offset);
-		offset += rx_in;
+		offset += rx_value_len+6;
 	}
-	rx_in -= offset;
+	if(rx_in>=offset)
+    {
+        rx_in -= offset;
+    }
 	if (rx_in > 0)
 	{
 		memcpy((char *)bt24_rx_buf, (char *)bt24_rx_buf + offset, rx_in);

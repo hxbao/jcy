@@ -68,7 +68,7 @@ uint8_t IapHanle(uint8_t cmd,uint8_t len,uint8_t *inBuf,uint8_t *outBuf);
 void save_iap_configration(void);
 void iap_load_app(uint32_t appxaddr);
 void iap_write_appbin(uint32_t appxaddr, uint32_t appbufaddr, uint32_t appsize);
-
-
+uint16_t CRC16_MODBUS(uint8_t *puchMsg, uint32_t usDataLen, uint16_t wCRCin);
+void IAP_TEST(void);
 
 #endif /* INCLUDE_IAP_H_ */

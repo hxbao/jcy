@@ -20,7 +20,7 @@ void main(void)
 	uint16_t newCrc;
 	uint8_t count = 5;
 	//中断地址偏移设置
-	// MCU_SetNVOffset();
+	MCU_SetNVOffset();
 	Clk_Config();
 	SysTick_Config(SystemCoreClock / 1000);
 
@@ -35,7 +35,7 @@ void main(void)
 	//new fw version crc check
 	SEGGER_RTT_printf(0, "new crc:%x\n", newCrc);
 	SEGGER_RTT_printf(0, "SystemCoreClockFreq:%d\n", SystemCoreClock);
-	SEGGER_RTT_printf(0, "version:%d\n", FW_VERSION);
+	SEGGER_RTT_printf(0, "version:%s\n", FW_VERSION);
 	SEGGER_RTT_printf(0, "complie time:%s\n", COMPLIE_TIME);
 
 	Bsp_Init();

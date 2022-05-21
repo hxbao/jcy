@@ -218,7 +218,7 @@ void ATLCANParseTask(void const * argument)
 * @brief  	主机通讯协议任务
 * @param  	
 * @param  	
-* @param   
+* @param    
 * @retval  	None
 * @warning 	None
 * @example
@@ -272,7 +272,7 @@ void BT24Task(void const *argument)
 		// DXBT24_AT_Init(BLE_NAME,sizeof(BLE_NAME));
 		atc_loop(&atc);
 		bt24_recv_service();
-		osDelay(1);
+		osDelay(10);
 	}
 }
 /* GetIdleTaskMemory prototype (linked to static allocation support) */

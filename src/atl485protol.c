@@ -596,7 +596,7 @@ uint16_t get_atl485_bat_vol_cell(uint8_t num)
 * @warning 	None
 * @example
 **/
-uint16_t get_atl485_bat_circle(uint8_t num)
+uint16_t get_atl485_bat_circle(void)
 {
 	return atl485batd.Cycle;
 }

@@ -431,4 +431,7 @@ uint16_t get_atl485_bat_max_cap_vol(void);
 uint16_t get_atl485_bat_max_vol(void);
 uint8_t get_atl485_bat_sta(void);
 void ATLModbusSendSlient(void);
+uint8_t get_atl485_bat_fault_code(uint8_t num);
+uint16_t get_atl485_bat_circle(void);
+uint32_t get_atl485_bat_fault(void);
 #endif
