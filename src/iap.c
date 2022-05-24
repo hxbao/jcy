@@ -374,7 +374,7 @@ void IAP_TEST()
 	if (appBin.flag == 0xaa) //need updata appbin data
 	{
 		iap_write_appbin(FLASH_START_ADDR_APP2+0x5000, appBin.srcFlashAddr, appBin.appBinByteSize);
-		// appBin.flag = 0x55;
+		appBin.flag = 0x55;
 		Flash_Write(APP_CONFIG_AREA_ADDR, (uint8_t *)&appBin, sizeof(AppBinHandle_t));
 	}
 }

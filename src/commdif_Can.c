@@ -240,7 +240,6 @@ static void CanIapHandle(CanRxMessage rmsg)
     
 }
 
-
 void RYCAN_Init(void)
 {
     //定义接收的IDlist
@@ -313,11 +312,13 @@ void RYCAN_SendData(uint8_t *buf,uint16_t len)
     }while(1);   
 }
 
-void RYCAN_TxProcess(void)
+uint8_t RYCAN_TxProcess(void)
 {
+    uint8_t TransmitMailbox = 0;
+	uint16_t Time_out=0xFFFF;
     //if(bsp_CheckTimer(TMR_ONEBUS_CHECK))
     {
-        RYCAN_SendSilence();
+        TransmitMailbox=RYCAN_SendSilence();
     }
 }
 

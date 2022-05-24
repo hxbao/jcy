@@ -32,7 +32,7 @@ typedef void (*pf_CANRxCallback)(CanRxMessage RxMessage);
 #define   CAN_BIT_RSJW              CAN_RSJW_1tq
 #define   CAN_BIT_BS1               CAN_TBS1_10tq
 #define   CAN_BIT_BS2               CAN_TBS2_5tq
-#define   CAN_BAUDRATEPRESCALER     4 
+#define   CAN_BAUDRATEPRESCALER     3 
 #elif(CAN_BAUDRATE==CAN_BAUDRATE_125K)
 #define   CAN_BIT_RSJW              CAN_RSJW_1tq
 #define   CAN_BIT_BS1               CAN_TBS1_10tq

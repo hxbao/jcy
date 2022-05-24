@@ -41,6 +41,7 @@ void BxCanPortInit()
     /* Configure CAN TX pin */
     GPIO_InitStructure.Pin        = GPIO_PIN_9;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Alternate = GPIO_AF5_CAN;
     GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure);
 }
 
@@ -86,6 +87,9 @@ void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum
     CAN_InitStructure.RSJW          = CAN_BIT_RSJW;
     CAN_InitStructure.TBS1          = CAN_BIT_BS1;
     CAN_InitStructure.TBS2          = CAN_BIT_BS2;
+    // CAN_InitStructure.RSJW          = CAN_RSJW_1tq;
+    // CAN_InitStructure.TBS1          = CAN_TBS1_4tq;
+    // CAN_InitStructure.TBS2          = CAN_TBS2_3tq;
     CAN_InitStructure.BaudRatePrescaler = CAN_BAUDRATEPRESCALER;
 
     /*Initializes the CAN */
@@ -121,20 +125,19 @@ void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum
         CAN_InitFilter(&CAN_FilterInitStructure);
     }
 
-    if(isIdMask == 1)
-    {
-        CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
-        CAN_FilterInitStructure.Filter_Mode           = CAN_Filter_IdMaskMode;
-        CAN_FilterInitStructure.Filter_Scale          = CAN_Filter_32bitScale;
-        CAN_FilterInitStructure.Filter_HighId         = 0x0000;
-        CAN_FilterInitStructure.Filter_LowId          = 0x0000;
-        CAN_FilterInitStructure.FilterMask_HighId     = (uint16_t)(idMask>>16);
-        CAN_FilterInitStructure.FilterMask_LowId      = (uint16_t)(idMask);
-        CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
-        CAN_FilterInitStructure.Filter_Act            = ENABLE;
-        CAN_InitFilter(&CAN_FilterInitStructure);
-    }
-    
+    // if(isIdMask == 1)
+    // {
+    //     CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
+    //     CAN_FilterInitStructure.Filter_Mode           = CAN_Filter_IdMaskMode;
+    //     CAN_FilterInitStructure.Filter_Scale          = CAN_Filter_32bitScale;
+    //     CAN_FilterInitStructure.Filter_HighId         = 0x0000;
+    //     CAN_FilterInitStructure.Filter_LowId          = 0x0000;
+    //     CAN_FilterInitStructure.FilterMask_HighId     = (uint16_t)(idMask>>16);
+    //     CAN_FilterInitStructure.FilterMask_LowId      = (uint16_t)(idMask);
+    //     CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
+    //     CAN_FilterInitStructure.Filter_Act            = ENABLE;
+    //     CAN_InitFilter(&CAN_FilterInitStructure);
+    // }
     
     CAN_INTConfig(CAN, CAN_INT_FMP0, ENABLE);
 
@@ -159,7 +162,7 @@ uint8_t CANTxMessage(CAN_Module* CANx,
                      CanTxMessage* TxMessage)
 {
     return CAN_TransmitMessage(CANx, TxMessage);
-    /* ******** */
+    /* ******** */  
 }
 
 /**
@@ -170,8 +173,7 @@ void CAN_RX0_IRQHandler(void)
     CanRxMessage canRxMsg;
 
     CAN_ReceiveMessage(CAN, 0, &canRxMsg);
-    canRxCallback(canRxMsg);
-    
+    canRxCallback(canRxMsg);   
 }
 
 
