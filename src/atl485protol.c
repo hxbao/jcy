@@ -59,7 +59,7 @@ AltMdCmdReq_t atlcmdreq;
 
 uint8_t rxIndex = 0;
 uint8_t ATLMdPollFlg = 0;
-
+uint16_t response;
 
 static uint16_t ATL_Calc_CRC(uint8_t *pDesBuf,uint8_t len)
 {
@@ -148,6 +148,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
                 //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_CELLV;
                 memcpy((uint8_t*)&atl485cellv+mdoffset,(uint8_t*)pMdInput+4,byCount);
+                response=0;
             }
 
         }else
@@ -158,6 +159,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
                  //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_BATD;
                 memcpy((uint8_t*)&atl485batd+mdoffset,(uint8_t*)pMdInput+4,byCount);
+                response=0;
             }
         }else
         if(atlcmdreq.cmdId == CMD_ID_READ_BATSTA)
@@ -167,6 +169,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
                   //地址偏移
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_BATSTA;
                 memcpy((uint8_t*)&atl485batsta+mdoffset,pMdInput+4,byCount);
+                response=0;
             }
         }else
         if(atlcmdreq.cmdId == CMD_ID_READ_PROJECT)
@@ -175,6 +178,7 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             {
                 mdoffset = atlcmdreq.reqaddr - ATL485_BASE_ADDR_PROJECTINTO;
                 memcpy((uint8_t*)&atl485prjInfo+mdoffset,pMdInput+4,byCount);
+                response=0;
             }
         }
 
@@ -247,15 +251,15 @@ void ATLModbusPoll(void)
 {
     static uint8_t index = 0;
     static uint8_t cellnum;
-    cellnum=get_atl485_bat_cell_num();
-    if(cellnum==0)
-    {
-        cellnum=13;        
-    }
+    static uint8_t buff[120]={0};
     //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ATL485))  
     {
-        // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
+        cellnum=get_atl485_bat_cell_num();
+        if(cellnum==0)
+        {
+            cellnum=13;        
+        }
         switch(index++)
         {
             case 0: //雅迪3000地址最大只能�?�取26�??字节数据，大�??26则�?�取无效
@@ -263,7 +267,8 @@ void ATLModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
             // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
-            atlcmdreq.reqCount = cellnum*2;    
+            atlcmdreq.reqCount = cellnum*2;   
+            response++; 
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
@@ -272,7 +277,8 @@ void ATLModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
             atlcmdreq.reqCount = sizeof(Atl485_batd_t);
-            // atlcmdreq.reqCount = 84;    
+            // atlcmdreq.reqCount = 84; 
+            response++;    
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
@@ -282,6 +288,7 @@ void ATLModbusPoll(void)
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
             atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
             // atlcmdreq.reqCount = 100;
+            response++;
             CommdSendFrame(atlcmdreq,atlmode);
             break;
 
@@ -290,11 +297,20 @@ void ATLModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
             atlcmdreq.reqCount = sizeof(Atl485_ProjectInfo_t);
-            // atlcmdreq.reqCount = 88;        
+            // atlcmdreq.reqCount = 88;    
+            response++;    
             CommdSendFrame(atlcmdreq,atlmode);
             break;
         }
         // SEGGER_RTT_printf(0,"atl485_mode_running\r\n");
+        if(response>10)
+        {
+            response =0;
+            memcpy((uint8_t*)&atl485cellv,buff,sizeof(atl485cellv));
+            memcpy((uint8_t*)&atl485batd,buff,sizeof(atl485batd));
+            memcpy((uint8_t*)&atl485batsta,buff,sizeof(atl485batsta));
+            memcpy((uint8_t*)&atl485prjInfo,buff,sizeof(atl485prjInfo));             
+        }
     } 
 
     if(index == 4)
@@ -315,23 +331,22 @@ void ATLOneBusModbusPoll(void)
 {
     static uint8_t index = 0;
     static uint8_t cellnum;
-    cellnum=get_atl485_bat_cell_num();
-    if(cellnum==0)
-    {
-        cellnum=13;        
-    }
     //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ONEBUS_CHECK))  
     {
-        // GPIO_ToggleBits(TEST_IO_PORT,TEST_IO_PIN);
+        cellnum=get_atl485_bat_cell_num();
+        if(cellnum==0)
+        {
+            cellnum=13;        
+        }
         switch(index++)
         {
             case 0: //雅迪3000地址最大只能�?�取26�??字节数据，大�??26则�?�取无效
             atlcmdreq.cmdId = CMD_ID_READ_CELLVID;
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_CELLV;
-            // atlcmdreq.reqCount = sizeof(Atl485_Cellv_t);
-            atlcmdreq.reqCount = cellnum*2;    
+            atlcmdreq.reqCount = cellnum*2; 
+            response++;   
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
@@ -340,7 +355,8 @@ void ATLOneBusModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATD;
             atlcmdreq.reqCount = sizeof(Atl485_batd_t);
-            // atlcmdreq.reqCount = 84;    
+            // atlcmdreq.reqCount = 84;  
+            response++;  
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
@@ -350,6 +366,7 @@ void ATLOneBusModbusPoll(void)
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_BATSTA;
             atlcmdreq.reqCount = sizeof(Atl485_BatState_t);
             // atlcmdreq.reqCount = 100;
+            response++;
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
 
@@ -358,7 +375,8 @@ void ATLOneBusModbusPoll(void)
             atlcmdreq.funcode = 0x03;
             atlcmdreq.reqaddr = ATL485_BASE_ADDR_PROJECTINTO;
             atlcmdreq.reqCount = sizeof(Atl485_ProjectInfo_t);
-            // atlcmdreq.reqCount = 88;        
+            // atlcmdreq.reqCount = 88; 
+            response++;      
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
         }
