@@ -125,19 +125,19 @@ void BxCanConfig(pf_CANRxCallback callback,uint16_t *idListTab,uint8_t idListNum
         CAN_InitFilter(&CAN_FilterInitStructure);
     }
 
-    // if(isIdMask == 1)
-    // {
-    //     CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
-    //     CAN_FilterInitStructure.Filter_Mode           = CAN_Filter_IdMaskMode;
-    //     CAN_FilterInitStructure.Filter_Scale          = CAN_Filter_32bitScale;
-    //     CAN_FilterInitStructure.Filter_HighId         = 0x0000;
-    //     CAN_FilterInitStructure.Filter_LowId          = 0x0000;
-    //     CAN_FilterInitStructure.FilterMask_HighId     = (uint16_t)(idMask>>16);
-    //     CAN_FilterInitStructure.FilterMask_LowId      = (uint16_t)(idMask);
-    //     CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
-    //     CAN_FilterInitStructure.Filter_Act            = ENABLE;
-    //     CAN_InitFilter(&CAN_FilterInitStructure);
-    // }
+    if(isIdMask == 1)
+    {
+        CAN_FilterInitStructure.Filter_Num            = CAN_FILTERNUM0;
+        CAN_FilterInitStructure.Filter_Mode           = CAN_Filter_IdMaskMode;
+        CAN_FilterInitStructure.Filter_Scale          = CAN_Filter_32bitScale;
+        CAN_FilterInitStructure.Filter_HighId         = 0x0000;
+        CAN_FilterInitStructure.Filter_LowId          = 0x0000;
+        CAN_FilterInitStructure.FilterMask_HighId     = (uint16_t)(idMask>>16);
+        CAN_FilterInitStructure.FilterMask_LowId      = (uint16_t)(idMask);
+        CAN_FilterInitStructure.Filter_FIFOAssignment = CAN_FIFO0;
+        CAN_FilterInitStructure.Filter_Act            = ENABLE;
+        CAN_InitFilter(&CAN_FilterInitStructure);
+    }
     
     CAN_INTConfig(CAN, CAN_INT_FMP0, ENABLE);
 

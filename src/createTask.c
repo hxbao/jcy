@@ -104,11 +104,12 @@ uint8_t msgLoop(void)
 	static uint8_t msgID;
 	if(bsp_CheckTimer(TMR_MAIN))  
 	{
-		msgID=get_onebus_flag()|get_atl485_flag();
+		msgID=get_onebus_flag()|get_atl485_flag()|get_can_flag();
 		if(msgID!=0)	//清除接收标志位
 		{
 			get_atl485_clear();
 			get_onebus_clear();
+			get_can_clear();
 		}
 	}
 	return msgID;
@@ -126,8 +127,6 @@ void MsgTask(void const * argument)
 {
 /* USER CODE BEGIN UsbTask */
 	uint16_t dataSize = 0;
-//	uint16_t i,j,k;
-//	uint8_t a = 0;
 	uint32_t pbufAddr;
 	osEvent evt;
 	uint8_t result;
@@ -182,14 +181,15 @@ void OneBusTask(void const * argument)
 void Atl485Task(void const * argument)
 {
 	osEvent  evt;
-	Uart0Init(ATL_ModbusRecvHandle);
-	bsp_StartCallBackTimer(TMR_ATL485,ATLModbusPoll,250);	//100ms
-	for(;;)
-	{
+	Uart1Init(ATL_ModbusRecvHandle); 
+	bsp_StartCallBackTimer(TMR_ATL485,ATLModbusPoll,250);	//250ms
+	bsp_StartCallBackTimer(TMR_UART_BAUDRATE_SET,Uart1SetBaudRate,1000);	//250ms
+	for(;;) 
+	{ 
 		evt=osMessageGet(QueueTx,20);
 		if(evt.value.v==2)
 		{
-			// SEGGER_RTT_printf(0,"ATL485_Task_Running mode-%d\r\n",evt.value.v);	
+			
 		}
 		osDelay(500);
 	}
@@ -269,7 +269,7 @@ void BT24Task(void const *argument)
 	// atc_command(&atc,"AT\r\n",3000,echo_buf,20,1,"OK");
 	for (;;)
 	{
-		// DXBT24_AT_Init(BLE_NAME,sizeof(BLE_NAME));
+		DXBT24_AT_Init(BLE_NAME,sizeof(BLE_NAME));
 		atc_loop(&atc);
 		bt24_recv_service();
 		osDelay(10);

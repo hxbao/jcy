@@ -309,7 +309,8 @@ void ATLModbusPoll(void)
             memcpy((uint8_t*)&atl485cellv,buff,sizeof(atl485cellv));
             memcpy((uint8_t*)&atl485batd,buff,sizeof(atl485batd));
             memcpy((uint8_t*)&atl485batsta,buff,sizeof(atl485batsta));
-            memcpy((uint8_t*)&atl485prjInfo,buff,sizeof(atl485prjInfo));             
+            memcpy((uint8_t*)&atl485prjInfo,buff,sizeof(atl485prjInfo)); 
+            // SEGGER_RTT_printf(0,"atl485_response_failed!\r\n");            
         }
     } 
 

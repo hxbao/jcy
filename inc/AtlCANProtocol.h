@@ -42,19 +42,80 @@ typedef struct {
     uint16_t Bat_SOC;          //电池剩余电量 2 uint16 % 0.10% 0 0~100
     uint16_t Bat_SOH;          //电池健康状态 2 uint16 % 0.10% 0 0~100
     uint16_t Bat_SocUser;      //用户使用的SOC
-
-
-
-
-
-
-
-
+    uint16_t Bat_MaxPulse_ChgCur;
+    uint16_t Bat_MaxPulse_DchCur;
+    uint16_t BMS_Run_Flg;
+    uint8_t  WakeUp_Flg;
+    uint8_t  Reset_status;
+    uint8_t  BMS_Battery_Alarm1[8];
+    uint8_t  BMS_Battery_Alarm2[8];
+    uint8_t  BMS_System_Alarm1[8];
+    uint8_t  BMS_System_Alarm2[8];
+    uint8_t  BMS_System_Alarm3[8];
+    uint8_t  BMS_HardWare_Alarm1[8];
+    uint8_t  BMS_HardWare_Alarm2[8];
+    uint8_t  BMS_HardWare_Alarm3[8];
+    uint8_t  BMS_HardWare_Alarm4[8];
+    uint8_t  BMS_HardWare_Alarm5[8];
+    uint16_t Bat_Chg_Remain_Time;
+    uint16_t Bat_Dsg_Remain_Time;
+    uint16_t Bat_Max_Allow_Chg_Power;
+    uint16_t Bat_Max_Allow_Dsg_Power;
+    uint32_t Bat_Max_Allow_FeedBack_Cur;
+    uint16_t Bat_Max_Allow_FeedBack_Power;
+    uint16_t Bat_SOE;
+    uint16_t Bat_Max_Dch_30s_Cur;
+    uint16_t Bat_DsgCur_30s;
+    uint16_t Bat_Max_Dch_5s_Cur;
+    uint16_t Bat_DsgCur_5s;
+    uint16_t  Bat_ChgCur_Contiue;
+    uint16_t  Bat_ChgCur_Instant;
+    uint16_t  Bat_DsgCur_Continue;
+    uint16_t  Bat_DsgCur_Instant;
+    uint16_t  BMS_BalTemp_1;
+    uint16_t  BMS_BalTemp_2;
+    uint16_t  BMS_HeatTemp_1;
+    uint16_t  BMS_HeatTemp_2;
+    uint16_t  BMS_EnvTemp;
+    uint16_t  BMS_ICTemp;
+    uint16_t  Usoc;
+    uint16_t  UsocRsvd;
+    uint16_t  SOH;
+    uint16_t  Rsoc0;
+    uint16_t  Rsoc1;
+    uint16_t  AsocFilt;
+    uint16_t  AsocOCV;
+    uint16_t  AsocAh0;
+    uint16_t  AsocAH1;
+    uint16_t  AsocFull0;
+    uint16_t  AsocFull1;
+    uint16_t  AsocEmpty0;
+    uint16_t  AsocEmpty1;
+    uint16_t  PassChg0;
+    uint16_t  PassChg1;
+    uint16_t  QMax0;
+    uint16_t  QMax1;
+    uint16_t  FCC;
+    uint16_t  RemCap;
+    uint16_t  Cycle;
+    uint16_t  TotalChgAh_L;
+    uint16_t  TotalChgAh_H;
+    uint16_t  TotalDsgAh_L;
+    uint16_t  TotalDsgAh_H;
+    uint16_t  TotalChgwh_L;
+    uint16_t  TotalChgwh_H;
+    uint16_t  TotalDsgWh_L;
+    uint16_t  TotalDsgWh_H;
+    uint16_t  Flag;
+    uint16_t  Source_12V;
+    uint16_t  Source_5V;
+    uint16_t  Sourve_3_3V;
 }ATLCANData_t;
 
 extern ATLCANData_t atlCanData;
 
 void RYCAN_Init(void);
 uint8_t RYCAN_SendSilence();
+uint8_t RYCAN_TxProcess(void);
 
 #endif

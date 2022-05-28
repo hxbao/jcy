@@ -10,8 +10,13 @@ History:
 
 
 uint8_t Uart0FlagUartInited = 0;
+
 static uint8_t Atl485Flag;   //硬件485接口
+static uint32_t Atl485BaudRate;
+static uint8_t Atl485CheckFlag;
+
 pf_RxCallback RxCallback;
+
 
 //注册一个接收回调处理函数
 #if(MCU_LIB_SELECT == 1)
@@ -166,7 +171,7 @@ void Uart0_IRQHandler(void)
 }
 #elif(MCU_LIB_SELECT == 2) 
 
-static void Uart0PortCfg(void)
+static void Uart1PortCfg(void)
 {
     GPIO_InitType GPIO_InitStructure;
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);   
@@ -239,11 +244,11 @@ static void NVIC_UartConfiguration(void)
 }
 
 
-void Uart0Init(pf_RxCallback callback)
+void Uart1Init(pf_RxCallback callback)
 {
     USART_InitType USART_InitStructure;
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_USART1, ENABLE); 
-    Uart0PortCfg();
+    Uart1PortCfg();
     USART_StructInit(&USART_InitStructure);
     USART_InitStructure.BaudRate            = 115200;
     USART_InitStructure.WordLength          = USART_WL_8B;
@@ -260,7 +265,61 @@ void Uart0Init(pf_RxCallback callback)
     //接收回调函数
     RxCallback = callback;
 }
-
+/** 
+* @brief  	设置串口波特率
+* @param  	不同总线系统波特率不一致
+* @param  	
+* @param   
+* @retval  	None
+* @warning 	None
+* @example
+**/
+void Uart1SetBaudRate(void)
+{
+    if(bsp_CheckTimer(TMR_UART_BAUDRATE_SET)) 
+    {
+        static uint8_t temp=0;
+        if(Atl485CheckFlag==0)  //未返回协议数据
+        {
+            switch (temp)
+            {
+            case 0:
+                /* code */
+                Atl485BaudRate=115200;  //硬件485 115200
+                ACC_ENABLE();
+                SEGGER_RTT_printf(0,"ATL485_HARDWARE_MODE_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
+                break;
+            case 1:
+                /* code */
+                Atl485BaudRate=9600;  //硬件485 9600
+                ACC_ENABLE();
+                SEGGER_RTT_printf(0,"ATL485_HARDWARE_MODE_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
+                break;
+            case 2:
+                /* code */
+                Atl485BaudRate=57600;   //一线通转485 57600
+                ACC_DISABLE();
+                SEGGER_RTT_printf(0,"ONEBUS_CHANGE_485_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
+                break;
+            }
+            USART_InitType USART_InitStructure;
+            USART_StructInit(&USART_InitStructure);
+            USART_InitStructure.BaudRate            = Atl485BaudRate;   //485硬件总线波特率	
+            USART_Init(USART1, &USART_InitStructure);
+        }
+        else    //找到返回协议数据
+        {
+            if(Atl485CheckFlag>0)
+            {
+                Atl485CheckFlag--;
+            }
+        }
+        if(++temp>2)
+        {
+            temp=0;
+        }
+    }
+}
 
 #if(PROJECT_ID == 2)
 void Uart0Init4TY(pf_RxCallback callback)
@@ -285,13 +344,6 @@ void Uart0Init4TY(pf_RxCallback callback)
     RxCallback = callback;
 }
 #endif
-
-
-
-void UartDeInit(void)
-{
-
-}
 
 void Uart1SendData(uint8_t *pData, uint16_t len)
 {
@@ -329,6 +381,7 @@ void USART1_IRQHandler(void)
         data = USART_ReceiveData(USART1);///读取数据
         HandleRecvData(data); 
         Atl485Flag=0x02;
+        Atl485CheckFlag=5;  //5秒超时
         //USART_ClrIntPendingBit(USART1, USART_INT_RXDNE);   ///<清接收中断请求 
     }else
     {

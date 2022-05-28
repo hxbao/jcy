@@ -23,6 +23,8 @@
 
 #define TMR_DEVICE_LOOP	  12
 
+#define TMR_UART_BAUDRATE_SET	13
+
 typedef enum
 {
 	TMR_ONCE_MODE = 0,		

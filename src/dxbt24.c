@@ -485,59 +485,117 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x55;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 	bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
-	//电池单体串数
-	for(int i=0;i<20;i++)
+	if(bat_type!=0x04)
 	{
-		bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
-		bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
+		//电池单体串数
+		for(int i=0;i<20;i++)
+		{
+			bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
+			bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
+		}
+		//电流
+		bt24_tx_buf[47]=get_device_cur_value()>>8;	
+		bt24_tx_buf[48]=get_device_cur_value();
+		//最大电芯电压
+		bt24_tx_buf[49]=get_atl485_bat_max_cell_vol()>>8;	
+		bt24_tx_buf[50]=get_atl485_bat_max_cell_vol();
+		//最小电芯电压
+		bt24_tx_buf[51]=get_atl485_bat_min_cell_vol()>>8;	
+		bt24_tx_buf[52]=get_atl485_bat_min_cell_vol();
+		//压差
+		bt24_tx_buf[53]=get_atl485_bat_vol_dec()>>8;
+		bt24_tx_buf[54]=get_atl485_bat_vol_dec();
+		//最大电芯温度
+		bt24_tx_buf[55]=get_atl485_bat_max_temp()>>8;
+		bt24_tx_buf[56]=get_atl485_bat_max_temp();
+		//最小电芯温度
+		bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
+		bt24_tx_buf[58]=get_atl485_bat_min_temp();
+		//电池总压(累加值)
+		bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
+		bt24_tx_buf[60]=get_atl485_bat_max_vol();
+		//电池总压(检测值)
+		bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
+		bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
+		//外总压
+		bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
+		bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
+		//SOC
+		bt24_tx_buf[65]=get_atl485_bat_soc()>>8;
+		bt24_tx_buf[66]=get_atl485_bat_soc();
+		//SOH
+		bt24_tx_buf[67]=get_atl485_bat_soh()>>8;
+		bt24_tx_buf[68]=get_atl485_bat_soh();
+		//最大充电电流
+		bt24_tx_buf[69]=get_atl485_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[70]=get_atl485_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[71]=get_atl485_bat_max_dsg_cur()>>8;	
+		bt24_tx_buf[72]=get_atl485_bat_max_dsg_cur();	
+		//循环次数
+		bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
+		bt24_tx_buf[74]=get_atl485_bat_circle();
+		//faultcode
+		bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
+		bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
+		bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
+		bt24_tx_buf[78]=get_atl485_bat_fault();
 	}
-	//电流
-	bt24_tx_buf[47]=get_device_cur_value()>>8;	
-	bt24_tx_buf[48]=get_device_cur_value();
-	//最大电芯电压
-	bt24_tx_buf[49]=get_atl485_bat_max_cell_vol()>>8;	
-	bt24_tx_buf[50]=get_atl485_bat_max_cell_vol();
-	//最小电芯电压
-	bt24_tx_buf[51]=get_atl485_bat_min_cell_vol()>>8;	
-	bt24_tx_buf[52]=get_atl485_bat_min_cell_vol();
-	//压差
-	bt24_tx_buf[53]=get_atl485_bat_vol_dec()>>8;
-	bt24_tx_buf[54]=get_atl485_bat_vol_dec();
-	//最大电芯温度
-	bt24_tx_buf[55]=get_atl485_bat_max_temp()>>8;
-	bt24_tx_buf[56]=get_atl485_bat_max_temp();
-	//最小电芯温度
-	bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
-	bt24_tx_buf[58]=get_atl485_bat_min_temp();
-	//电池总压(累加值)
-	bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
-	bt24_tx_buf[60]=get_atl485_bat_max_vol();
-	//电池总压(检测值)
-	bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
-	bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
-	//外总压
-	bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
-	bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
-	//SOC
-	bt24_tx_buf[65]=get_atl485_bat_soc()>>8;
-	bt24_tx_buf[66]=get_atl485_bat_soc();
-	//SOH
-	bt24_tx_buf[67]=get_atl485_bat_soh()>>8;
-	bt24_tx_buf[68]=get_atl485_bat_soh();
-	//最大充电电流
-	bt24_tx_buf[69]=get_atl485_bat_max_ch_cur()>>8;	
-	bt24_tx_buf[70]=get_atl485_bat_max_ch_cur();	
-	//最大放电电流
-	bt24_tx_buf[71]=get_atl485_bat_max_dsg_cur()>>8;	
-	bt24_tx_buf[72]=get_atl485_bat_max_dsg_cur();	
-	//循环次数
-	bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
-	bt24_tx_buf[74]=get_atl485_bat_circle();
-	//faultcode
-	bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
-	bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
-	bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
-	bt24_tx_buf[78]=get_atl485_bat_fault();
+	else if(bat_type==0x04)	//CAN总线
+	{
+		for(int i=0;i<20;i++)
+		{
+			bt24_tx_buf[7+i*2]=get_can_bat_vol_cell(i)>>8;
+			bt24_tx_buf[8+i*2]=get_can_bat_vol_cell(i);
+		}
+		//电流
+		bt24_tx_buf[47]=get_device_cur_value()>>8;	
+		bt24_tx_buf[48]=get_device_cur_value();
+		//最大电芯电压
+		bt24_tx_buf[49]=get_can_bat_max_cell_vol()>>8;	
+		bt24_tx_buf[50]=get_can_bat_max_cell_vol();
+		//最小电芯电压
+		bt24_tx_buf[51]=get_can_bat_min_cell_vol()>>8;	
+		bt24_tx_buf[52]=get_can_bat_min_cell_vol();
+		//压差
+		bt24_tx_buf[53]=get_can_bat_vol_delta()>>8;
+		bt24_tx_buf[54]=get_can_bat_vol_delta();
+		//最大电芯温度
+		bt24_tx_buf[55]=get_can_bat_max_temp()>>8;
+		bt24_tx_buf[56]=get_can_bat_max_temp();
+		//最小电芯温度
+		bt24_tx_buf[57]=get_can_bat_min_temp()>>8;
+		bt24_tx_buf[58]=get_can_bat_min_temp();
+		//电池总压(累加值)
+		bt24_tx_buf[59]=get_can_bat_max_vol()>>8;
+		bt24_tx_buf[60]=get_can_bat_max_vol();
+		//电池总压(检测值)
+		bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
+		bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
+		//外总压
+		bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
+		bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
+		//SOC
+		bt24_tx_buf[65]=get_can_bat_soc()>>8;
+		bt24_tx_buf[66]=get_can_bat_soc();
+		//SOH
+		bt24_tx_buf[67]=get_can_bat_soh()>>8;
+		bt24_tx_buf[68]=get_can_bat_soh();
+		//最大充电电流
+		bt24_tx_buf[69]=get_can_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[70]=get_can_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[71]=get_can_bat_max_dcg_cur()>>8;	
+		bt24_tx_buf[72]=get_can_bat_max_dcg_cur();	
+		//循环次数
+		bt24_tx_buf[73]=get_can_bat_circle()>>8;	
+		bt24_tx_buf[74]=get_can_bat_circle();
+		//faultcode
+		bt24_tx_buf[75]=get_can_bat_fault()>>24;
+		bt24_tx_buf[76]=get_can_bat_fault()>>16;
+		bt24_tx_buf[77]=get_can_bat_fault()>>8;
+		bt24_tx_buf[78]=get_can_bat_fault();
+	}
 	//当前电压
 	bt24_tx_buf[79]=get_device_vol_value()>>24;
 	bt24_tx_buf[80]=get_device_vol_value()>>16;
@@ -555,6 +613,8 @@ static void get_device_param_handler(uint8_t offset,uint8_t *batRxBuff)
 	//总容量
 	bt24_tx_buf[88]=get_device_sum_cap()>>8;
 	bt24_tx_buf[89]=get_device_sum_cap();
+
+
 	check_crc = get_check_sum_bt24(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5));
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
@@ -622,59 +682,117 @@ static void get_device_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x56;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 	bt24_tx_buf[BT24_FRAME_STATE] = bat_type;
-	//电池单体串数
-	for(int i=0;i<20;i++)
+	if(bat_type!=0x04)
 	{
-		bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
-		bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
+		//电池单体串数
+		for(int i=0;i<20;i++)
+		{
+			bt24_tx_buf[7+i*2]=get_atl485_bat_vol_cell(i)>>8;
+			bt24_tx_buf[8+i*2]=get_atl485_bat_vol_cell(i);
+		}
+		//电流
+		bt24_tx_buf[47]=get_device_cur_value()>>8;	
+		bt24_tx_buf[48]=get_device_cur_value();
+		//最大电芯电压
+		bt24_tx_buf[49]=get_atl485_bat_max_cell_vol()>>8;	
+		bt24_tx_buf[50]=get_atl485_bat_max_cell_vol();
+		//最小电芯电压
+		bt24_tx_buf[51]=get_atl485_bat_min_cell_vol()>>8;	
+		bt24_tx_buf[52]=get_atl485_bat_min_cell_vol();
+		//压差
+		bt24_tx_buf[53]=get_atl485_bat_vol_dec()>>8;
+		bt24_tx_buf[54]=get_atl485_bat_vol_dec();
+		//最大电芯温度
+		bt24_tx_buf[55]=get_atl485_bat_max_temp()>>8;
+		bt24_tx_buf[56]=get_atl485_bat_max_temp();
+		//最小电芯温度
+		bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
+		bt24_tx_buf[58]=get_atl485_bat_min_temp();
+		//电池总压(累加值)
+		bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
+		bt24_tx_buf[60]=get_atl485_bat_max_vol();
+		//电池总压(检测值)
+		bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
+		bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
+		//外总压
+		bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
+		bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
+		//SOC
+		bt24_tx_buf[65]=get_atl485_bat_soc()>>8;
+		bt24_tx_buf[66]=get_atl485_bat_soc();
+		//SOH
+		bt24_tx_buf[67]=get_atl485_bat_soh()>>8;
+		bt24_tx_buf[68]=get_atl485_bat_soh();
+		//最大充电电流
+		bt24_tx_buf[69]=get_atl485_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[70]=get_atl485_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[71]=get_atl485_bat_max_dsg_cur()>>8;	
+		bt24_tx_buf[72]=get_atl485_bat_max_dsg_cur();	
+		//循环次数
+		bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
+		bt24_tx_buf[74]=get_atl485_bat_circle();
+		//faultcode
+		bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
+		bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
+		bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
+		bt24_tx_buf[78]=get_atl485_bat_fault();
 	}
-	//电流
-	bt24_tx_buf[47]=get_device_cur_value()>>8;	
-	bt24_tx_buf[48]=get_device_cur_value();
-	//最大电芯电压
-	bt24_tx_buf[49]=get_atl485_bat_max_cell_vol()>>8;	
-	bt24_tx_buf[50]=get_atl485_bat_max_cell_vol();
-	//最小电芯电压
-	bt24_tx_buf[51]=get_atl485_bat_min_cell_vol()>>8;	
-	bt24_tx_buf[52]=get_atl485_bat_min_cell_vol();
-	//压差
-	bt24_tx_buf[53]=get_atl485_bat_vol_dec()>>8;
-	bt24_tx_buf[54]=get_atl485_bat_vol_dec();
-	//最大电芯温度
-	bt24_tx_buf[55]=get_atl485_bat_max_temp()>>8;
-	bt24_tx_buf[56]=get_atl485_bat_max_temp();
-	//最小电芯温度
-	bt24_tx_buf[57]=get_atl485_bat_min_temp()>>8;
-	bt24_tx_buf[58]=get_atl485_bat_min_temp();
-	//电池总压(累加值)
-	bt24_tx_buf[59]=get_atl485_bat_max_vol()>>8;
-	bt24_tx_buf[60]=get_atl485_bat_max_vol();
-	//电池总压(检测值)
-	bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
-	bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
-	//外总压
-	bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
-	bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
-	//SOC
-	bt24_tx_buf[65]=get_atl485_bat_soc()>>8;
-	bt24_tx_buf[66]=get_atl485_bat_soc();
-	//SOH
-	bt24_tx_buf[67]=get_atl485_bat_soh()>>8;
-	bt24_tx_buf[68]=get_atl485_bat_soh();
-	//最大充电电流
-	bt24_tx_buf[69]=get_atl485_bat_max_ch_cur()>>8;	
-	bt24_tx_buf[70]=get_atl485_bat_max_ch_cur();	
-	//最大放电电流
-	bt24_tx_buf[71]=get_atl485_bat_max_dsg_cur()>>8;	
-	bt24_tx_buf[72]=get_atl485_bat_max_dsg_cur();	
-	//循环次数
-	bt24_tx_buf[73]=get_atl485_bat_circle()>>8;	
-	bt24_tx_buf[74]=get_atl485_bat_circle();
-	//faultcode
-	bt24_tx_buf[75]=get_atl485_bat_fault()>>24;
-	bt24_tx_buf[76]=get_atl485_bat_fault()>>16;
-	bt24_tx_buf[77]=get_atl485_bat_fault()>>8;
-	bt24_tx_buf[78]=get_atl485_bat_fault();
+	else if(bat_type==0x04)	//CAN总线
+	{
+		for(int i=0;i<20;i++)
+		{
+			bt24_tx_buf[7+i*2]=get_can_bat_vol_cell(i)>>8;
+			bt24_tx_buf[8+i*2]=get_can_bat_vol_cell(i);
+		}
+		//电流
+		bt24_tx_buf[47]=get_device_cur_value()>>8;	
+		bt24_tx_buf[48]=get_device_cur_value();
+		//最大电芯电压
+		bt24_tx_buf[49]=get_can_bat_max_cell_vol()>>8;	
+		bt24_tx_buf[50]=get_can_bat_max_cell_vol();
+		//最小电芯电压
+		bt24_tx_buf[51]=get_can_bat_min_cell_vol()>>8;	
+		bt24_tx_buf[52]=get_can_bat_min_cell_vol();
+		//压差
+		bt24_tx_buf[53]=get_can_bat_vol_delta()>>8;
+		bt24_tx_buf[54]=get_can_bat_vol_delta();
+		//最大电芯温度
+		bt24_tx_buf[55]=get_can_bat_max_temp()>>8;
+		bt24_tx_buf[56]=get_can_bat_max_temp();
+		//最小电芯温度
+		bt24_tx_buf[57]=get_can_bat_min_temp()>>8;
+		bt24_tx_buf[58]=get_can_bat_min_temp();
+		//电池总压(累加值)
+		bt24_tx_buf[59]=get_can_bat_max_vol()>>8;
+		bt24_tx_buf[60]=get_can_bat_max_vol();
+		//电池总压(检测值)
+		bt24_tx_buf[61]=get_atl485_bat_max_cap_vol()>>8;
+		bt24_tx_buf[62]=get_atl485_bat_max_cap_vol();
+		//外总压
+		bt24_tx_buf[63]=get_atl485_bat_max_ext_vol()>>8;
+		bt24_tx_buf[64]=get_atl485_bat_max_ext_vol();
+		//SOC
+		bt24_tx_buf[65]=get_can_bat_soc()>>8;
+		bt24_tx_buf[66]=get_can_bat_soc();
+		//SOH
+		bt24_tx_buf[67]=get_can_bat_soh()>>8;
+		bt24_tx_buf[68]=get_can_bat_soh();
+		//最大充电电流
+		bt24_tx_buf[69]=get_can_bat_max_ch_cur()>>8;	
+		bt24_tx_buf[70]=get_can_bat_max_ch_cur();	
+		//最大放电电流
+		bt24_tx_buf[71]=get_can_bat_max_dcg_cur()>>8;	
+		bt24_tx_buf[72]=get_can_bat_max_dcg_cur();	
+		//循环次数
+		bt24_tx_buf[73]=get_can_bat_circle()>>8;	
+		bt24_tx_buf[74]=get_can_bat_circle();
+		//faultcode
+		bt24_tx_buf[75]=get_can_bat_fault()>>24;
+		bt24_tx_buf[76]=get_can_bat_fault()>>16;
+		bt24_tx_buf[77]=get_can_bat_fault()>>8;
+		bt24_tx_buf[78]=get_can_bat_fault();
+	}
 	//放电状态
 	bt24_tx_buf[79]=get_device_work_station();
 	//当前电压
@@ -1315,6 +1433,24 @@ uint8_t DXBT24_Set_Factory()
 	return 0;
 }
 /**
+ * @brief  	BT24设置波特率
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t DXBT24_Set_BaudRate()
+{
+	char echo_buf[10];
+	if (atc_command(&atc, "AT+BAUD6\r\n", 1000, echo_buf, 20, 1, "OK") == 1)
+	{
+		return 1;
+	}
+	return 0;
+}
+/**
  * @brief  	BT24蓝牙恢复出厂设置
  * @param
  * @param
@@ -1379,6 +1515,7 @@ uint8_t DXBT24_Device_ID_Read(uint16_t BLE_ID)
  **/
 uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 {
+	static uint8_t timeout;
 	char echo_buf[20]; 
 	uint16_t id;
 	if (GetConfigLoopTime() > CompareValue && ConfigModuleNoBlockFlage == 0)
@@ -1393,11 +1530,12 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 		else if (DataReturnFlage == 0)
 		{
 			RunCnt++;
-			if (RunCnt >= 3)
+			if (RunCnt >= 20)	//超时20秒
 			{
 				RunCnt = 0;
 				ConfigModuleNoBlockCaseValue = 0;
-				// ConfigModuleNoBlockFlage = 1;
+				ConfigModuleNoBlockFlage = 1;	//超时15秒则跳过BLE配置
+				SEGGER_RTT_printf(0,"BLE_Jump_Config!\r\n");
 			}
 		}
 		switch (ConfigModuleNoBlockCaseValue)
@@ -1409,6 +1547,12 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 			}
 			break;
 		case 1:
+			if (atc_command(&atc, "AT+BAUD6\r\n", 1000, echo_buf, 20, 1, "OK"))
+			{
+				DataReturnFlage = 1;
+			}
+			break;
+		case 2:
 			if(get_device_send_ble_id()!=0)
 			{
 				id=get_device_send_ble_id();
@@ -1430,12 +1574,12 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 					ConfigModuleNoBlockFlage = 1;
 				}		
 			}
-			// else
-			// {
-			// 	SEGGER_RTT_printf(0,"BLE disconnected from device,please check!\r\n");
-			// }		
+			else
+			{
+				SEGGER_RTT_printf(0,"BLE disconnected from device,please check!\r\n");
+			}		
 			break;
-		case 2:	//蓝牙重启
+		case 3:	//蓝牙重启
 			if (atc_command(&atc, "AT+RESET\r\n", 1000, echo_buf, 20, 1, "OK"))
 			{
 				DataReturnFlage = 1;

@@ -46,7 +46,7 @@ static void OneBusSetUart2Mode(void)
 	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
 
-	// ACC_ENABLE();	//短接ACC和BAT+
+	ACC_ENABLE();	//短接ACC和BAT+
 }
 
 static void Uart2SetTxMode(void)

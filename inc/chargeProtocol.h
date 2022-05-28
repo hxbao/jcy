@@ -107,7 +107,7 @@ void device_uart_service(void);
 uint8_t get_device_bat_type(void);
 uint16_t get_device_send_ble_id(void);
 void device_drc_init(void);
-void get_device_recv_flag(void);
+uint8_t get_device_recv_flag(void);
 uint8_t get_device_time_h(void);
 uint8_t get_device_time_s(void);
 uint8_t get_device_time_m(void);

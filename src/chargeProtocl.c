@@ -360,7 +360,7 @@ uint16_t get_device_send_ble_id(void)
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/
-void get_device_recv_flag(void)
+uint8_t get_device_recv_flag(void)
 {
     return dev_recv_flag;
 }

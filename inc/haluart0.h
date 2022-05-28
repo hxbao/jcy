@@ -28,6 +28,8 @@ uint16_t Uart0ReceiveData(uint8_t *pData);
 void Uart1SendData(uint8_t *pData, uint16_t len);
 uint8_t get_atl485_clear(void);
 uint8_t get_atl485_flag(void);
+void Uart1Init(pf_RxCallback callback);
+void Uart1SetBaudRate(void);
 
 void LpUartInit(pf_RxCallback callback);
 void LpUartDeInit(void);
