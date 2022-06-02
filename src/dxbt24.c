@@ -13,9 +13,18 @@ BleDeviceNameErr_t	BDN;
 #define BLE_STA_PIN GPIO_PIN_7
 #define BLE_STA_PORT GPIOA
 
+#define BLE_EN_PIN GPIO_PIN_0
+#define BLE_EN_PORT GPIOB
+
+#define BLE_STA_GET() MCU_GPIO_GetBit(BLE_STA_PORT,BLE_STA_PIN)
+
+#define BLE_EN_ENABLE() 	MCU_GPIO_SetBit(BLE_EN_PORT,BLE_EN_PIN)
+#define BLE_EN_DISABLE() 	MCU_GPIO_ClrBit(BLE_EN_PORT,BLE_EN_PIN) 
+
 #define PROTOCOL_HEAD_LEN 6
 // crc key值
 #define CRC_KEY 7
+#define Poly16 							0xA001
 
 #define CompareValue 5000 //每隔5000ms发送一次数据
 #define BT24_UART_QUEUE_LMT 400
@@ -29,6 +38,8 @@ unsigned char bt24_tx_buf[BT24_UART_RECV_BUF_LMT];
 unsigned char *queue_in;
 unsigned char *queue_out;
 
+uint32_t BLE_ID_value;
+char BLE_ID_Buff[5];
 uint8_t bat_rx_buf[200];
 uint8_t stop_update_flag;		//禁止升级
 
@@ -39,7 +50,7 @@ int DataReturnFlage = 0;					 //是否返回的预期的数据
 uint32_t RunCnt = 0;						 //记录运行状态发送的次数
 uint8_t BT24_RECV_FLAG;
 
-#define Poly16 							0xA001
+uint8_t BLE_ID_RECV_FLAG;
 
 uint16_t GetCrc16(uint8_t *buf, uint8_t len)
 {
@@ -93,7 +104,7 @@ void DX_BT24_Init(void)
 {
     GPIO_InitType GPIO_InitStructure;
 
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);   
+    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA|RCC_APB2_PERIPH_GPIOB, ENABLE);   
     /* Initialize GPIO_InitStructure */
     GPIO_InitStruct(&GPIO_InitStructure);
 
@@ -103,6 +114,13 @@ void DX_BT24_Init(void)
     GPIO_InitStructure.Pin            = BLE_STA_PIN;
     GPIO_InitStructure.GPIO_Pull      = GPIO_No_Pull;
     GPIO_InitPeripheral(BLE_STA_PORT, &GPIO_InitStructure);  
+
+	GPIO_InitStructure.GPIO_Mode     = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.Pin            = BLE_EN_PIN;
+    GPIO_InitStructure.GPIO_Pull      = GPIO_No_Pull;
+	GPIO_InitPeripheral(GPIOB, &GPIO_InitStructure); 
+
+	BLE_EN_ENABLE(); 
 }
 /**
  *蓝牙模块初始化
@@ -860,6 +878,36 @@ void get_device_fw_version_handler()
 
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
+/*****************************************************************************
+函数名称: get_device_binding_code_handler
+功能描述：绑定二维码
+输入参数：无
+返回参数：无
+*****************************************************************************/
+static void get_device_binding_code_handler(uint8_t offset,uint8_t *batRxBuff)
+{
+	uint8_t check_crc;
+	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
+	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
+	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE] = GET_CODE_CMD;
+	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x01;
+	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
+
+	check_crc = get_check_sum_bt24(bt24_tx_buf, (bt24_tx_buf[BT24_FRAME_LENGTH]+5));
+	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
+
+	BLE_ID_value=bt24_rx_buf[6]<<16|bt24_rx_buf[7]<<8|bt24_rx_buf[8];
+	BLE_ID_Buff[0]=BLE_ID_value/10000;
+	BLE_ID_Buff[1]=BLE_ID_value/1000;
+	BLE_ID_Buff[2]=BLE_ID_value/100;
+	BLE_ID_Buff[3]=BLE_ID_value/10;
+	BLE_ID_Buff[4]=BLE_ID_value%10;
+
+	BLE_ID_RECV_FLAG=1;
+
+	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
+}
 /**
  * @brief  		固件版本校验
  * @param
@@ -1005,6 +1053,10 @@ void bt24_data_handler(uint8_t offset)
 	uint8_t cmd_type = bt24_rx_buf[offset + BT24_FRAME_CMDTYPE];
 	switch (cmd_type)
 	{
+		case GET_CODE_CMD: //检测校验
+			/* code */
+			get_device_binding_code_handler(offset,bat_rx_buf);
+			break;
 		case APP_CHECK_CMD: //检测校验
 			/* code */
 			get_app_check_updata(offset,bat_rx_buf);
@@ -1207,10 +1259,10 @@ uint8_t bt24_get_bat_type(void)
 		break;
 
 		case 1:	
-			bat_type=3;	//485
+			bat_type=2;	//一线通485
 		break;
 		case 2:	
-			bat_type=3; //486
+			bat_type=3; //硬件485
 		break;
 		case 4:	//CAN总线
 			bat_type=4;
@@ -1292,7 +1344,7 @@ uint8_t bt24_get_bat_sn(void)
  **/
 uint8_t bt24_get_bat_opera_status(void)
 {
-	if(GPIO_ReadInputDataBit(BLE_STA_PORT,BLE_STA_PIN))
+	if(BLE_STA_GET())
 	{
 		if(BT24_RECV_FLAG==1)
 		{
@@ -1488,20 +1540,55 @@ uint8_t DXBT24_Set_Name(uint8_t *name)
  * @warning 	None
  * @example
  **/
-uint8_t DXBT24_Device_ID_Read(uint16_t BLE_ID)
+uint8_t DXBT24_Device_ID_Read(void)
 {
 	Flash_Read(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
-	if(((BDN.BDB.BLE_ID_H<<8)|BDN.BDB.BLE_ID_L)!=BLE_ID) 
+	if(((BDN.BDB.BLE_ID_HH<<24)|(BDN.BDB.BLE_ID_HL<<16)|(BDN.BDB.BLE_ID_LH<8)|BDN.BDB.BLE_ID_LL)!=BLE_ID_value) 
 	{
 		BDN.BDB.BLE_MARK=0x55;
-		BDN.BDB.BLE_ID_H=BLE_ID>>8;
-		BDN.BDB.BLE_ID_L=BLE_ID;
+		BDN.BDB.BLE_ID_HH=BLE_ID_value>>24;
+		BDN.BDB.BLE_ID_HL=BLE_ID_value>>16;
+		BDN.BDB.BLE_ID_LH=BLE_ID_value>>8;
+		BDN.BDB.BLE_ID_LL=BLE_ID_value;
 		Flash_Write(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
-		SEGGER_RTT_printf(0,"BLE_ID_RELOAD %x%x!\r\n",BDN.BDB.BLE_ID_H,BDN.BDB.BLE_ID_H);
+		SEGGER_RTT_printf(0,"BLE_ID_RELOAD %x%x%x%x!\r\n",BDN.BDB.BLE_ID_HH,BDN.BDB.BLE_ID_HL,BDN.BDB.BLE_ID_LH,BDN.BDB.BLE_ID_LL);
 		SEGGER_RTT_printf(0,"BLE_RESET!\r\n");
 		return 1;
 	}
-	SEGGER_RTT_printf(0,"BLE_ID %x!\r\n",BLE_ID);
+	return 0;
+}
+/**
+ * @brief  	蓝牙是否改变波特率
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t DXBT24_Device_BAUD_FLAG_WRITE(void)
+{
+	Flash_Read(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
+	BDN.BDB.BLE_BAUD_FLAG=1;
+	Flash_Write(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
+}
+/**
+ * @brief  	蓝牙是否改变波特率
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t DXBT24_Device_BAUD_FLAG_Read(void)
+{
+	Flash_Read(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
+	if(BDN.BDB.BLE_BAUD_FLAG==1) 
+	{
+		LpUartReset();
+		return 1;
+	}
 	return 0;
 }
 /**
@@ -1517,10 +1604,10 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 {
 	static uint8_t timeout;
 	char echo_buf[20]; 
-	uint16_t id;
 	if (GetConfigLoopTime() > CompareValue && ConfigModuleNoBlockFlage == 0)
 	{
 		GetConfigTimeClear();
+		DXBT24_Device_BAUD_FLAG_Read();
 		if (DataReturnFlage == 1) //上一条指令是OK的
 		{
 			RunCnt = 0;
@@ -1530,7 +1617,7 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 		else if (DataReturnFlage == 0)
 		{
 			RunCnt++;
-			if (RunCnt >= 20)	//超时20秒
+			if (RunCnt >= 15)	//超时20秒
 			{
 				RunCnt = 0;
 				ConfigModuleNoBlockCaseValue = 0;
@@ -1547,46 +1634,47 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 			}
 			break;
 		case 1:
-			if (atc_command(&atc, "AT+BAUD6\r\n", 1000, echo_buf, 20, 1, "OK"))
+			if (atc_command(&atc, "AT+BAUD7\r\n", 1000, echo_buf, 20, 1, "OK"))
 			{
 				DataReturnFlage = 1;
 			}
 			break;
-		case 2:
-			if(get_device_send_ble_id()!=0)
-			{
-				id=get_device_send_ble_id();
-				if(DXBT24_Device_ID_Read(id))	//蓝牙名称需要重写并重启
-				{
-					for (int i = 0; i < name_len; i++)
-					{
-						echo_buf[i]=name[i];			
-					}					
-					__hex2str((uint8_t*)&id,(char*)(echo_buf+8),2);
-					if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
-					{
-						DataReturnFlage = 1;				
-					}
-				}
-				else
-				{
-					DataReturnFlage = 1;
-					ConfigModuleNoBlockFlage = 1;
-				}		
-			}
-			else
-			{
-				SEGGER_RTT_printf(0,"BLE disconnected from device,please check!\r\n");
-			}		
-			break;
-		case 3:	//蓝牙重启
+		case 2:	//蓝牙重启
 			if (atc_command(&atc, "AT+RESET\r\n", 1000, echo_buf, 20, 1, "OK"))
 			{
+				LpUartReset();
+				DXBT24_Device_BAUD_FLAG_WRITE();				
 				DataReturnFlage = 1;
 				ConfigModuleNoBlockFlage = 1;
 			}
 			break;
 		}
+	}
+	if((BLE_ID_RECV_FLAG==1)&&(GetConfigLoopTime() > CompareValue))	//接收到蓝牙ID信号
+	{
+		BLE_EN_DISABLE();
+		for (int i = 0; i < 4; i++)
+		{
+			echo_buf[i]=name[i];			
+		}
+		for(int i = 0; i < 5; i++)	
+		{
+			echo_buf[i+4]=(BLE_ID_Buff[i]+'0');
+		}			
+		if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
+		{		
+			BLE_ID_RECV_FLAG=0;
+			ConfigModuleNoBlockFlage=0;
+			ConfigModuleNoBlockCaseValue=0;	
+			BLE_EN_ENABLE();	
+		}
+		RunCnt++;
+		if (RunCnt >= 5)	//超时20秒
+		{
+			RunCnt = 0;
+			BLE_ID_RECV_FLAG=0;
+			BLE_EN_ENABLE();
+		} 
 	}
 }
 

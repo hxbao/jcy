@@ -263,7 +263,7 @@ void device_uart_write_frame(void)
         uart_tx_buf[DEV_ADDR] = MOD_FRAME_SECOND;
         uart_tx_buf[DATA_LEN] = MOD_FRAME_TATOL_LEN;
         uart_tx_buf[BAT_STATE_FRAME] = get_onebus_bat_sta();    //从一线通得到电池状态
-        uart_tx_buf[BAT_CORE_FRAME]= 0;
+        uart_tx_buf[BAT_CORE_FRAME]= bt24_get_bat_type();       //得到电池类型
         uart_tx_buf[BAT_SPE_FRAME]= 0;
         uart_tx_buf[BAT_CAP_FRAME]= 0;
         uart_tx_buf[BAT_SN_FRAME]= 0;

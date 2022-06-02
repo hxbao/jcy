@@ -61,7 +61,7 @@ void OneBusSetPPMode(void)
 
 	ONE_TXD1_HIGH();
 	ONE_TXD2_HIGH();
-	// ACC_ENABLE();	//短接ACC和BAT+
+	// ONEWIre_485_ENABLE();	//短接ACC和BAT+
 	bmsOneBusParamInit(&bms);
 }
 

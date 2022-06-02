@@ -137,7 +137,7 @@ void MsgTask(void const * argument)
 		result=msgLoop(); 
 		evt.status=osMessagePut(QueueTx,(uint32_t)result,osWaitForever); 
 		// SEGGER_RTT_printf(0,"osMessagePut ID %d\r\n",result);
-		osDelay(300);
+		osDelay(10);
 	}
   /* USER CODE END UsbTask */
 }
@@ -165,7 +165,7 @@ void OneBusTask(void const * argument)
 		{
 			// SEGGER_RTT_printf(0,"OneBus_Task_Running mode-%d\r\n",evt.value.v);	
 		}
-		osDelay(500);
+		osDelay(10);
 	}
 }
 
@@ -191,7 +191,7 @@ void Atl485Task(void const * argument)
 		{
 			
 		}
-		osDelay(500);
+		osDelay(10);
 	}
 }
 
@@ -269,7 +269,7 @@ void BT24Task(void const *argument)
 	// atc_command(&atc,"AT\r\n",3000,echo_buf,20,1,"OK");
 	for (;;)
 	{
-		DXBT24_AT_Init(BLE_NAME,sizeof(BLE_NAME));
+		DXBT24_AT_Init(BLE_NAME,4);
 		atc_loop(&atc);
 		bt24_recv_service();
 		osDelay(10);

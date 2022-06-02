@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include "config.h"
 #include "string.h"
+#include "stdio.h"
 #ifdef UNIT_TEST_EN
 void UnitTestProcess(void);
 #endif

@@ -57,7 +57,7 @@ void LpUartInit(pf_RxCallback callback)
     RCC_EnableRETPeriphClk(RCC_RET_PERIPH_LPUART, ENABLE);
     LpUartPortCfg();
     LPUART_StructInit(&LPUART_InitStructure);
-    LPUART_InitStructure.BaudRate            = 9600;
+    LPUART_InitStructure.BaudRate            = 115200;
     LPUART_InitStructure.Parity              = LPUART_PE_NO;
     LPUART_InitStructure.RtsThreshold        = LPUART_RTSTH_FIFOFU;
     LPUART_InitStructure.HardwareFlowControl = LPUART_HFCTRL_NONE;
@@ -70,6 +70,14 @@ void LpUartInit(pf_RxCallback callback)
     NVIC_UartConfiguration();
     //接收回调函数
     LpUartRxCallback = callback;
+}
+
+void LpUartReset()
+{
+    LPUART_InitType LPUART_InitStructure;
+    LPUART_StructInit(&LPUART_InitStructure);
+    LPUART_InitStructure.BaudRate            = 115200;
+    LPUART_Init(&LPUART_InitStructure);
 }
 
 void LpUartDeInit(void)

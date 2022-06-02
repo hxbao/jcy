@@ -286,19 +286,19 @@ void Uart1SetBaudRate(void)
             case 0:
                 /* code */
                 Atl485BaudRate=115200;  //硬件485 115200
-                ACC_ENABLE();
+                ONEWIre_485_ENABLE();
                 SEGGER_RTT_printf(0,"ATL485_HARDWARE_MODE_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
                 break;
             case 1:
                 /* code */
                 Atl485BaudRate=9600;  //硬件485 9600
-                ACC_ENABLE();
+                ONEWIre_485_ENABLE();
                 SEGGER_RTT_printf(0,"ATL485_HARDWARE_MODE_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
                 break;
             case 2:
                 /* code */
                 Atl485BaudRate=57600;   //一线通转485 57600
-                ACC_DISABLE();
+                ONEWIre_485_DISABLE();
                 SEGGER_RTT_printf(0,"ONEBUS_CHANGE_485_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
                 break;
             }
@@ -380,7 +380,7 @@ void USART1_IRQHandler(void)
     {
         data = USART_ReceiveData(USART1);///读取数据
         HandleRecvData(data); 
-        Atl485Flag=0x02;
+        Atl485Flag=0x03;
         Atl485CheckFlag=5;  //5秒超时
         //USART_ClrIntPendingBit(USART1, USART_INT_RXDNE);   ///<清接收中断请求 
     }else

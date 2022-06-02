@@ -5,7 +5,7 @@
 
 #define DXBT24_UARTX 1
 
-#define BLE_NAME  "DX-BT24-"	//定义蓝牙名称
+#define BLE_NAME  "XNA1"	//定义蓝牙名称
 //=============================================================================
 //接收数据帧值
 //=============================================================================
@@ -38,6 +38,7 @@
 #define         DEVICE_PARAM_CMD            0x0A   		//电池状态
 #define         START_DC_CMD                0x91       	//开始放电                       	
 #define         GET_DC_CMD                 	0x0B       	//得到放电结果
+#define         GET_CODE_CMD                0x0C       	//得到放电结果
 #define         GET_FW_CMD                  0x01       	//固件升级
 #define         FW_UPDATA_CHECK             0x02        //推送新版本检验
 #define         FW_UPDATA_CONTENT           0x03        //升级内容
@@ -275,13 +276,16 @@ typedef struct
 typedef struct 
 {
     uint8_t BLE_MARK;
-    uint8_t BLE_ID_H;
-    uint8_t BLE_ID_L;
+    uint8_t BLE_BAUD_FLAG;
+    uint8_t BLE_ID_HH;
+    uint8_t BLE_ID_HL;
+    uint8_t BLE_ID_LH;
+    uint8_t BLE_ID_LL;
 }BleDeviceBuffErr_t;
  
 typedef union
 {
-	uint8_t BLE_ID_BUFF[3];
+	uint8_t BLE_ID_BUFF[5];
 	BleDeviceBuffErr_t BDB;
 }BleDeviceNameErr_t;
 

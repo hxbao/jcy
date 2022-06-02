@@ -30,16 +30,16 @@
 #define TEST_IO_PIN GPIO_PIN_6
 #define TEST_IO_PORT GPIOA
 
-#define ACC_IO_CLK RCC_APB2Periph_GPIOA
-#define ACC_IO_PIN GPIO_PIN_8
-#define ACC_IO_PORT GPIOA
+#define ONEWIre_485_CLK RCC_APB2Periph_GPIOB 
+#define ONEWIre_485_PIN GPIO_PIN_1
+#define ONEWIre_485_PORT GPIOB
 
 #define bms_data		MCU_GPIO_GetBit(ONE_RXD1_PORT,ONE_RXD1_PIN)
 #define TEST_PIN_HIGH()	MCU_GPIO_SetBit(TEST_IO_PORT,TEST_IO_PIN)
 #define TEST_PIN_LOW()	MCU_GPIO_ClrBit(TEST_IO_PORT,TEST_IO_PIN)
 
-#define ACC_ENABLE()	MCU_GPIO_SetBit(ACC_IO_PORT,ACC_IO_PIN)
-#define ACC_DISABLE()	MCU_GPIO_ClrBit(ACC_IO_PORT,ACC_IO_PIN)
+#define ONEWIre_485_ENABLE()	MCU_GPIO_SetBit(ONEWIre_485_PORT,ONEWIre_485_PIN)
+#define ONEWIre_485_DISABLE()	MCU_GPIO_ClrBit(ONEWIre_485_PORT,ONEWIre_485_PIN)
 
 #define ONE_TXD1_HIGH()	MCU_GPIO_SetBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
 #define ONE_TXD1_LOW()	MCU_GPIO_ClrBit(ONE_TXD1_PORT,ONE_TXD1_PIN)
@@ -50,7 +50,7 @@
 #define RX_DISABLE()	USART2->CTRL1|=8;USART2->CTRL1&=0XFFFFFFFB
 #define RX_ENABLE()		USART2->CTRL1|=4;USART2->CTRL1&=0XFFFFFFFF
 /*********************************************************
-½ÓÊÕ×´Ì¬
+ï¿½ï¿½ï¿½ï¿½×´Ì¬
 *********************************************************/
 #define bmsreset 0
 #define sync1 1
@@ -58,7 +58,7 @@
 #define bms_h 3
 #define bms_l 4
 /*********************************************************
-Ð­ÒéÍ¬²½Í·
+Ð­ï¿½ï¿½Í¬ï¿½ï¿½Í·
 *********************************************************/
 #define pa_syncl_short 85
 #define pa_syncl_long 115
@@ -86,99 +86,99 @@ typedef struct
 
 typedef struct
 {
-	uint8_t MSG_SOF;			 //±¨ÎÄID 8Î»
-	uint8_t SEC_PRTL;			 //´Î¼¶Ð­Òé   4Î»
-	uint8_t FIR_PRTL;			 //Ö÷ÒªÍ¨Ñ¶Ð­Òé	4Î»
-	uint8_t BAT_STATUS;			 //µç³Ø×´Ì¬	4Î»
-	uint8_t BAT_CH_STATUS;		 //µç³Ø³äµç×´Ì¬ 3Î»
-	uint8_t BAT_SOC_LEFT;		 //µç³ØÊ£ÓàSOC
-	uint16_t BAT_CH_MAX_VOL;	 //µç³Ø×î´óÔÊÐí³äµçµçÑ¹
-	uint16_t BAT_CH_MAX_CUR;	 //µç³Ø×î´óÔÊÐí³äµçµçÁ÷
-	uint16_t BAT_CUR_FB;		 //µç³Ø×î´óÔÊÐí»ØÀ¡µçÁ÷
-	uint16_t BAT_DIS_MAX_CUR;	 //µç³Ø×î´óÔÊÐí·ÅµçµçÁ÷
-	uint16_t BAT_TOTAL_CH_TIME;	 //µç³ØµçÁ¿³äÂúÊ£ÓàÊ±¼ä
-	uint16_t BAT_TOTAL_VOL;		 //µç³Ø×ÜµçÑ¹
-	uint16_t BAT_TOTAL_CUR;		 //µç³Ø×ÜµçÁ÷
-	uint8_t BAT_DIS_MOS_STA;	 //·ÅµçMOS×´Ì¬   2Î»
-	uint8_t BAT_CH_MOS_STA;		 //³äµçMOS×´Ì¬	2Î»
-	uint8_t BAT_PRE_DIS_MOS_STA; //Ô¤·ÅµçMOS×´Ì¬	2Î»
-	uint16_t BAT_SOE_LEFT;		 //µç³ØÊ£ÓàÄÜÁ¿
-	uint16_t BAT_CIR_TIME;		 //Ñ­»·´ÎÊý
-	uint8_t BAT_HEALTH_STA;		 //µç³Ø½¡¿µ¶È
-	uint8_t BAT_CELL_TEMP_MAX;	 //µç³Øµ¥Ìå×î¸ßÎÂ¶È
-	uint8_t BAT_CELL_TEMP_MIN;	 //µç³Øµ¥Ìå×îµÍÎÂ¶È
-	uint8_t BAT_MOS_TEMP_MAX;	 //µç³ØMOS×îµÍÎÂ¶È
-	uint16_t BAT_CELL_VOL_MAX;	 //µç³Øµ¥Ìå×î¸ßµçÑ¹
-	uint16_t BAT_CELL_VOL_MIN;	 //µç³Øµ¥Ìå×îµÍµçÑ¹
+	uint8_t MSG_SOF;			 //ï¿½ï¿½ï¿½ï¿½ID 8Î»
+	uint8_t SEC_PRTL;			 //ï¿½Î¼ï¿½Ð­ï¿½ï¿½   4Î»
+	uint8_t FIR_PRTL;			 //ï¿½ï¿½ÒªÍ¨Ñ¶Ð­ï¿½ï¿½	4Î»
+	uint8_t BAT_STATUS;			 //ï¿½ï¿½ï¿½×´Ì¬	4Î»
+	uint8_t BAT_CH_STATUS;		 //ï¿½ï¿½Ø³ï¿½ï¿½×´Ì¬ 3Î»
+	uint8_t BAT_SOC_LEFT;		 //ï¿½ï¿½ï¿½Ê£ï¿½ï¿½SOC
+	uint16_t BAT_CH_MAX_VOL;	 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹
+	uint16_t BAT_CH_MAX_CUR;	 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uint16_t BAT_CUR_FB;		 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uint16_t BAT_DIS_MAX_CUR;	 //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½
+	uint16_t BAT_TOTAL_CH_TIME;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½Ê±ï¿½ï¿½
+	uint16_t BAT_TOTAL_VOL;		 //ï¿½ï¿½ï¿½ï¿½Üµï¿½Ñ¹
+	uint16_t BAT_TOTAL_CUR;		 //ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½
+	uint8_t BAT_DIS_MOS_STA;	 //ï¿½Åµï¿½MOS×´Ì¬   2Î»
+	uint8_t BAT_CH_MOS_STA;		 //ï¿½ï¿½ï¿½MOS×´Ì¬	2Î»
+	uint8_t BAT_PRE_DIS_MOS_STA; //Ô¤ï¿½Åµï¿½MOS×´Ì¬	2Î»
+	uint16_t BAT_SOE_LEFT;		 //ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uint16_t BAT_CIR_TIME;		 //Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uint8_t BAT_HEALTH_STA;		 //ï¿½ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½
+	uint8_t BAT_CELL_TEMP_MAX;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¶ï¿½
+	uint8_t BAT_CELL_TEMP_MIN;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¶ï¿½
+	uint8_t BAT_MOS_TEMP_MAX;	 //ï¿½ï¿½ï¿½MOSï¿½ï¿½ï¿½ï¿½Â¶ï¿½
+	uint16_t BAT_CELL_VOL_MAX;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Ñ¹
+	uint16_t BAT_CELL_VOL_MIN;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Ñ¹
 
-	uint8_t BAT_CELL_OV_FAULT;	 //µç³Øµ¥Ìå¹ýÑ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_UV_FAULT;	 //µç³Øµ¥ÌåÇ·Ñ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_DV_FAULT;	 //µç³Øµ¥ÌåÑ¹²î¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_ZERO_FAULT; // 0V½û³ä¹ÊÕÏ 2Î»
+	uint8_t BAT_CELL_OV_FAULT;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_UV_FAULT;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½Ç·Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_DV_FAULT;	 //ï¿½ï¿½Øµï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_ZERO_FAULT; // 0Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_TOTAL_OV_FAULT; //×ÜÑ¹¹ýÑ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_TOTAL_UV_FAULT; //×ÜÑ¹Ç·Ñ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_OV_FB_FAULT;	//µç³Ø»ØÀ¡¹ýÑ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_CH_OC_FAULT;	//µç³Ø³äµç¹ýÁ÷¹ÊÕÏ 2Î»
+	uint8_t BAT_TOTAL_OV_FAULT; //ï¿½ï¿½Ñ¹ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_TOTAL_UV_FAULT; //ï¿½ï¿½Ñ¹Ç·Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_OV_FB_FAULT;	//ï¿½ï¿½Ø»ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CH_OC_FAULT;	//ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_CH_OC_FB_FAULT;	  //µç³Ø»ØÀ¡¹ýÁ÷¹ÊÕÏ 2Î»
-	uint8_t BAT_DIS_OC_FAULT;	  //µç³Ø·Åµç¹ýÁ÷¹ÊÕÏ 2Î»
-	uint8_t BAT_DIS_INOC_FAULT;	  //µç³Ø·ÅµçË²Ê±¹ýÁ÷¹ÊÕÏ 2Î»
-	uint8_t BAT_PRE_DIS_OC_FAULT; //µç³ØÔ¤·Åµç¹ýÁ÷¹ÊÕÏ 2Î»
+	uint8_t BAT_CH_OC_FB_FAULT;	  //ï¿½ï¿½Ø»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_DIS_OC_FAULT;	  //ï¿½ï¿½Ø·Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_DIS_INOC_FAULT;	  //ï¿½ï¿½Ø·Åµï¿½Ë²Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_PRE_DIS_OC_FAULT; //ï¿½ï¿½ï¿½Ô¤ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_CH_OT_FAULT;  //µç³Ø³äµç¸ßÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_CH_UT_FAULT;  //µç³Ø³äµçµÍÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_DIS_OT_FAULT; //µç³Ø·Åµç¸ßÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_DIS_UT_FAULT; //µç³Ø·ÅµçµÍÎÂ¹ÊÕÏ 2Î»
+	uint8_t BAT_CH_OT_FAULT;  //ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CH_UT_FAULT;  //ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_DIS_OT_FAULT; //ï¿½ï¿½Ø·Åµï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_DIS_UT_FAULT; //ï¿½ï¿½Ø·Åµï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_DVUT_FAULT;		  //µç³ØÎÂ²î¹ý´ó¹ÊÕÏ 2Î»
-	uint8_t BAT_EQT_FAULT;		  //µç³Ø¾ùºâÎÂ¶È¹ý¸ß 2Î»
-	uint8_t BAT_MOS_OT_FAULT;	  //µç³ØMOSÎÂ¶È¹ý¸ß 2Î»
-	uint8_t BAT_PRE_RES_OT_FAULT; //µç³ØÔ¤·Åµç×èÎÂ¶È¹ý¸ß 2Î»
+	uint8_t BAT_DVUT_FAULT;		  //ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_EQT_FAULT;		  //ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½ï¿½Â¶È¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_MOS_OT_FAULT;	  //ï¿½ï¿½ï¿½MOSï¿½Â¶È¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_PRE_RES_OT_FAULT; //ï¿½ï¿½ï¿½Ô¤ï¿½Åµï¿½ï¿½ï¿½ï¿½Â¶È¹ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_PRE_CH_OT_FAULT; //µç³ØÔ¤·Å³¬Ê±¹ÊÕÏ 2Î»
-	uint8_t BAT_SOC_UL_FAULT;	 //µç³ØSOC¹ýµÍ¹ÊÕÏ 2Î»
-	uint8_t BAT_INS_UL_FAULT;	 //µç³Ø¾øÔµ¹ýµÍ¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_OV_FAULT;	 //µç³ØAFE¹ýÑ¹¹ÊÕÏ 2Î»
+	uint8_t BAT_PRE_CH_OT_FAULT; //ï¿½ï¿½ï¿½Ô¤ï¿½Å³ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_SOC_UL_FAULT;	 //ï¿½ï¿½ï¿½SOCï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_INS_UL_FAULT;	 //ï¿½ï¿½Ø¾ï¿½Ôµï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_OV_FAULT;	 //ï¿½ï¿½ï¿½AFEï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_AFE_UV_FAULT;	  //µç³ØAFEÇ·Ñ¹¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_DIS_OT_FAULT; //µç³ØAFE·Åµç¹ýÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_DIS_UT_FAULT; //µç³ØAFE·ÅµçµÍÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_CH_OT_FAULT;  //µç³ØAFE³äµç¹ýÎÂ¹ÊÕÏ 2Î»
+	uint8_t BAT_AFE_UV_FAULT;	  //ï¿½ï¿½ï¿½AFEÇ·Ñ¹ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_DIS_OT_FAULT; //ï¿½ï¿½ï¿½AFEï¿½Åµï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_DIS_UT_FAULT; //ï¿½ï¿½ï¿½AFEï¿½Åµï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_CH_OT_FAULT;  //ï¿½ï¿½ï¿½AFEï¿½ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_AFE_CH_UT_FAULT;  //µç³ØAFE³äµçµÍÎÂ¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_DIS_OC_FAULT; //µç³ØAFE·Åµç¹ýÁ÷¹ÊÕÏ 2Î»
-	uint8_t BAT_AFE_CH_UC_FAULT;  //µç³ØAFE³äµç¹ýÁ÷¹ÊÕÏ 2Î»
-	uint8_t BAT_SC_FAULT;		  //µç³Ø¶ÌÂ·¹ÊÕÏ 2Î»
+	uint8_t BAT_AFE_CH_UT_FAULT;  //ï¿½ï¿½ï¿½AFEï¿½ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_DIS_OC_FAULT; //ï¿½ï¿½ï¿½AFEï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_AFE_CH_UC_FAULT;  //ï¿½ï¿½ï¿½AFEï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_SC_FAULT;		  //ï¿½ï¿½Ø¶ï¿½Â·ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_FC_FAULT;			 //µç³Ø¸¡³ä¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_GET_VOL_FAULT;	 //µç³ØµçÑ¹²É¼¯¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_GET_TEMP_FAULT; //µç³ØÎÂ¶È²É¼¯¹ÊÕÏ 2Î»
-	uint8_t BAT_CELL_GET_FW_FAULT;	 //µç³ØÇ°¶Ë²É¼¯¹ÊÕÏ 2Î»
+	uint8_t BAT_FC_FAULT;			 //ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_GET_VOL_FAULT;	 //ï¿½ï¿½Øµï¿½Ñ¹ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_GET_TEMP_FAULT; //ï¿½ï¿½ï¿½ï¿½Â¶È²É¼ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CELL_GET_FW_FAULT;	 //ï¿½ï¿½ï¿½Ç°ï¿½Ë²É¼ï¿½ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_DIS_MOS_FAULT;	   //µç³Ø·ÅµçMOS¹ÊÕÏ 2Î»
-	uint8_t BAT_PRE_DIS_MOS_FAULT; //µç³ØÔ¤·ÅµçMOS¹ÊÕÏ 2Î»
-	uint8_t BAT_CH_MOS_FAULT;	   //µç³Ø³äµçMOS¹ÊÕÏ 2Î»
-	uint8_t BAT_EOL_FAULT;		   //µç³ØÊÙÃüÖÕÖ¹¹ÊÕÏ 2Î»
+	uint8_t BAT_DIS_MOS_FAULT;	   //ï¿½ï¿½Ø·Åµï¿½MOSï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_PRE_DIS_MOS_FAULT; //ï¿½ï¿½ï¿½Ô¤ï¿½Åµï¿½MOSï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_CH_MOS_FAULT;	   //ï¿½ï¿½Ø³ï¿½ï¿½MOSï¿½ï¿½ï¿½ï¿½ 2Î»
+	uint8_t BAT_EOL_FAULT;		   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ 2Î»
 
-	uint8_t BAT_FAULT_REVERSE; //¹ÊÕÏ×´Ì¬Ô¤Áô
-	uint8_t BAT_FW_VERSION;	   //µç³ØÓ²¼þ°æ±¾
+	uint8_t BAT_FAULT_REVERSE; //ï¿½ï¿½ï¿½ï¿½×´Ì¬Ô¤ï¿½ï¿½
+	uint8_t BAT_FW_VERSION;	   //ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½æ±¾
 
-	uint8_t BAT_EXT_FW1_VERSION; //µç³ØÓ²¼þ°æ±¾ 2Î»
-	uint8_t BAT_EXT_FW2_VERSION; //µç³ØÓ²¼þ°æ±¾ 6Î»
+	uint8_t BAT_EXT_FW1_VERSION; //ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½æ±¾ 2Î»
+	uint8_t BAT_EXT_FW2_VERSION; //ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½æ±¾ 6Î»
 
-	uint8_t BAT_CH_PHASE;  //µç³Ø³äµç½×¶Î 4Î»
-	uint8_t BAT_CORE_TYPE; //µçÐ¾ÀàÐÍ 4Î»
+	uint8_t BAT_CH_PHASE;  //ï¿½ï¿½Ø³ï¿½ï¿½×¶ï¿½ 4Î»
+	uint8_t BAT_CORE_TYPE; //ï¿½ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½ 4Î»
 
-	uint8_t BAT_CORE_TOTAL; //µçÐ¾´®Êý
+	uint8_t BAT_CORE_TOTAL; //ï¿½ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½
 
-	uint8_t BAT_DESIGN_MF; //µç³ØÉè¼Æ³§¼Ò 3Î»
-	uint8_t BAT_PRO_SPEC;  //µç³Ø²úÆ·¹æ¸ñ 5Î»
+	uint8_t BAT_DESIGN_MF; //ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ 3Î»
+	uint8_t BAT_PRO_SPEC;  //ï¿½ï¿½Ø²ï¿½Æ·ï¿½ï¿½ï¿½ 5Î»
 
-	uint8_t BAT_PRO_TIME; //µç³Ø²úÆ·Äê·Ý 4Î»
-	uint8_t BAT_PRO_CODE; //µç³ØÉú²úÁ÷Ë®Âë 20Î»
+	uint8_t BAT_PRO_TIME; //ï¿½ï¿½Ø²ï¿½Æ·ï¿½ï¿½ï¿½ 4Î»
+	uint8_t BAT_PRO_CODE; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ï¿½ 20Î»
 
-	uint8_t BAT_CRC;		//Ð£ÑéÂë
+	uint8_t BAT_CRC;		//Ð£ï¿½ï¿½ï¿½ï¿½
 } OneBusStaticData_t;
 
 void TIM_Configuration(uint16_t arr, uint16_t psc);

@@ -28,6 +28,7 @@ static void OneBusSetUart2Mode(void)
     GPIO_InitStruct(&GPIO_InitStructure);
 
 	RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA, ENABLE);
+    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOB,ENABLE);
 
     /* Configure USARTy Tx as alternate function push-pull */
     GPIO_InitStructure.Pin            = ONE_TXD1_PIN;    
@@ -40,13 +41,13 @@ static void OneBusSetUart2Mode(void)
     GPIO_InitStructure.GPIO_Alternate = GPIO_AF4_USART2;
     GPIO_InitPeripheral(ONE_RXD1_PORT, &GPIO_InitStructure);
 
-    GPIO_InitStructure.Pin        = GPIO_PIN_8;	//ACC_CTL
+    GPIO_InitStructure.Pin        = ONEWIre_485_PIN;	//ACC_CTL
 	GPIO_InitStructure.GPIO_Current = GPIO_DC_4mA;
 	GPIO_InitStructure.GPIO_Pull    = GPIO_No_Pull;
 	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
-    GPIO_InitPeripheral(GPIOA, &GPIO_InitStructure);
+    GPIO_InitPeripheral(ONEWIre_485_PORT, &GPIO_InitStructure);
 
-	ACC_ENABLE();	//短接ACC和BAT+
+	ONEWIre_485_ENABLE();	//短接ACC和BAT+
 }
 
 static void Uart2SetTxMode(void)
@@ -158,7 +159,7 @@ void USART2_IRQHandler(void)
         data = USART_ReceiveData(USART2);///读取数据
 		// RX_BUF[rx_cnt++]=data;
         HandleRecvData(data);  
-        OneBusAtl485Flag=1;     
+        OneBusAtl485Flag=2;     
     }else
     {
         data = USART2->STS;
