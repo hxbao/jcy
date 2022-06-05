@@ -39,7 +39,7 @@ unsigned char *queue_in;
 unsigned char *queue_out;
 
 uint32_t BLE_ID_value;
-char BLE_ID_Buff[5];
+char BLE_ID_Buff[6];
 uint8_t bat_rx_buf[200];
 uint8_t stop_update_flag;		//禁止升级
 
@@ -890,7 +890,7 @@ static void get_device_binding_code_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[BT24_FRAME_FIRST] = BT24_TX_FIRST;
 	bt24_tx_buf[BT24_FRAME_ADDRH] = BT24_TX_ADDRH;
 	bt24_tx_buf[BT24_FRAME_ADDRL] = BT24_TX_ADDRL;
-	bt24_tx_buf[BT24_FRAME_CMDTYPE] = GET_CODE_CMD;
+	bt24_tx_buf[BT24_FRAME_CMDTYPE] = 0x01;
 	bt24_tx_buf[BT24_FRAME_LENGTH] = 0x01;
 	bt24_tx_buf[BT24_FRAME_DATATYPE] = 0;
 
@@ -898,15 +898,21 @@ static void get_device_binding_code_handler(uint8_t offset,uint8_t *batRxBuff)
 	bt24_tx_buf[bt24_tx_buf[BT24_FRAME_LENGTH] + 5] = check_crc;
 
 	BLE_ID_value=bt24_rx_buf[6]<<16|bt24_rx_buf[7]<<8|bt24_rx_buf[8];
-	BLE_ID_Buff[0]=BLE_ID_value/10000;
-	BLE_ID_Buff[1]=BLE_ID_value/1000;
-	BLE_ID_Buff[2]=BLE_ID_value/100;
-	BLE_ID_Buff[3]=BLE_ID_value/10;
-	BLE_ID_Buff[4]=BLE_ID_value%10;
+	BLE_ID_Buff[0]=BLE_ID_value/100000;
+	BLE_ID_Buff[1]=BLE_ID_value%100000/10000;
+	BLE_ID_Buff[2]=BLE_ID_value%10000/1000;
+	BLE_ID_Buff[3]=BLE_ID_value%1000/100;
+	BLE_ID_Buff[4]=BLE_ID_value%100/10;
+	BLE_ID_Buff[5]=BLE_ID_value%10;
 
 	BLE_ID_RECV_FLAG=1;
 
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
+
+	for(int i=0;i<10;i++)
+	{
+		SEGGER_RTT_printf(0,"BLE_ID_SEND %X\r\n",bt24_tx_buf[i]);
+	}
 }
 /**
  * @brief  		固件版本校验
@@ -1532,6 +1538,45 @@ uint8_t DXBT24_Set_Name(uint8_t *name)
 	return 0;
 }
 /**
+ * @brief  	BT24蓝牙恢复出厂设置
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t DXBT24_Set_Default_Name(void)
+{
+	uint8_t cmd[40];
+	char echo_buf[40];
+	memset(cmd, 0, 40);
+	cmd[0] = 'A';
+	cmd[1] = 'T';
+	cmd[2] = '+';
+	cmd[3] = 'N';
+	cmd[4] = 'A';
+	cmd[5] = 'M';
+	cmd[6] = 'E';
+	cmd[7] = 'X';
+	cmd[8] = 'N';
+	cmd[9] = 'A';
+	cmd[10] = '1';
+	cmd[11] = '0';
+	cmd[12] = '0';
+	cmd[13] = '0';
+	cmd[14] = '0';
+	cmd[15] = '1';
+	strcat(cmd, "\r\n");
+	if(BDN.BDB.BLE_ID_FLAG==0)
+	{
+		if (atc_command(&atc, cmd, 3000, echo_buf, 20, 1, "+NAME="))
+		{
+			return 1;
+		}
+	}
+}
+/**
  * @brief  	蓝牙名称FLASH查询
  * @param
  * @param
@@ -1570,6 +1615,21 @@ uint8_t DXBT24_Device_BAUD_FLAG_WRITE(void)
 {
 	Flash_Read(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
 	BDN.BDB.BLE_BAUD_FLAG=1;
+	Flash_Write(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
+}
+/**
+ * @brief  	蓝牙ID已经写入
+ * @param
+ * @param
+ * @param
+ * @retval  	None
+ * @warning 	None
+ * @example
+ **/
+uint8_t DXBT24_BLE_ID_FLAG_WRITE(void)
+{
+	Flash_Read(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
+	BDN.BDB.BLE_ID_FLAG=1;
 	Flash_Write(BLE_ID_SAVE_ADDR,BDN.BLE_ID_BUFF,sizeof(BDN.BLE_ID_BUFF));
 }
 /**
@@ -1653,16 +1713,17 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 	if((BLE_ID_RECV_FLAG==1)&&(GetConfigLoopTime() > CompareValue))	//接收到蓝牙ID信号
 	{
 		BLE_EN_DISABLE();
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			echo_buf[i]=name[i];			
 		}
-		for(int i = 0; i < 5; i++)	
+		for(int i = 0; i < 6; i++)	
 		{
-			echo_buf[i+4]=(BLE_ID_Buff[i]+'0');
+			echo_buf[i+3]=(BLE_ID_Buff[i]+'0');
 		}			
 		if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
 		{		
+			DXBT24_BLE_ID_FLAG_WRITE();
 			BLE_ID_RECV_FLAG=0;
 			ConfigModuleNoBlockFlage=0;
 			ConfigModuleNoBlockCaseValue=0;	

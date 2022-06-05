@@ -267,6 +267,7 @@ void BT24Task(void const *argument)
 	atc_init(&atc, "MY_ATC", 2, atc_found);
 	atc_addSearch(&atc, "\r\n");
 	// atc_command(&atc,"AT\r\n",3000,echo_buf,20,1,"OK");
+	DXBT24_Set_Default_Name();
 	for (;;)
 	{
 		DXBT24_AT_Init(BLE_NAME,4);

@@ -5,7 +5,7 @@
 
 #define DXBT24_UARTX 1
 
-#define BLE_NAME  "XNA1"	//定义蓝牙名称
+#define BLE_NAME  "XNA"	//定义蓝牙名称
 //=============================================================================
 //接收数据帧值
 //=============================================================================
@@ -277,6 +277,7 @@ typedef struct
 {
     uint8_t BLE_MARK;
     uint8_t BLE_BAUD_FLAG;
+    uint8_t BLE_ID_FLAG;
     uint8_t BLE_ID_HH;
     uint8_t BLE_ID_HL;
     uint8_t BLE_ID_LH;
@@ -285,7 +286,7 @@ typedef struct
  
 typedef union
 {
-	uint8_t BLE_ID_BUFF[5];
+	uint8_t BLE_ID_BUFF[6];
 	BleDeviceBuffErr_t BDB;
 }BleDeviceNameErr_t;
 

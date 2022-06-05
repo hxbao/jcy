@@ -57,7 +57,7 @@ void LpUartInit(pf_RxCallback callback)
     RCC_EnableRETPeriphClk(RCC_RET_PERIPH_LPUART, ENABLE);
     LpUartPortCfg();
     LPUART_StructInit(&LPUART_InitStructure);
-    LPUART_InitStructure.BaudRate            = 115200;
+    LPUART_InitStructure.BaudRate            = 9600;
     LPUART_InitStructure.Parity              = LPUART_PE_NO;
     LPUART_InitStructure.RtsThreshold        = LPUART_RTSTH_FIFOFU;
     LPUART_InitStructure.HardwareFlowControl = LPUART_HFCTRL_NONE;
