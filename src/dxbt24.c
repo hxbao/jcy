@@ -1673,7 +1673,7 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 		{
 			RunCnt = 0;
 			BLE_ID_RECV_FLAG=0;
-			BLE_EN_ENABLE();
+			BLE_EN_ENABLE();   
 		} 
 	}
 }
