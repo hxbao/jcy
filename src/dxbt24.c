@@ -48,9 +48,12 @@ static uint8_t ConfigModuleNoBlockFlage;	 // 1-配置完成 0-未配置完成
 static uint8_t ConfigModuleNoBlockCaseValue; //控制执行哪一条CASE语句
 int DataReturnFlage = 0;					 //是否返回的预期的数据
 uint32_t RunCnt = 0;						 //记录运行状态发送的次数
-uint8_t BT24_RECV_FLAG;
 
-uint8_t BLE_ID_RECV_FLAG;
+uint8_t BT24RecvFlag;
+
+uint8_t BLEConifgCnt;	 		//配置完成，可接收透传指令
+
+uint8_t BLEIdRecvFlag;
 
 uint16_t GetCrc16(uint8_t *buf, uint8_t len)
 {
@@ -445,7 +448,6 @@ static void get_app_check_updata(uint8_t offset,uint8_t *batRxBuff)
 	uint8_t protocol_type;		//协议类型
 	bat_type=get_device_bat_type();	//电池类型
 	bat_type=bt24_get_bat_type();
-	fault_code = get_device_fault_code();
 	protocol_type=msgLoop();
 	for(int i=0;i<sizeof(bt24_tx_buf);i++)
 	{
@@ -670,7 +672,7 @@ static void device_start_dc_handler(uint8_t offset,uint8_t *batRxBuff)
 	|(bt24_rx_buf[offset+BT24_SET_CH_END_VOL+2]<<8)|(bt24_rx_buf[offset+BT24_SET_CH_END_VOL+3]);
 	BSE.DataType=bt24_rx_buf[offset+BT24_SET_DataType];
 
-	BT24_RECV_FLAG=1;
+	BT24RecvFlag=1;
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 }
 /*****************************************************************************
@@ -905,7 +907,7 @@ static void get_device_binding_code_handler(uint8_t offset,uint8_t *batRxBuff)
 	BLE_ID_Buff[4]=BLE_ID_value%100/10;
 	BLE_ID_Buff[5]=BLE_ID_value%10;
 
-	BLE_ID_RECV_FLAG=1;
+	BLEIdRecvFlag=1;
 
 	atc_transmit(&atc, bt24_tx_buf, bt24_tx_buf[BT24_FRAME_LENGTH] + 6);
 
@@ -1233,6 +1235,36 @@ void bt24_recv_service(void)
 		memcpy((char *)bt24_rx_buf, (char *)bt24_rx_buf + offset, rx_in);
 	}
 }
+
+// void bt24_recv_service(void)
+// {
+// 	static unsigned short rx_in = 0;
+// 	uint8_t offset = 0;
+// 	uint8_t rx_value_len = 0;             //数据帧长度
+// 	uint8_t crc;
+// 	while ((rx_in < sizeof(bt24_rx_buf)) && get_queue_total_data() > 0)
+// 	{
+// 		bt24_rx_buf[rx_in++] = Queue_Read_Byte();
+// 	}
+// 	if (rx_in < PROTOCOL_HEAD_LEN)
+// 		return;
+// 	if(rx_in==5)
+// 	{
+// 		rx_value_len=bt24_rx_buf[offset + BT24_FRAME_LENGTH];
+// 	}
+// 	if (rx_in == rx_value_len+6)
+// 	{
+// 		if (get_check_sum_bt24(bt24_rx_buf, rx_in - 1) != bt24_rx_buf[rx_value_len+PROTOCOL_HEAD_LEN + offset - 1])
+// 		{
+// 			//校验出错
+// 			offset += rx_value_len+6;
+// 			crc=get_check_sum_bt24(bt24_rx_buf, rx_in - 1);
+// 			SEGGER_RTT_printf(0, "bt24_crc_check_error! %x\n",crc);
+// 		}
+// 		bt24_data_handler(offset);
+// 		rx_in=0;
+// 	}	
+// }
 /**
  * @brief  	得到电池类型
  * @param
@@ -1352,9 +1384,9 @@ uint8_t bt24_get_bat_opera_status(void)
 {
 	if(BLE_STA_GET())
 	{
-		if(BT24_RECV_FLAG==1)
+		if(BT24RecvFlag==1)
 		{
-			BT24_RECV_FLAG=0;
+			BT24RecvFlag=0;
 			return BSE.OPERA_STA;	
 		}
 		else
@@ -1647,9 +1679,9 @@ uint8_t DXBT24_Device_BAUD_FLAG_Read(void)
 	if(BDN.BDB.BLE_BAUD_FLAG==1) 
 	{
 		LpUartReset();
-		return 1;
+		return 0;
 	}
-	return 0;
+	return 1;
 }
 /**
  * @brief  	BT24蓝牙AT初始化
@@ -1664,10 +1696,9 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 {
 	static uint8_t timeout;
 	char echo_buf[20]; 
-	if (GetConfigLoopTime() > CompareValue && ConfigModuleNoBlockFlage == 0)
+	if ((GetConfigLoopTime() > CompareValue && ConfigModuleNoBlockFlage == 0)&&(DXBT24_Device_BAUD_FLAG_Read()))
 	{
 		GetConfigTimeClear();
-		DXBT24_Device_BAUD_FLAG_Read();
 		if (DataReturnFlage == 1) //上一条指令是OK的
 		{
 			RunCnt = 0;
@@ -1710,7 +1741,7 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 			break;
 		}
 	}
-	if((BLE_ID_RECV_FLAG==1)&&(GetConfigLoopTime() > CompareValue))	//接收到蓝牙ID信号
+	if((BLEIdRecvFlag==1)&&(GetConfigLoopTime() > CompareValue))	//接收到蓝牙ID信号
 	{
 		BLE_EN_DISABLE();
 		for (int i = 0; i < 3; i++)
@@ -1724,7 +1755,7 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 		if (DXBT24_Set_Name(echo_buf) == 1)	//写入蓝牙名称
 		{		
 			DXBT24_BLE_ID_FLAG_WRITE();
-			BLE_ID_RECV_FLAG=0;
+			BLEIdRecvFlag=0;
 			ConfigModuleNoBlockFlage=0;
 			ConfigModuleNoBlockCaseValue=0;	
 			BLE_EN_ENABLE();	
@@ -1733,11 +1764,26 @@ uint8_t DXBT24_AT_Init(uint8_t *name,uint8_t name_len)
 		if (RunCnt >= 5)	//超时20秒
 		{
 			RunCnt = 0;
-			BLE_ID_RECV_FLAG=0;
+			BLEIdRecvFlag=0;
 			BLE_EN_ENABLE();   
 		} 
+	}
+	if(ConfigModuleNoBlockFlage==1)
+	{
+		if(BLEConifgCnt<3)
+		{
+			BLEConifgCnt++;
+		}
 	}
 }
 
 
-
+uint8_t BLE_ConfigModule_Complete()
+{
+	static uint8_t temp=0;
+	if (BLEConifgCnt==3)
+	{
+		temp=1;
+	}
+	return temp;
+}

@@ -7,7 +7,7 @@
 
 #define DEBUG_EN    (1)
 
-#define FW_VERSION  "jcy_V2_1_7"
+#define FW_VERSION  "jcy_V2_1_9"
 #define HW_VERSION  "1_2"
 #define BAT_TYPE  (1)
 #define BAT_TYPE2 _2000P

@@ -101,7 +101,7 @@ uint32_t get_device_vol_value(void);
 uint16_t get_device_cur_value(void);
 void device_uart_receive_input(unsigned char value);
 void device_data_handle(unsigned short offset,DeviceResponseCmdErr_t *DRC);
-uint8_t get_device_fault_code(void);
+uint32_t get_device_fault_code(void);
 void device_protocol_init(void);
 void device_uart_service(void);
 uint8_t get_device_bat_type(void);

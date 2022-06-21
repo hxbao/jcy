@@ -629,6 +629,10 @@ uint16_t get_can_bat_vol_delta(void)
 **/
 uint16_t get_can_bat_max_temp(void)
 {
+    if(atlCanData.Bat_Module_Max_Temp==0)
+    {
+        return atlCanData.Bat_Module_Max_Temp;
+    }
 	return atlCanData.Bat_Module_Max_Temp-400;
 }
 /** 
@@ -642,6 +646,10 @@ uint16_t get_can_bat_max_temp(void)
 **/
 uint16_t get_can_bat_min_temp(void)
 {
+    if(atlCanData.Bat_Module_Min_Temp==0)
+    {
+         return atlCanData.Bat_Module_Min_Temp;
+    }
 	return atlCanData.Bat_Module_Min_Temp-400;
 }
 /** 
@@ -694,6 +702,10 @@ uint16_t get_can_bat_soh(void)
 **/
 uint16_t get_can_bat_max_ch_cur(void)
 {
+    if(atlCanData.Bat_Max_Chg_Cur==0)
+    {
+        return atlCanData.Bat_Max_Chg_Cur;
+    }
 	return (atlCanData.Bat_Max_Chg_Cur-30000)/10;
 }
 /** 
@@ -799,6 +811,9 @@ uint32_t get_can_bat_fault()
     {
         checkfault|0x100;
     }
+
+    checkfault|=get_device_fault_code();
+
     return checkfault;
 }
 

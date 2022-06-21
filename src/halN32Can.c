@@ -174,6 +174,7 @@ void CAN_RX0_IRQHandler(void)
 
     CAN_ReceiveMessage(CAN, 0, &canRxMsg);
     canRxCallback(canRxMsg);   
+    
 }
 
 

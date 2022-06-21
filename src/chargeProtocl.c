@@ -299,6 +299,32 @@ void device_uart_write_frame(void)
 *****************************************************************************/
 uint8_t get_device_work_station(void)
 {
+    if((DRC.DEV_STATUS==0x01)||(DRC.DEV_STATUS==0x02))  
+    {
+        DRC.DEV_STATUS=0x01;
+        return DRC.DEV_STATUS;
+    }
+    if(DRC.DEV_STATUS==0x03)
+    {
+        DRC.DEV_STATUS=0x03;
+        return DRC.DEV_STATUS;
+    }
+    if(DRC.DEV_STATUS==0x05)
+    {
+        DRC.DEV_STATUS=0x05;
+        return DRC.DEV_STATUS;
+    }
+    if(DRC.DEV_STATUS==0)
+    {
+        DRC.DEV_STATUS=0;
+        return DRC.DEV_STATUS;
+    }
+    DRC.DEV_STATUS=DRC.DEV_FAULT_CODE;
+    if((DRC.DEV_STATUS==1)||(DRC.DEV_STATUS==2))
+    {
+        DRC.DEV_STATUS=0x05;
+        return DRC.DEV_STATUS; 
+    }
     return DRC.DEV_STATUS; 
 }
 
@@ -339,9 +365,18 @@ uint8_t get_device_bat_type(void)
 输入参数 : 无
 返回参数 : 无
 *****************************************************************************/
-uint8_t get_device_fault_code(void)
+uint32_t get_device_fault_code(void)
 {
-    return DRC.DEV_FAULT_CODE;
+    uint32_t temp;  
+    if(DRC.DEV_FAULT_CODE==0x01)
+    {
+        temp= 0x0400;    
+    }   
+    else if(DRC.DEV_FAULT_CODE==0x02)
+    {    
+        temp= 0x0800; 
+    }
+    return temp;
 }
 /*****************************************************************************
 函数名称 : get_device_send_ble_id

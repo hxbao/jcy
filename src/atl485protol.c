@@ -539,6 +539,10 @@ uint16_t get_atl485_bat_max_dsg_cur(void)
 **/
 uint16_t get_atl485_bat_max_temp(void)
 {
+    if(atl485batd.MaxCellTemp==0)
+    {
+        return atl485batd.MaxCellTemp;
+    }
 	return atl485batd.MaxCellTemp-400;
 }
 /** 
@@ -552,6 +556,10 @@ uint16_t get_atl485_bat_max_temp(void)
 **/
 uint16_t get_atl485_bat_min_temp(void)
 {
+    if(atl485batd.MinCellTemp==0)
+    {
+        return atl485batd.MinCellTemp;
+    }   
 	return atl485batd.MinCellTemp-400;
 }
 /** 
@@ -774,7 +782,7 @@ uint8_t get_atl485_bat_fault_code(uint8_t num)
 **/
 uint32_t get_atl485_bat_fault()
 {
-    uint8_t checkfault;
+    uint32_t checkfault;
     uint8_t faultnum;
     for(int i;i<8;i++)
     {
@@ -840,5 +848,8 @@ uint32_t get_atl485_bat_fault()
     {
         checkfault|0x100;
     }
+
+    checkfault|=get_device_fault_code();
+
     return checkfault;
 }
