@@ -3,8 +3,8 @@
 
 
 //ATL BMS 485设�?�地址
-#define ATL_MODBUS_DEV 0x01
-
+#define ATL_MODBUS_DEV_H 0x01
+#define ATL_MODBUS_DEV_L 0x03
 
 //命令�??,主机发送的命令�??
 #define ATL_MODBUS_CMD_READ_ID        0x04
@@ -182,8 +182,10 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
             }
         }
 
-    }else
+    }
+    else
     {
+        rxIndex=0;
         SEGGER_RTT_printf(0,"recv crc error\n");
     }
 }
@@ -193,26 +195,32 @@ static void ATLModbusParse(uint8_t *pMdInput,uint8_t len)
 void ATL_ModbusRecvHandle(uint8_t rdata)
 {
     static uint16_t mdLen = 0;
-    if(rdata == ATL_MODBUS_DEV && rxIndex == 0)
+    if(rdata == ATL_MODBUS_DEV_H && rxIndex == 0)
     {
         ATLMdOrgInBuf[rxIndex++] = rdata;
-        // SEGGER_RTT_printf(0,"%02X ",rdata);
+        SEGGER_RTT_printf(0,"%02X ",rdata);
         return;
-    }else
-    if(rxIndex > 0)
+    }
+    else if(rxIndex > 0)
     {           
         ATLMdOrgInBuf[rxIndex++] = rdata;
         if(rxIndex > 254)
         {
             SEGGER_RTT_printf(0,"recv:%02X ",rdata);
+            rxIndex=0;
             return ;
         }
         SEGGER_RTT_printf(0,"%02X ",rdata);
         if(rxIndex ==3)
         {
             mdLen = ATLMdOrgInBuf[2] | ((uint16_t)ATLMdOrgInBuf[3]<<8);
+            if(mdLen<20)
+            {
+               rxIndex=0;
+               return; 
+            }
         }
-        //请求读数�??�??
+        //请求读数�??�?? 
         if(rxIndex == mdLen+6)
         {   
             //返回读数�??�??         
@@ -332,6 +340,7 @@ void ATLOneBusModbusPoll(void)
 {
     static uint8_t index = 0;
     static uint8_t cellnum;
+    static uint8_t buff[120]={0};
     //�??�??发送取数据指令
     if(bsp_CheckTimer(TMR_ONEBUS_CHECK))  
     {
@@ -381,6 +390,15 @@ void ATLOneBusModbusPoll(void)
             CommdSendFrame(atlcmdreq,onebusmode);
             break;
         }
+        // if(response>20)
+        // {
+        //     response =0;
+        //     memcpy((uint8_t*)&atl485cellv,buff,sizeof(atl485cellv));
+        //     memcpy((uint8_t*)&atl485batd,buff,sizeof(atl485batd));
+        //     memcpy((uint8_t*)&atl485batsta,buff,sizeof(atl485batsta));
+        //     memcpy((uint8_t*)&atl485prjInfo,buff,sizeof(atl485prjInfo)); 
+        //     // SEGGER_RTT_printf(0,"atl485_response_failed!\r\n");            
+        // }
         // SEGGER_RTT_printf(0,"onebus_mode_running\r\n");
     } 
 

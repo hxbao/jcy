@@ -409,7 +409,7 @@ typedef enum
 }uart_mode;
 
 
-#define ATl_OneBusModbusSend(a,b) Uart2SendData(a,b)
+#define ATl_OneBusModbusSend(a,b) Uart1SendData(a,b)
 #define ATl_ModbusSend(a,b) Uart1SendData(a,b)
 
 void ATL_ModbusRecvHandle(uint8_t rdata);

@@ -15,6 +15,8 @@ static uint8_t Atl485Flag;   //硬件485接口
 static uint32_t Atl485BaudRate;
 static uint8_t Atl485CheckFlag;
 
+extern uint8_t OneBusAtl485Flag;
+
 pf_RxCallback RxCallback;
 
 
@@ -249,6 +251,7 @@ void Uart1Init(pf_RxCallback callback)
     USART_InitType USART_InitStructure;
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_USART1, ENABLE); 
     Uart1PortCfg();
+    OneBusSetUart2Mode();
     USART_StructInit(&USART_InitStructure);
     USART_InitStructure.BaudRate            = 115200;
     USART_InitStructure.WordLength          = USART_WL_8B;
@@ -297,7 +300,7 @@ void Uart1SetBaudRate(void)
                 break;
             case 2:
                 /* code */
-                Atl485BaudRate=57600;   //一线通转485 57600
+                Atl485BaudRate=57600;   //一线通转485 57600 
                 ONEWIre_485_DISABLE();
                 SEGGER_RTT_printf(0,"ONEBUS_CHANGE_485_USART_BAUDRATE_SWITCH ---- %d\r\n",Atl485BaudRate);
                 break;
@@ -380,8 +383,15 @@ void USART1_IRQHandler(void)
     {
         data = USART_ReceiveData(USART1);///读取数据
         HandleRecvData(data); 
-        Atl485Flag=0x03;
-        Atl485CheckFlag=5;  //5秒超时
+        if(Atl485BaudRate==57600)
+        {
+            OneBusAtl485Flag=2; 
+        }
+        if((Atl485BaudRate==115200)||(Atl485BaudRate==9600))
+        {
+            Atl485Flag=3; 
+        }
+        Atl485CheckFlag=2;  //5秒超时
         //USART_ClrIntPendingBit(USART1, USART_INT_RXDNE);   ///<清接收中断请求 
     }else
     {

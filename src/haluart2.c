@@ -11,9 +11,9 @@ typedef void (*pf_Rx2Callback)(uint8_t rData);
 
 pf_Rx2Callback Rx2Callback; 
 
-uint8_t OneBusAtl485Flag;   //Ò»ÏßÍ¨485½Ó¿Ú
+uint8_t OneBusAtl485Flag;   //Ò»ï¿½ï¿½Í¨485ï¿½Ó¿ï¿½
 /** 
-* @brief  	bmsÒ»ÏßÍ¨ÉèÖÃÎª´®¿Ú2
+* @brief  	bmsÒ»ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½2
 * @param  	
 * @param  	
 * @param   
@@ -21,7 +21,7 @@ uint8_t OneBusAtl485Flag;   //Ò»ÏßÍ¨485½Ó¿Ú
 * @warning 	None
 * @example
 **/
-static void OneBusSetUart2Mode(void)
+void OneBusSetUart2Mode(void)
 {
     GPIO_InitType GPIO_InitStructure;
      /* Initialize GPIO_InitStructure */
@@ -47,7 +47,7 @@ static void OneBusSetUart2Mode(void)
 	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_InitPeripheral(ONEWIre_485_PORT, &GPIO_InitStructure);
 
-	ONEWIre_485_ENABLE();	//¶Ì½ÓACCºÍBAT+
+	ONEWIre_485_ENABLE();	//ï¿½Ì½ï¿½ACCï¿½ï¿½BAT+
 }
 
 static void Uart2SetTxMode(void)
@@ -94,7 +94,7 @@ static void NVIC_UartConfiguration(void)
 
 }
 /** 
-* @brief  	USART2 ³õÊ¼»¯
+* @brief  	USART2 ï¿½ï¿½Ê¼ï¿½ï¿½
 * @param  	
 * @param  	
 * @param   
@@ -120,17 +120,16 @@ void Uart2Init(pf_Rx2Callback callback)
     USART_ConfigInt(USART2, USART_INT_RXDNE, ENABLE);
 
 	USART_Enable(USART2, ENABLE);
-	// USART_EnableHalfDuplex(USART2, ENABLE);	//µ¥Ïß°ëË«¹¤³õÊ¼»¯
+	// USART_EnableHalfDuplex(USART2, ENABLE);	//ï¿½ï¿½ï¿½ß°ï¿½Ë«ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
     NVIC_UartConfiguration();
-    //½ÓÊÕ»Øµ÷º¯Êý
+    //ï¿½ï¿½ï¿½Õ»Øµï¿½ï¿½ï¿½ï¿½ï¿½
     Rx2Callback = callback;
 }
 
 void Uart2SendData(uint8_t *pData, uint16_t len)
 {
     uint16_t i;
-    //IO ÉèÖÃµ½Uart·¢ËÍÄ£Ê½
-    OneBusAtl485Flag=0;
+    //IO ï¿½ï¿½ï¿½Ãµï¿½Uartï¿½ï¿½ï¿½ï¿½Ä£Ê½
     Uart2SetTxMode();
 	// RX_DISABLE();
     USART_ConfigInt(USART2,USART_INT_RXDNE,DISABLE);
@@ -142,21 +141,21 @@ void Uart2SendData(uint8_t *pData, uint16_t len)
         }
 	}
     while(USART_GetFlagStatus(USART2, USART_FLAG_TXC)==RESET );
-    bsp_DelayUS(100); //ÓÉÓÚÐèÒªÔÚÖÐ¶ÏÖÐµ÷ÓÃ£¬²»Ê¹ÓÃbsp_DelayMS()º¯Êý
+    bsp_DelayUS(100); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ðµï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½bsp_DelayMS()ï¿½ï¿½ï¿½ï¿½
     USART_ClrIntPendingBit(USART2,USART_INT_RXDNE);
 	USART_ConfigInt(USART2,USART_INT_RXDNE,ENABLE);
 	// RX_ENABLE();
     // Uart2SetPPMode();
 }
 
-///<Uart2 ÖÐ¶Ï·þÎñº¯Êý
+///<Uart2 ï¿½Ð¶Ï·ï¿½ï¿½ï¿½ï¿½ï¿½
 void USART2_IRQHandler(void)
 {
     uint8_t data;
-    if(USART_GetIntStatus(USART2, USART_INT_RXDNE) != RESET)    ///½ÓÊÕÊý¾Ý
+    if(USART_GetIntStatus(USART2, USART_INT_RXDNE) != RESET)    ///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
-        // USART_ClrIntPendingBit(USART2, USART_INT_RXDNE);   ///<Çå½ÓÊÕÖÐ¶ÏÇëÇó 
-        data = USART_ReceiveData(USART2);///¶ÁÈ¡Êý¾Ý
+        // USART_ClrIntPendingBit(USART2, USART_INT_RXDNE);   ///<ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        data = USART_ReceiveData(USART2);///ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		// RX_BUF[rx_cnt++]=data;
         HandleRecvData(data);  
         OneBusAtl485Flag=2;     
@@ -169,7 +168,7 @@ void USART2_IRQHandler(void)
 }
 
 /** 
-* @brief  	µÃµ½Ò»ÏßÍ¨485¼æÈÝµç³ØÄ£Ê½
+* @brief  	ï¿½Ãµï¿½Ò»ï¿½ï¿½Í¨485ï¿½ï¿½ï¿½Ýµï¿½ï¿½Ä£Ê½
 * @param  	
 * @param  	
 * @param   
@@ -182,7 +181,7 @@ uint8_t get_onebus_flag()
     return OneBusAtl485Flag;
 }
 /** 
-* @brief  	Çå³ýÒ»ÏßÍ¨485¼æÈÝµç³ØÄ£Ê½
+* @brief  	ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Í¨485ï¿½ï¿½ï¿½Ýµï¿½ï¿½Ä£Ê½
 * @param  	
 * @param  	
 * @param   

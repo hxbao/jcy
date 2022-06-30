@@ -1296,10 +1296,10 @@ uint8_t bt24_get_bat_type(void)
 			}
 		break;
 
-		case 1:	
+		case 2:	
 			bat_type=2;	//一线通485
 		break;
-		case 2:	
+		case 3:	
 			bat_type=3; //硬件485
 		break;
 		case 4:	//CAN总线

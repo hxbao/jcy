@@ -86,13 +86,14 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+	//   IWDG_ReloadKey();
 	  osDelay(10);
   }
   /* USER CODE END 5 */ 
 }
 /** 
-* @brief  	�õ����ձ��λ
-* @param  	1:һ��ͨ����485 2:485Э�� 3:CANЭ��
+* @brief  	锟矫碉拷锟斤拷锟秸憋拷锟轿�
+* @param  	1:一锟斤拷通锟斤拷锟斤拷485 2:485协锟斤拷 3:CAN协锟斤拷
 * @param  	
 * @param   
 * @retval  	None
@@ -105,7 +106,7 @@ uint8_t msgLoop(void)
 	if(bsp_CheckTimer(TMR_MAIN))  
 	{
 		msgID=get_onebus_flag()|get_atl485_flag()|get_can_flag();
-		if(msgID!=0)	//������ձ�־λ
+		if(msgID!=0)	//锟斤拷锟斤拷锟斤拷毡锟街疚�
 		{
 			get_atl485_clear();
 			get_onebus_clear();
@@ -115,8 +116,8 @@ uint8_t msgLoop(void)
 	return msgID;
 }
 /** 
-* @brief  	��Ϣ��������
-* @param  	1:һ��ͨ����485 2:485Э�� 3:CANЭ��
+* @brief  	锟斤拷息锟斤拷锟斤拷锟斤拷锟斤拷
+* @param  	1:一锟斤拷通锟斤拷锟斤拷485 2:485协锟斤拷 3:CAN协锟斤拷
 * @param  	
 * @param   
 * @retval  	None
@@ -142,7 +143,7 @@ void MsgTask(void const * argument)
   /* USER CODE END UsbTask */
 }
 /** 
-* @brief  	bmsһ��ͨ 485����Э������
+* @brief  	bms一锟斤拷通 485锟斤拷锟斤拷协锟斤拷锟斤拷锟斤拷
 * @param  	
 * @param  	   
 * @param   
@@ -157,7 +158,7 @@ void OneBusTask(void const * argument)
 	TIM_Configuration(47,99);	//(47+1)*(99+1)/48000000
 	ATLModbusSendSlient();
 	bsp_StartCallBackTimer(TMR_ONEBUS_CHECK,ATLOneBusModbusPoll,500);
-	// OneBusSetPPMode();	//����һ��ͨģʽ
+	// OneBusSetPPMode();	//锟斤拷锟斤拷一锟斤拷通模式
 	for(;;)
 	{
 		evt=osMessageGet(QueueTx,20);
@@ -170,7 +171,7 @@ void OneBusTask(void const * argument)
 }
 
 /** 
-* @brief  	485Э������
+* @brief  	485协锟斤拷锟斤拷锟斤拷
 * @param  	
 * @param  	
 * @param   
@@ -215,7 +216,7 @@ void ATLCANParseTask(void const * argument)
 }
 
 /** 
-* @brief  	����ͨѶЭ������
+* @brief  	锟斤拷锟斤拷通讯协锟斤拷锟斤拷锟斤拷
 * @param  	
 * @param  	
 * @param    
@@ -236,7 +237,7 @@ void MFDeviceTask(void const * argument)
 	}
 }
 /**
- * @brief  	ATָ�����
+ * @brief  	AT指锟斤拷锟斤拷锟�
  * @param
  * @param
  * @param
@@ -251,7 +252,7 @@ void atc_found(char *foundStr)
 	}
 }
 /**
- * @brief  	BT24����Э������
+ * @brief  	BT24锟斤拷锟斤拷协锟斤拷锟斤拷锟斤拷
  * @param
  * @param
  * @param
@@ -263,7 +264,7 @@ void BT24Task(void const *argument)
 {
 	DX_BT24_Init();	
 	bt24_protocol_init();
-	iap_config_init();	//��ʼ��IAP�汾��Ϣ
+	iap_config_init();	//锟斤拷始锟斤拷IAP锟芥本锟斤拷息
 	atc_init(&atc, "MY_ATC", 2, atc_found);
 	atc_addSearch(&atc, "\r\n");
 	// atc_command(&atc,"AT\r\n",3000,echo_buf,20,1,"OK");
